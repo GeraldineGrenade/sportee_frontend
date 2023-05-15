@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, View, Text, StyleSheet, TextInput } from 'react-native'
+import { SafeAreaView, View, Text, StyleSheet, TextInput, Button } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const HomeScreen = ({navigation}) => {
@@ -33,7 +33,8 @@ const [map, setMap] = useState(false);
             </View>
             <View style={styles.forMe}>
                 <Text style={styles.titles}>Pour moi</Text>
-            </View>                    
+            </View>
+            <Button onPress={navigation.navigate('SignUpJoin')} title="Sign Up"/>                    
 
         </SafeAreaView>
     )

@@ -1,16 +1,16 @@
-import React, { useState, FC } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, Platform } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Image, Platform,StyleSheet } from 'react-native';
+// import DateTimePicker from '@react-native-community/datetimepicker';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const avatarIconList = [
-    '../assets/avatar-icons/avatar1.png',
-    '../assets/avatar-icons/avatar2.png',
-    '../assets/avatar-icons/avatar3.png',
-    '../assets/avatar-icons/avatar4.png',
-    '../assets/avatar-icons/avatar5.png',
-    '../assets/avatar-icons/avatar6.png',
+    require('../assets/avatar-icons/avatar1.png'),
+    require('../assets/avatar-icons/avatar2.png'),
+    require('../assets/avatar-icons/avatar3.png'),
+    require('../assets/avatar-icons/avatar4.png'),
+    require('../assets/avatar-icons/avatar5.png'),
+    require('../assets/avatar-icons/avatar6.png'),
 ]
 
 const EMAIL_REGEX = new RegExp (/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
@@ -64,7 +64,7 @@ const SignupJoinScreen = ({ navigation }) => {
         //if all input are correct, navigate to preference page with info in route
         
         {/* Change navigation destination to preferences page */}
-        navigation.navigate('navigate', {username, firstname, lastname, email, telephone, dateOfBirth, password})
+        //navigation.navigate('navigate', {username, firstname, lastname, email, telephone, dateOfBirth, password})
     }
 
     //change style of inputs according to whether error or not 
@@ -78,7 +78,7 @@ const SignupJoinScreen = ({ navigation }) => {
             <Text style={styles.title}>Rejoins nous !</Text>
             <View style={styles.userContainer}>
                 {/* Add possibility to choose image from list */}
-                <Image source={require(avatarIconList[1])} style={styles.avatar} />
+                <Image source={avatarIconList[0]} style={styles.avatar} />
                 <View style={styles.userNameContainer}>
                     <Text>Nom d'utilisateur* :</Text>
                     <TextInput
@@ -223,32 +223,37 @@ export default SignupJoinScreen
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
         backgroundColor: "white",
-        alignItems: 'center',
         paddingRight: 30,
         paddingLeft: 30,
+        paddingTop: 30,
         width: '100%',
         height: '100%',
     },
     title: {
-        paddingTop: 30,
-        paddingBottom: 30,
         color: '#EA7810',
-    },
+        fontSize: 24,
+        fontWeight: '700',
+        paddingTop: 8,
+        },
     userContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         width: '100%'
     },
     avatar: {
-        borderRadius: '50%'
+        //borderRadius: '50%'
+        width: 50,
+        height: 50,
     },
     userNameContainer: {
         justifyContent: 'flex-start',
+        //width: '100%'
+
     },
     input: {
-
+        //borderColor: 'black',
+        width : 100,
     },
     inputContainer: {
         width: '100%'

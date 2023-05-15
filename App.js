@@ -1,5 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -8,7 +7,16 @@ import HomeScreen from './screens/HomeScreen';
 import CreateScreen from './screens/CreateScreen';
 import MessagesListScreen from './screens/MessagesListScreen';
 import ProfilScreen from './screens/ProfilScreen';
+import SignupJoinScreen from './screens/SignupJoinScreen';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import user from './reducers/user'
+
+const store = configureStore({
+ reducer: { user },
+});
 
 
 const Tab = createBottomTabNavigator();
@@ -46,20 +54,14 @@ const TabNavigator = () => {
 
 export default function App() {
   return (
+    <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="TabNavigator" component={TabNavigator} />
-          <Stack.Screen name="Profil" component={ProfilScreen} />
+          <Stack.Screen name="Profil" component={ProfilScreen} /> 
+           <Stack.Screen name="SignUpJoin" component={SignupJoinScreen} />
         </Stack.Navigator>
       </NavigationContainer>
+    </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
