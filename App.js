@@ -30,10 +30,12 @@ const TabNavigator = () => {
           iconName = 'comments'
         }
  
-        return <FontAwesome name={iconName} size={size} color={color} />;
+        return <FontAwesome name={iconName} size={size} color={color} />
+        ;
       },
       tabBarActiveTintColor: '#ffa500',
       tabBarInactiveTintColor: '#000080',
+      // tabBarColor: '#121C6E',
       headerShown: false,
     })}>
         <Tab.Screen name="Calendrier" component={CalendarScreen} />
@@ -63,3 +65,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+
+/* <StatusBar backgroundColor="#121C6E" /> */
