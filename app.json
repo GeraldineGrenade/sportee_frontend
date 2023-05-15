@@ -3,6 +3,7 @@
     "name": "sportee_frontend",
     "slug": "sportee_frontend",
     "version": "1.0.0",
+    "scheme": "sporteefrontend",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
