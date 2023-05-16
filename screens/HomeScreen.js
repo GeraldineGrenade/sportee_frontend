@@ -39,7 +39,7 @@ const [map, setMap] = useState(false);
                     <ActivityCard />
                 </View>
             </View>
-            {/* <Button onPress={navigation.navigate('SignUpJoin')} title="Sign Up"/>                     */}
+            <Button onPress={navigation.navigate('SignUpJoin')} title="Sign Up"/>                    
 
         </SafeAreaView>
     )
