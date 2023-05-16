@@ -1,9 +1,7 @@
 import React from 'react'
-import { SafeAreaView, View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-// import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { SafeAreaView, View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-// const Tab = createBottomTabNavigator();
 
 const ProfilScreen = ({navigation}) => {
     return (
@@ -19,6 +17,7 @@ const ProfilScreen = ({navigation}) => {
             <View style={styles.infosUser}>
                 <View style={styles.userPhotoContainer}>
                     <FontAwesome name='user' size={70} color='#f8f8ff' style={styles.userIcon} onPress={() => navigation.navigate('Profil')}/>
+                    <View style={styles.plusContainer}><Text style={styles.plus}>+</Text></View>
                 </View>
                 <View style={styles.infosUserText}>
                     <Text style={styles.textName}>Antoine</Text>
@@ -31,12 +30,20 @@ const ProfilScreen = ({navigation}) => {
             <Text style={styles.textButton}>Modifier le profil</Text>
           </TouchableOpacity>
           <View style={styles.favoris}>
-            <Text style={styles.subtitleFav}>Mes sports favoris</Text>
+            <Text style={styles.subtitleFav}>Mes sports favoris : </Text>
+            <View style={styles.favoriteSport}>
+                    <View style={styles.sportContent}></View>
+                    <View style={styles.sportContent}></View>
+                    <View style={styles.sportContent}></View>
+                    <View style={styles.sportContent}></View>
+                    <View style={styles.sportContent}></View>
+            </View>
+
           </View>
           <View style={styles.description}>
-            <Text style={styles.subtitleDesc}>Ma description</Text>
-            <input type="text" maxLength={280} placeholder="Votre description" className={styles.input}/>
-            <span className={styles.counter}>/280</span>
+            <Text style={styles.subtitleDesc}>Ma description : </Text>
+            <TextInput style={styles.input} placeholder='Votre description' maxLength={280}></TextInput>
+            <Text style={styles.counter}>/280</Text>
           </View>
 
           <View style={styles.bottomButtons}>
@@ -80,12 +87,31 @@ const styles = StyleSheet.create({
     },
 
     userIconContainer: {
+    flexDirection: 'row',
     backgroundColor: '#EA7810',
     borderRadius: 50,
     width: 42,
     height: 42,
     padding: 8,
     // marginRight: 20,
+    },
+
+    plus: {
+        color: '#f8f8ff', 
+        fontSize: 20,
+        fontWeight: '700',
+        paddingLeft: 6,
+        paddingBottom: 4,
+    }, 
+
+    plusContainer: {
+        backgroundColor: '#A4ABB0',
+        borderRadius: 50,
+        width: 25,
+        height: 25,
+        // padding: 4,
+        marginLeft: 70,
+        marginTop: 5,
     },
 
     infosUser: {
@@ -103,10 +129,10 @@ const styles = StyleSheet.create({
 
     userPhotoContainer: {
         backgroundColor: '#A4ABB0',
-        borderRadius: 50,
-        width: 105,
-        height: 105,
-        padding: 25,
+        borderRadius: 60,
+        width: 115,
+        height: 115,
+        padding: 30,
         // marginRight: 20,
         },
 
@@ -134,6 +160,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         padding: 6.5,
         paddingLeft: 9,
+        textDecorationLine: 'underline',
     },
 
     modifButton: {
@@ -146,7 +173,8 @@ const styles = StyleSheet.create({
     },
 
     legalInfosButton: {
-
+        marginRight: 27.5,
+        marginTop: 20,
     },
 
     deconnexionButton: {
@@ -162,56 +190,66 @@ const styles = StyleSheet.create({
     favoris: {
         fontSize: 16,
         color: '#EA7810', 
-        marginTop:20,
+        marginTop:40,
         marginBottom: 20,
-        marginLeft: 20,
+        marginLeft: 27.5,
     },
 
     description: {
-        marginTop:20,
-        marginBottom: 20,
-        marginLeft: 20,
+        // marginTop:40,
+        marginBottom: 40,
+        marginLeft: 27.5,
     },
 
     input: {
-        // color: grey;
-        // background-color: #35353500;
-        // font-size: 18px;
-        // border-bottom: 2px solid #46484b;
-        // border-right: none;
-        // border-top: none;
-        // border-left: none;
-        // padding-bottom: 15px;
-        // margin-bottom: 20px;
+        color: 'grey',
+        borderColor: '#000',
+        borderRadius: 10,
+        height:150,
+        width:'92%',
+        borderWidth: 1,
+
     },
 
-    // .placeholder {
-    //     background-color: #35353500;
-    //     color: grey;
-    //     font-size: 18px;
-    // }
-
     counter: {
-        // font-size: 12px;
-        // margin-right: 5px;
-        // padding-top: 3px;
+        marginTop: 5,
+        fontSize: 10,
+        alignSelf: 'flex-end',
+        marginRight: 40, 
     },
 
     subtitleDesc: {
     fontSize: 16,
-    fontWeight: '550',
+    fontWeight: '600',
     color: '#EA7810', 
+    marginBottom: 10,
     },
 
     subtitleFav: {
     fontSize: 16, 
-    fontWeight: '550',
+    fontWeight: '600',
     color: '#EA7810',
+    marginBottom: 10,
     },
 
     bottomButtons: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        marginTop: 80,
     },
+
+    favoriteSport: {
+        flexDirection: 'row',
+        // justifyContent: 'space-between',
+    }, 
+
+    sportContent: {
+        borderColor: 'grey',
+        borderRadius: 10,
+        borderWidth: 1, 
+        height:60,
+        width:60,
+        marginRight: 10
+    }, 
 
 });
