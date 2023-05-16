@@ -29,16 +29,28 @@ const [map, setMap] = useState(false);
                     <Text style={styles.texte}>Carte</Text>
                 </View>
             </View>
-
-            <View style={styles.populate}>
+        <View style={styles.principalContent}>
+            {/* <View style={styles.populate}> */}
                 <Text style={styles.titlePopulate}>Activités populaires autour de moi</Text>
-            </View>
-            <View style={styles.forMe}>
+                <View style={styles.cardContainerTop}>
+                    <ActivityCard />
+                    <ActivityCard />
+                </View>
+            {/* </View> */}
+            {/* <View style={styles.forMe}> */}
                 <Text style={styles.titleForMe}>Pour moi</Text>
                 <View style={styles.cardContainer}>
                     <ActivityCard />
+                    <ActivityCard />
+                    <ActivityCard />
+                    <ActivityCard />
+                    <ActivityCard />
+                    <ActivityCard />
+                    <ActivityCard />
+                    <ActivityCard />
                 </View>
-            </View>
+            {/* </View> */}
+        </View>
             {/* <Button onPress={navigation.navigate('SignUpJoin')} title="Sign Up"/>                     */}
 
         </SafeAreaView>
@@ -130,11 +142,17 @@ const styles = StyleSheet.create({
         marginRight:5,
     },
 
+    principalContent: {
+    alignItems:'flex-start',
+    width: '100%',
+    marginLeft: 27.5,
+    },
+
    titlePopulate:{
     fontSize: 18,
     fontWeight: '500',
     color: '#121C6E',
-    marginBottom:20,
+    marginBottom:10,
     marginTop:30,
    }, 
 
@@ -142,8 +160,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '500',
     color: '#121C6E',
-    marginBottom:20,
-    marginTop:30,
+    marginBottom:10,
+    marginTop:20,
    }, 
 
    forMe:{
@@ -155,8 +173,20 @@ const styles = StyleSheet.create({
    },
 
    cardContainer: {
-
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '94%',
+    flexWrap: 'wrap',
+    // overflow: 'scroll',
    }, 
+
+   cardContainerTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    overflow: 'scroll',
+   },
 
 });
 
