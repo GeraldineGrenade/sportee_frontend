@@ -4,11 +4,13 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const Activity = (props) => {
     return (
-        <View>
-            <View style={styles.photoContainer}>
-                <Image style={styles.sportPhoto}></Image>
-                <Text style={styles.activityName}>Surf</Text>
-            </View>
+        <View style={styles.cardContainer}>
+            {/* <View style={styles.photoContainer}> */}
+                <Image style={styles.sportPhoto} source={require('../assets/sport-photos/yoga.jpg')}/>
+
+                <Text style={styles.activityName}>Yoga</Text>
+
+            {/* </View> */}
 
             <View style={styles.infosContainer}>
 
@@ -41,47 +43,80 @@ const styles = StyleSheet.create({
     // //   alignItems: 'center',
     // },
 
-    photoContainer: {
 
+    cardContainer: {
+    margin:10,    
+    },
+
+    photoContainer: {
+        // width: '30%',
+        // height: '25%',
+      
     }, 
 
     infosContainer: {
-
+        marginTop: 31,
+        borderBottomRightRadius: 10,
+        borderBottomLeftRadius: 10,
+        borderWidth: 1,
+        borderColor: '#E4D8D8',
     }, 
 
     topInfos: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        marginBottom: 4,
+        marginTop: 4,
+        marginLeft: 4,
+        marginRight: 4, 
     }, 
 
     activityName: {
-        color: '#fffaf0', 
+        color: '#fff', 
+        fontSize: 22,
+        fontWeight: '600',
+        width: '100%',
+        textAlign: 'center',
+        marginTop: -58, 
     }, 
 
     sportPhoto: {
-
+        width: 180,
+        height: 90,
+        borderTopLeftRadius:10,
+        borderTopRightRadius:10,
+   
+        // zIndex: 1,
+        // z-index: 1
     }, 
 
     activityTitle: {
         fontSize: 11,
+        marginBottom: 4,
+        marginTop: 4,
+        marginLeft: 4,
+        marginRight: 4, 
     }, 
 
     date: {
         marginLeft: 5,
         fontWeight: '600',
         fontSize: 11,
+        paddingTop: 2,
     },
 
     nbrParticipants: {
         color: '#121C6E',
         fontWeight: '500',
         fontSize: 11,
+        paddingTop: 1,
     }, 
 
     city:{
         marginLeft: 10,
         fontWeight: '600',
         fontSize: 11,
+        paddingTop: 2,
     }, 
 
     locInfos: {
@@ -92,6 +127,8 @@ const styles = StyleSheet.create({
 
     dateInfos: {
         flexDirection: 'row',
+        marginLeft: 4,
+        marginRight: 4, 
         // justifyContent: 'space-around',
     },
 
