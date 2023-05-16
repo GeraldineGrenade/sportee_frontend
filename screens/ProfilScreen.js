@@ -35,6 +35,8 @@ const ProfilScreen = ({navigation}) => {
           </View>
           <View style={styles.description}>
             <Text style={styles.subtitleDesc}>Ma description</Text>
+            <input type="text" maxLength={280} placeholder="Votre description" className={styles.input}/>
+            <span className={styles.counter}>/280</span>
           </View>
 
           <View style={styles.bottomButtons}>
@@ -169,6 +171,30 @@ const styles = StyleSheet.create({
         marginTop:20,
         marginBottom: 20,
         marginLeft: 20,
+    },
+
+    input: {
+        // color: grey;
+        // background-color: #35353500;
+        // font-size: 18px;
+        // border-bottom: 2px solid #46484b;
+        // border-right: none;
+        // border-top: none;
+        // border-left: none;
+        // padding-bottom: 15px;
+        // margin-bottom: 20px;
+    },
+
+    // .placeholder {
+    //     background-color: #35353500;
+    //     color: grey;
+    //     font-size: 18px;
+    // }
+
+    counter: {
+        // font-size: 12px;
+        // margin-right: 5px;
+        // padding-top: 3px;
     },
 
     subtitleDesc: {
