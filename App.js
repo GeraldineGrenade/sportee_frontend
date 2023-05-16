@@ -27,90 +27,49 @@ const Stack = createNativeStackNavigator();
 const HomeStack = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Profil" component={ProfilScreen} /> 
-          <Stack.Screen name="Conversation" component={MessagesScreen} /> 
-          <Stack.Screen name="Activity" component={ActivityScreen} /> 
-        </Stack.Navigator>
-  )};
+      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Profil" component={ProfilScreen} />
+      <Stack.Screen name="Conversation" component={MessagesScreen} />
+      <Stack.Screen name="Activity" component={ActivityScreen} />
+    </Stack.Navigator>
+  )
+};
 
-  const CalendarStack = () => {
-    return (
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Calendar" component={CalendarScreen} />
-            <Stack.Screen name="Profil" component={ProfilScreen} /> 
-            <Stack.Screen name="Conversation" component={MessagesScreen} /> 
-            <Stack.Screen name="Activity" component={ActivityScreen} /> 
-          </Stack.Navigator>
-    )};
+const CalendarStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Calendar" component={CalendarScreen} />
+      <Stack.Screen name="Profil" component={ProfilScreen} />
+      <Stack.Screen name="Conversation" component={MessagesScreen} />
+      <Stack.Screen name="Activity" component={ActivityScreen} />
+    </Stack.Navigator>
+  )
+};
 
-    const CreateStack = () => {
-      return (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="Create" component={CreateScreen} />
-              <Stack.Screen name="Profil" component={ProfilScreen} /> 
-              <Stack.Screen name="Conversation" component={MessagesScreen} /> 
-              <Stack.Screen name="Activity" component={ActivityScreen} /> 
-            </Stack.Navigator>
-      )};
+const CreateStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Create" component={CreateScreen} />
+      <Stack.Screen name="Profil" component={ProfilScreen} />
+      <Stack.Screen name="Conversation" component={MessagesScreen} />
+      <Stack.Screen name="Activity" component={ActivityScreen} />
+    </Stack.Navigator>
+  )
+};
 
-      const MessagesListStack = () => {
-        return (
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="MessagesList" component={MessagesListScreen} />
-                <Stack.Screen name="Profil" component={ProfilScreen} /> 
-                <Stack.Screen name="Conversation" component={MessagesScreen} /> 
-                <Stack.Screen name="Activity" component={ActivityScreen} /> 
-              </Stack.Navigator>
-        )};
+const MessagesListStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="MessagesList" component={MessagesListScreen} />
+      <Stack.Screen name="Profil" component={ProfilScreen} />
+      <Stack.Screen name="Conversation" component={MessagesScreen} />
+      <Stack.Screen name="Activity" component={ActivityScreen} />
+    </Stack.Navigator>
+  )
+};
 
 const TabNavigator = () => {
   return (
-<<<<<<< HEAD
-<Tab.Navigator initialRouteName='Recherche' screenOptions={({ route }) => ({ 
-        tabBarIcon: ({ color, size }) => {
-          let iconName = '';
-   
-          if (route.name === 'Recherche') {
-            iconName = 'search';
-          } else if (route.name === 'Calendrier') {
-            iconName = 'calendar';
-          } else if (route.name === 'Créer') {
-            iconName = 'plus-circle';
-          } else if (route.name === 'Messages') {
-            iconName = 'comments'
-          }
-   
-          return <FontAwesome name={iconName} size={size} color={color} />
-          ;
-        },
-        tabBarActiveTintColor: '#ffa500',
-        tabBarInactiveTintColor: '#FFFFFF',
-        tabBarStyle: { backgroundColor: '#121C6E' }, 
-        headerShown: false,
-  })}>
-         <Tab.Screen name="Calendrier" component={CalendarStack} />
-         <Tab.Screen name="Recherche" component={HomeStack} />
-         <Tab.Screen name="Créer" component={CreateStack} />
-         <Tab.Screen name="Messages" component={MessagesListStack} />
-     </Tab.Navigator>
-   );
- };
-
-export default function App() {
-  return (
-    <Provider store={store}>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="TabNavigator" component={TabNavigator} />
-          {/* <Stack.Screen name="Profil" component={ProfilScreen} />  */}
-          {/* <Stack.Screen name="SignUpJoin" component={SignupJoinScreen} />
-          <Stack.Screen name="SignUpPreferences" component={SignUpPreferencesScreen} /> */}
-        </Stack.Navigator>
-      </NavigationContainer>
-    </Provider>
-  );
-=======
     <Tab.Navigator initialRouteName='Recherche' screenOptions={({ route }) => ({
       tabBarIcon: ({ color, size }) => {
         let iconName = '';
@@ -129,36 +88,29 @@ export default function App() {
           ;
       },
       tabBarActiveTintColor: '#ffa500',
-      tabBarInactiveTintColor: '#000080',
-      // tabBarColor: '#121C6E',
+      tabBarInactiveTintColor: '#FFFFFF',
+      tabBarStyle: { backgroundColor: '#121C6E' },
       headerShown: false,
-    })}
-      tabBarOptions={{
-        tabBarStyle: { backgroundColor: '#121C6E' },
-      }}
-    >
-
-      <Tab.Screen name="Calendrier" component={CalendarScreen} />
-      <Tab.Screen name="Recherche" component={HomeScreen} />
-      <Tab.Screen name="Créer" component={CreateScreen} />
-      <Tab.Screen name="Messages" component={MessagesListScreen} />
+    })}>
+      <Tab.Screen name="Calendrier" component={CalendarStack} />
+      <Tab.Screen name="Recherche" component={HomeStack} />
+      <Tab.Screen name="Créer" component={CreateStack} />
+      <Tab.Screen name="Messages" component={MessagesListStack} />
     </Tab.Navigator>
   );
 };
 
 export default function App() {
-  // return (
-  //   <Provider store={store}>
-  //     <NavigationContainer>
-  //       <Stack.Navigator screenOptions={{ headerShown: false }}>
-  //         <Stack.Screen name="TabNavigator" component={TabNavigator} />
-  //         <Stack.Screen name="Profil" component={ProfilScreen} /> 
-  //         <Stack.Screen name="SignUpJoin" component={SignupJoinScreen} />
-  //         <Stack.Screen name="SignUpPreferences" component={SignUpPreferencesScreen} />
-  //       </Stack.Navigator>
-  //     </NavigationContainer>
-  //   </Provider>
-  // );
-  return <Connection />
->>>>>>> google
+  return (
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="TabNavigator" component={TabNavigator} />
+          {/* <Stack.Screen name="Profil" component={ProfilScreen} />  */}
+          {/* <Stack.Screen name="SignUpJoin" component={SignupJoinScreen} />
+          <Stack.Screen name="SignUpPreferences" component={SignUpPreferencesScreen} /> */}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
+  );
 }
