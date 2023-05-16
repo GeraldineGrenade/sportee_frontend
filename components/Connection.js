@@ -15,7 +15,7 @@ export default function App() {
     const [userInfo, setUserInfo] = useState(null)
 
     const [googleRequest, googleResponse, promptGoogleAsync] = Google.useAuthRequest({
-        clientId: "1016759034555-pa77bm5lhnj3t36jimjvadoi352t1kf2.apps.googleusercontent.com",
+        clientId: "1016759034555-pt2a62f4a0q7msu6f9p7rt9aetlin4a4.apps.googleusercontent.com",
         scopes: ["openid", "profile", "email"],
     })
 
@@ -63,6 +63,7 @@ export default function App() {
         } else {
             alert('Une erreur s\'est produite lors de l\'authentification Google.')
         }
+
     }
 
     const handleFacebookPressAsync = async () => {
@@ -82,15 +83,16 @@ export default function App() {
 
     const sendUserInfoToDatabase = async (userInfo) => {
         try {
-            console.log(userInfo)
-            await fetch('https://sportee-backend.vercel.app/users', {
+            console.log('user infos', userInfo)
+            const response = await fetch('https://sportee-backend.vercel.app/users', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(userInfo),
+                body: JSON.stringify({ userInfo }),
             })
-            console.log('Les informations utilisateur ont été envoyées en base de données avec succès !')
+            // const dataResponse = await response.json()
+            console.log('response from server', response)
         } catch (error) {
             console.error('error', error)
         }
