@@ -1,6 +1,6 @@
 import React, { useState, FC } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, Platform, StyleSheet } from 'react-native';
-// import DateTimePicker from '@react-native-community/datetimepicker';
+import { View, Text, TextInput, TouchableOpacity, Image, Platform, StyleSheet, DateInput } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -13,7 +13,13 @@ const avatarIconList = [
     require('../assets/avatar-icons/avatar6.png'),
 ]
 
-const EMAIL_REGEX = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+const emailRegex = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+const passwordRegex = new RegExp(/(?=.*\d.*)(?=.*[a-zA-Z].*)(?=.*[!#\$%&\?].*).{8,}/)
+
+
+// DateTimePickerAndroid.open(params: AndroidNativeProps)
+// DateTimePickerAndroid.dismiss(mode: AndroidNativeProps['date'])
+
 
 
 const SignupJoinScreen = ({ navigation }) => {
@@ -25,35 +31,68 @@ const SignupJoinScreen = ({ navigation }) => {
     const [lastname, setLastname] = useState('');
     const [lastnameError, setLastnameError] = useState(false);
     const [email, setEmail] = useState('');
+    const [emailError, setEmailError] = useState(false);
     const [confirmEmail, setConfirmEmail] = useState('')
+    const [confirmEmailError, setConfirmEmailError] = useState(false);
     const [telephone, setTelephone] = useState(null);
-    const [dateOfBirth, setDateOfBirth] = useState(null);
+    const [dateOfBirth, setDateOfBirth] = useState(new Date());
+    const [showModalDate, setShowModalDate] = useState(false);
     const [password, setPassword] = useState('');
+    const [passwordError, setPasswordError] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [confirmPasswordError, setConfirmPasswordError] = useState(false);
+    
+    //!\ DATE PICKER DOES NOT WORK
+    const selectDate = (event, selectedDate) => {
+        const dob = selectedDate || dateOfBirth
+        setDateOfBirth(dob)
+    }
 
+    let dateModal = <DateTimePicker 
+        mode="date" 
+        display="calendar" 
+        value ={dateOfBirth}
+        //onChange={selectDate()}
+        onSubmit={(date) => {
+            setDateOfBirth(date)
+            setShowModalDate(false)
+        }}
+    />
+
+   
+    
+    //Validate user info
     const handleValidate = () => {
+        //Check if all fields are valid and if not add error text underneath input
 
-        //Check if all fields are valid and if not add error text
+        //Check username
         if (username === '') {
             setUsernameError(true);
             setUsernameErrorTxt("Entrer un nom d'utilisateur");
             return
         }
-        // http://localhost:3000 
         fetch(`https://sportee-backend.vercel.app/users/checkUsername/${username}`)
-            .then(response => response.json())
+        .then(response => response.json())
             .then(data => {
-                console.log('result in front -----', data.result)
-                //!data.result ? (setUsernameError(true), setUsernameErrorTxt("Nom d'utilisateur déjà pris, choisis-en un autre !")) : (setUsernameError(false), setUsernameErrorTxt(''))
+                if (!data.result) {
+                    setUsernameError(true)
+                    setUsernameErrorTxt("Nom d'utilisateur déjà pris, choisis-en un autre !")
+                    return
+                } else {
+                    setUsernameError(false)
+                    setUsernameErrorTxt('')
+                }
             })
-
+            
+        //Check firstname    
         if (firstname === '') {
             setFirstnameError(true);
             return
         } else {
             setFirstnameError(false)
         }
-
+        
+        //Check lastname
         if (lastname === '') {
             setLastnameError(true);
             return
@@ -61,15 +100,46 @@ const SignupJoinScreen = ({ navigation }) => {
             setLastnameError(false)
         }
 
+        //Check email
+        if (!emailRegex.test(email)) {
+            setEmailError(true)
+            return
+        } else {
+            setEmailError(false)
+        }
+        
+        //Check confirm mail
+        if (email !== confirmEmail) {
+            setConfirmEmailError(true)
+            return
+        } else {
+            setConfirmEmailError(false)
+        }
 
-
-        //if all input are correct, navigate to preference page with info in route
-
-        //navigation.navigate('SignUpPreferences', {username, firstname, lastname, email, telephone, dateOfBirth, password})
+        //Check date 
+        
+        //Check password
+        if (!passwordRegex.test(password)) {
+            setPasswordError(true)
+            return
+        } else {
+            setPasswordError(false)
+        }
+        
+        //Check confirm password
+        if (password !== confirmPassword) {
+            setConfirmPasswordError(true)
+            return
+        } else {
+            setConfirmPasswordError(false)
+        }
+        
+        //if all input are correct, navigate to preference page with info in route.params
+        navigation.navigate('SignUpPreferences', {username, firstname, lastname, email, telephone, dateOfBirth, password})
     }
-
+    
     //change style of inputs according to whether error or not 
-
+    
     return (
         <View style={styles.container}>
             {/* Change navigation destination to connection page */}
@@ -141,6 +211,7 @@ const SignupJoinScreen = ({ navigation }) => {
                         value={email}
                     />
                 </View>
+                {emailError && <Text style={styles.error}>Entrer une addresse mail valide</Text>}
                 <View style={styles.inputPair}>
                     <Text>Confirmer mon email* :</Text>
                     <TextInput
@@ -148,12 +219,14 @@ const SignupJoinScreen = ({ navigation }) => {
                         // Change image in input bar
                         inlineImageLeft='search_icon'
                         inlineImagePadding={10}
+                        autoCapitalize="none"
                         inputMode='email'
                         placeholder="Confirmer mon mail"
                         onChangeText={(value) => setConfirmEmail(value)}
                         value={confirmEmail}
                     />
                 </View>
+                {confirmEmailError && <Text style={styles.error}>Addresses mails différentes</Text>}
                 <View style={styles.inputPair}>
                     <Text>Téléphone :</Text>
                     <TextInput
@@ -168,7 +241,7 @@ const SignupJoinScreen = ({ navigation }) => {
                     />
                 </View>
                 <View style={styles.inputPair}>
-                    <Text>Date de naissance :</Text>
+                    <Text>Date de naissance* :</Text>
                     {/* Add popup for date on click */}
                     <TextInput
                         style={styles.input}
@@ -176,18 +249,20 @@ const SignupJoinScreen = ({ navigation }) => {
                         inlineImageLeft='search_icon'
                         inlineImagePadding={10}
                         placeholder="JJ/MM/AA"
-                        onChangeText={(value) => setDateOfBirth(value)}
+                        // onChangeText={(value) => setDateOfBirth(value)}
+                        onFocus={() => setShowModalDate(true)}
                         value={dateOfBirth}
                     />
                 </View>
                 <View style={styles.inputPair}>
-                    <Text>Mon mot de passe :</Text>
+                    <Text>Mon mot de passe* :</Text>
                     {/* Add eye to view password on click */}
                     <TextInput
                         style={styles.input}
                         // Change image in input bar
                         inlineImageRight='search_icon'
                         inlineImagePadding={10}
+                        autoCapitalize="none"
                         inputMode='text'
                         placeholder="********"
                         secureTextEntry={true}
@@ -195,14 +270,16 @@ const SignupJoinScreen = ({ navigation }) => {
                         value={password}
                     />
                 </View>
+                {passwordError && <Text style={styles.error}>Entrer un mot de passe qui contient au moins un chiffre, une minuscule, un caractère spécial et qui fait au moins 8 caractères</Text>}
                 <View style={styles.inputPair}>
-                    <Text style={styles.inputLabel}>Confirmer mon mot de passe :</Text>
+                    <Text style={styles.inputLabel}>Confirmer mon mot de passe* :</Text>
                     {/* Add eye to view password on click */}
                     <TextInput
                         style={styles.input}
                         // Change image in input bar
                         inlineImageRight='search_icon'
                         inlineImagePadding={10}
+                        autoCapitalize="none"
                         inputMode='text'
                         placeholder="********"
                         secureTextEntry={true}
@@ -210,10 +287,12 @@ const SignupJoinScreen = ({ navigation }) => {
                         value={confirmPassword}
                     />
                 </View>
+                {confirmPasswordError && <Text style={styles.error}>Mots de passe différents</Text>}
             </View>
             <TouchableOpacity style={styles.validateBtn} onPress={() => handleValidate()}>
                 <Text style={styles.validateBtnTxt}>Valider mes informations</Text>
             </TouchableOpacity>
+            {showModalDate && dateModal}
         </View>
     )
 }
