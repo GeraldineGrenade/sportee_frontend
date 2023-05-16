@@ -1,5 +1,5 @@
 import React from 'react'
-import { SafeAreaView, View, Text, StyleSheet } from 'react-native'
+import { SafeAreaView, View, Text, StyleSheet, TextInput, } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 
@@ -14,6 +14,10 @@ const CreateScreen = ({navigation}) => {
                 <FontAwesome name='user' size={25} color='#f8f8ff' style={styles.userIcon} onPress={() => navigation.navigate('Profil')}/>
                 </View>         
             </View>
+            {/* <View>
+                <Text style={styles.titre}>Titre</Text>
+                <TextInput placeholder="Nom de l'activité" value={sport} style={styles.inputSport}/>
+            </View> */}
         </SafeAreaView>
     )
 }
@@ -55,6 +59,14 @@ const styles = StyleSheet.create({
     userIcon: {
         // padding: 10,
         marginLeft: 4,
-        }
+    },
+
+    titre: {
+
+    },
+
+    inputSport: {
+
+    },
 
 });
