@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { SafeAreaView, View, Text, StyleSheet, TextInput, Button } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import ActivityCard from '../components/ActivityCard';
+
 
 const HomeScreen = ({navigation}) => {
 
@@ -29,12 +31,15 @@ const [map, setMap] = useState(false);
             </View>
 
             <View style={styles.populate}>
-                <Text style={styles.titles}>Activités populaires autour de moi</Text>
+                <Text style={styles.titlePopulate}>Activités populaires autour de moi</Text>
             </View>
             <View style={styles.forMe}>
-                <Text style={styles.titles}>Pour moi</Text>
+                <Text style={styles.titleForMe}>Pour moi</Text>
+                <View style={styles.cardContainer}>
+                    <ActivityCard />
+                </View>
             </View>
-            <Button onPress={navigation.navigate('SignUpJoin')} title="Sign Up"/>                    
+            {/* <Button onPress={navigation.navigate('SignUpJoin')} title="Sign Up"/>                     */}
 
         </SafeAreaView>
     )
@@ -125,12 +130,33 @@ const styles = StyleSheet.create({
         marginRight:5,
     },
 
-    titles: {
+   titlePopulate:{
     fontSize: 18,
     fontWeight: '500',
     color: '#121C6E',
-    marginBottom:50,
-    marginTop:50,
+    marginBottom:20,
+    marginTop:30,
+   }, 
+
+   titleForMe:{
+    fontSize: 18,
+    fontWeight: '500',
+    color: '#121C6E',
+    marginBottom:20,
+    marginTop:30,
+   }, 
+
+   forMe:{
+
+   }, 
+
+   populate: {
+
    },
+
+   cardContainer: {
+
+   }, 
+
 });
 
