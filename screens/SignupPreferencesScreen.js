@@ -4,7 +4,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-nativ
 import Feather from 'react-native-vector-icons/Feather';
 
 
-const SignUpPreferencesScreen = () => {
+const SignUpPreferencesScreen = ({ navigation, route }) => {
     return (
         <View style={styles.container}>
             <TouchableOpacity onPress={() => navigation.navigate('DrawerNavigator')}>
