@@ -8,6 +8,7 @@ import CreateScreen from './screens/CreateScreen';
 import MessagesListScreen from './screens/MessagesListScreen';
 import ProfilScreen from './screens/ProfilScreen';
 import SignupJoinScreen from './screens/SignupJoinScreen';
+import SignUpPreferencesScreen from './screens/SignupPreferencesScreen';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { Provider } from 'react-redux';
@@ -61,7 +62,8 @@ export default function App() {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="TabNavigator" component={TabNavigator} />
           <Stack.Screen name="Profil" component={ProfilScreen} /> 
-           <Stack.Screen name="SignUpJoin" component={SignupJoinScreen} />
+          {/* <Stack.Screen name="SignUpJoin" component={SignupJoinScreen} />
+          <Stack.Screen name="SignUpPreferences" component={SignUpPreferencesScreen} /> */}
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
