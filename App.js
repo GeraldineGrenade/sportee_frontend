@@ -67,8 +67,8 @@ export default function App() {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="TabNavigator" component={TabNavigator} />
           <Stack.Screen name="Profil" component={ProfilScreen} /> 
-          {/* <Stack.Screen name="SignUpJoin" component={SignupJoinScreen} />
-          <Stack.Screen name="SignUpPreferences" component={SignUpPreferencesScreen} /> */}
+          <Stack.Screen name="SignUpJoin" component={SignupJoinScreen} />
+          <Stack.Screen name="SignUpPreferences" component={SignUpPreferencesScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

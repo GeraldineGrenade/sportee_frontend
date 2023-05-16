@@ -26,7 +26,7 @@ const SignupJoinScreen = ({ navigation }) => {
     const [lastnameError, setLastnameError] = useState(false);
     const [email, setEmail] = useState('');
     const [confirmEmail, setConfirmEmail] = useState('')
-    const [telephone, setTelephone] = useState(0);
+    const [telephone, setTelephone] = useState(null);
     const [dateOfBirth, setDateOfBirth] = useState(null);
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -39,12 +39,11 @@ const SignupJoinScreen = ({ navigation }) => {
             setUsernameErrorTxt("Entrer un nom d'utilisateur");
             return
         }
-        //https://sportee-backend.vercel.app
-        fetch(`http://localhost:3000/users/checkUsername/${username}`)
-            .then(response => response.json)
+        // http://localhost:3000 
+        fetch(`https://sportee-backend.vercel.app/users/checkUsername/${username}`)
+            .then(response => response.json())
             .then(data => {
-                console.log('route percutée')
-                console.log(data.result)
+                console.log('result in front -----', data.result)
                 //!data.result ? (setUsernameError(true), setUsernameErrorTxt("Nom d'utilisateur déjà pris, choisis-en un autre !")) : (setUsernameError(false), setUsernameErrorTxt(''))
             })
 
