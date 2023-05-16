@@ -46,7 +46,12 @@ const TabNavigator = () => {
       tabBarInactiveTintColor: '#000080',
       // tabBarColor: '#121C6E',
       headerShown: false,
-    })}>
+    })}
+    tabBarOptions={{
+      tabBarStyle: { backgroundColor: '#121C6E' }, 
+    }}
+    >
+      
         <Tab.Screen name="Calendrier" component={CalendarScreen} />
         <Tab.Screen name="Recherche" component={HomeScreen} />
         <Tab.Screen name="Créer" component={CreateScreen} />
