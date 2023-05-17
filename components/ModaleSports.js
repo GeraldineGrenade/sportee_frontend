@@ -1,43 +1,44 @@
-import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, TextInput, Text, ScrollView } from 'react-native'
-
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { View, StyleSheet, TextInput, Text, ScrollView } from 'react-native';
 import SelectionSport from './SelectionSport'
 
 //Info to send in props : closeModal(), sports
 
 export default ModaleSports = (props) => {
     const [search, setSearch] = useState('');
-    const [selectedSports, setSelectedSports] = useState([]);
-    const [sportsList, setSportsList] = useState([]);
+    const [allSports, setAllSports] = useState([]);
+    const selectedSports = useSelector((state) => state.preferences.value.sports);
 
-    //permet de récupérer un sport
+    //Send selected sport data to parent component and close modal
     const selectSport = (sport) => {
         let newSport = { id: sport.id, name: sport.name, icon: sport.icon }
         props.closeModal(newSport)
         setSearch('')
     }
    
-    // useEffect(() => {
-    //     //Set previously selected sports on opening modal
-    //     setSelectedSports(props.sports)
-    // }, [])
-
     useEffect(() => {
-        //Get list of sports from API which adapts to the user's search
+        //Get list of sports from API which adapts to the user's search /!\TO OPTIMISE, TOO LONG TO LOAD
         fetch(`https://sportee-backend.vercel.app/sports/${search}`)
             .then(response => response.json())
             .then(data => {
                 if (data.result) {
-                    setSportsList(data.sports)
+                    setAllSports(data.sports)
                 } else {
                     console.log('Error in fetching sports')
                 }
             })
     }, [search])
-     let sports = sportsList.map((e, i) => {
+
+    //!\Add a blanck component to remove sport 
+    
+     let sportsList = allSports.map((e, i) => {
         //Verify if the sport has been selected beforehand
-        // let isSelected = selectedSports.some(sport => sport.name === e.name)
-        return <SelectionSport key={i} isSelected={false} name={e.name} icon={e.icon} selectSport={selectSport} id={e._id} />
+        let isSelected = false
+        for(let i=0; i<selectedSports.length; i++) {
+            if (selectedSports[i] !== null && selectedSports[i].name === e.name) isSelected=true
+        }
+        return <SelectionSport key={i} isSelected={isSelected} name={e.name} icon={e.icon} selectSport={selectSport} id={e._id} />
     })
     return (
         <View style={styles.container}>
@@ -55,7 +56,7 @@ export default ModaleSports = (props) => {
                     value={search}
                 />
                 <ScrollView contentContainerStyle={styles.sportsList}>
-                    {sports}
+                    {sportsList}
                 </ScrollView>
             </View>
         </View >

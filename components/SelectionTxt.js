@@ -1,14 +1,14 @@
 import React from 'react'
 import { TouchableOpacity, Text, StyleSheet } from 'react-native'
 
-//Data to send in props : title, selectTxt(), isSelected
+//Data to send in props : title, selectTxt(), isSelected, category
 
 export default SelectionTxt = (props) => {
     let color = ""
     props.isSelected ? color="#EA7810" : color="white"
    
     return (
-        <TouchableOpacity style={[styles.container, { backgroundColor: color}]} onPress={() =>props.selectTxt(props.title)}>
+        <TouchableOpacity style={[styles.container, { backgroundColor: color}]} onPress={() =>props.selectTxt(props.category, props.title)}>
             <Text style={styles.text}>{props.title}</Text>
         </TouchableOpacity>
     )

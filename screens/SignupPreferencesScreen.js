@@ -4,7 +4,7 @@ import { View, Text, TouchableOpacity, Button, StyleSheet, Modal } from 'react-n
 import ModaleSports from '../components/ModaleSports';
 import SelectionTxt from '../components/SelectionTxt';
 import SelectionSport from '../components/SelectionSport';
-import { addSport, removeSport } from '../reducers/preferences';
+import { addSport, addHabit, removeHabit, selectLevel } from '../reducers/preferences';
 
 import Feather from 'react-native-vector-icons/Feather';
 
@@ -26,43 +26,50 @@ const levelTitles = [
 const SignUpPreferencesScreen = ({ navigation, route }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const selectedSports = useSelector((state) => state.preferences.value.sports);
+    const selectedHabits = useSelector((state) => state.preferences.value.habits);
+    const selectedLevel = useSelector((state) => state.preferences.value.level);
     const [sportIndex, setSportIndex] = useState(null);
     const userInfo = route.params;
     let dispatch = useDispatch();
 
-    const selectTxt = (txt) => {
-
+    const selectTxt = (cat, txt) => {
+        if (cat === 'habits') {
+            selectedHabits.includes(txt) ? dispatch(removeHabit(txt)) : dispatch(addHabit(txt))
+        }
     }
-
+    console.log(selectedHabits)
     const selectSport = (data) => {
         setIsModalVisible(true)
-        const {name, icon, index} = data
-        setSportIndex(index)
+        setSportIndex(data.index)
     }
     const closeModal = (sport) => {
         setIsModalVisible(false)
-        dispatch(addSport({sport, sportIndex}))
+        dispatch(addSport({ sport, sportIndex }))
     }
 
 
     const habitList = habitTitles.map((e, i) => {
-        {/* modify isSelected to implement */ }
-        return <SelectionTxt key={i} isSelected={false} selectTxt={selectTxt} title={e} />
+        //Verify if the habit has been selected beforehand
+        let isSelected = false
+        if (selectedHabits.includes(e)) isSelected = true
+
+        return <SelectionTxt key={i} category='habits' isSelected={isSelected} selectTxt={selectTxt} title={e} />
     })
     const levelList = levelTitles.map((e, i) => {
         {/* modify isSelected to implement */ }
-        return <SelectionTxt key={i} isSelected={false} selectTxt={selectTxt} title={e} />
+        return <SelectionTxt key={i} category='level' isSelected={false} selectTxt={selectTxt} title={e} />
     })
 
     let sportList = selectedSports.map((e, i) => {
-        {/* modify isSelected to implement */ }
+        //If index of selectedSports in store is null, set default component to add icon
         if (!e) {
             return <SelectionSport key={i} index={i} isSelected={false} name='add' icon='https://res.cloudinary.com/dsd7uux0v/image/upload/v1684260544/sportee/addition-thick-symbol_b3edkd.png' selectSport={selectSport} />
         }
+
         return <SelectionSport key={i} index={i} isSelected={false} name={e.name} icon={e.icon} selectSport={selectSport} />
     })
 
-   
+
     return (
         <View style={styles.container}>
             <TouchableOpacity onPress={() => navigation.navigate('SignUpJoin')}>
@@ -85,7 +92,7 @@ const SignUpPreferencesScreen = ({ navigation, route }) => {
                 <Text style={styles.validateBtnTxt}>Valider mes préférences</Text>
             </TouchableOpacity>
             <Modal visible={isModalVisible} animationType="fade" transparent>
-                <ModaleSports closeModal={closeModal} sports={selectedSports} />
+                <ModaleSports closeModal={closeModal} />
             </Modal>
         </View>
     )
@@ -112,14 +119,15 @@ const styles = StyleSheet.create({
     },
     subTitle: {
         color: '#121C6E',
-        fontSize: 18,
-        marginBottom: 8,
+        fontSize: 16,
+        marginBottom: 10,
     },
     choices: {
         flexDirection: 'row',
         width: '100%',
         justifyContent: 'space-between',
         flexWrap: 'wrap',
+        marginBottom: 5,
     },
     validateBtn: {
         backgroundColor: '#121C6E',
@@ -128,6 +136,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignSelf: 'center',
         borderRadius: 5,
+        marginTop: 15,
     },
     validateBtnTxt: {
         color: 'white',
