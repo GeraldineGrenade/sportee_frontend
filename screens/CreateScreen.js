@@ -9,7 +9,12 @@ import {
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
+
+
+
 const CreateScreen = ({ navigation }) => {
+
+  
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topContainer}>

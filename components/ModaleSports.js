@@ -1,73 +1,71 @@
-import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, TextInput, Text, ScrollView } from 'react-native'
-
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { View, StyleSheet, TextInput, Text, ScrollView } from 'react-native';
 import SelectionSport from './SelectionSport'
 
-export default ModaleSports = (props) => {
-    console.log('props from parent---', props.sports)
-    const [search, setSearch] = useState('');
-    const [selectedSports, setSelectedSports] = useState([]);
-    const [sportsList, setSportsList] = useState([])
+//Info to send in props : closeModal(), sports
 
+export default ModaleSports = (props) => {
+    const [search, setSearch] = useState('');
+    const [allSports, setAllSports] = useState([]);
+    const selectedSports = useSelector((state) => state.preferences.value.sports);
+
+    //Send selected sport data to parent component and close modal
     const selectSport = (sport) => {
-        let newSport = {id : sport.id, name: sport.name, icon : sport.icon}
-        //selectedSports.length<5 && 
-        setSelectedSports([...selectedSports, newSport])
-        console.log('sport selected in modale---',selectedSports)
-        props.closeModal(selectedSports)
+        let newSport = { id: sport.id, name: sport.name, icon: sport.icon }
+        props.closeModal(newSport)
         setSearch('')
     }
-    useEffect(()=>{
-        //Set previously selected sports on opening modal
-        setSelectedSports(props.sports)
-    }, [])
-
-    useEffect(()=>{
-        //Get list of sports from API which adapts to the user's search
+   
+    useEffect(() => {
+        //Get list of sports from API which adapts to the user's search /!\TO OPTIMISE, TOO LONG TO LOAD
         fetch(`https://sportee-backend.vercel.app/sports/${search}`)
             .then(response => response.json())
             .then(data => {
                 if (data.result) {
-                    let sportsData = data.sports.map((e, i) => {
-                        //Verify if the sport has been selected beforehand
-                        let isSelected = selectedSports.some(sport => sport.name === e.name)
-                        return <SelectionSport key={i} isSelected={isSelected} name={e.name} icon={e.icon} selectSport={selectSport} id={e._id} />
-                    })
-                    setSportsList(sportsData)
+                    setAllSports(data.sports)
                 } else {
                     console.log('Error in fetching sports')
                 }
             })
     }, [search])
 
+    //!\Add a blanck component to remove sport 
+    
+     let sportsList = allSports.map((e, i) => {
+        //Verify if the sport has been selected beforehand
+        let isSelected = false
+        for(let i=0; i<selectedSports.length; i++) {
+            if (selectedSports[i] !== null && selectedSports[i].name === e.name) isSelected=true
+        }
+        return <SelectionSport key={i} isSelected={isSelected} name={e.name} icon={e.icon} selectSport={selectSport} id={e._id} />
+    })
     return (
-        <View style={styles.modalView}>
-            <Text style={styles.modalTitle} >Choisis ton sport</Text>
-            <TextInput
-                style={styles.search}
-                // Change image in input bar
-                inlineImageLeft='search_icon'
-                inlineImagePadding={10}
-                inputMode='text'
-                autoCapitalize="none"
-                placeholder="Rechercher un sport"
-                onChangeText={(value) => setSearch(value)}
-                value={search}
-            />
-            <ScrollView contentContainerStyle={styles.sportsList}>
-                {sportsList}
-            </ScrollView>
-        </View>
+        <View style={styles.container}>
+            <View style={styles.modalView}>
+                <Text style={styles.modalTitle} >Choisis ton sport</Text>
+                <TextInput
+                    style={styles.search}
+                    // Change image in input bar
+                    inlineImageLeft='search_icon'
+                    inlineImagePadding={10}
+                    inputMode='text'
+                    autoCapitalize="none"
+                    placeholder="Rechercher un sport"
+                    onChangeText={(value) => setSearch(value)}
+                    value={search}
+                />
+                <ScrollView contentContainerStyle={styles.sportsList}>
+                    {sportsList}
+                </ScrollView>
+            </View>
+        </View >
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        borderColor: '#D9D9D9',
-        borderRadius: 10,
-        borderWidth: 1,
-        height: 60,
-        width: 60,
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -85,7 +83,7 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 5,
         height: '80%',
-        width: '95%',
+        width: '80%',
     },
     modalTitle: {
         color: '#121C6E',
