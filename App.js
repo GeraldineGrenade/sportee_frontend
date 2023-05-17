@@ -12,6 +12,7 @@ import ActivityScreen from './screens/ActivityScreen';
 import SignupJoinScreen from './screens/SignupJoinScreen';
 import SignUpPreferencesScreen from './screens/SignupPreferencesScreen';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Connection from './components/Connection'
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
@@ -77,14 +78,14 @@ const TabNavigator = () => {
         if (route.name === 'Recherche') {
           iconName = 'search';
         } else if (route.name === 'Calendrier') {
-          iconName = 'calendar';
+          iconName = 'calendar-alt';
         } else if (route.name === 'Créer') {
           iconName = 'plus-circle';
         } else if (route.name === 'Messages') {
           iconName = 'comments'
         }
 
-        return <FontAwesome name={iconName} size={size} color={color} />
+        return <FontAwesome5 name={iconName} size={size} color={color} />
           ;
       },
       tabBarActiveTintColor: '#ffa500',

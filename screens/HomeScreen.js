@@ -1,18 +1,23 @@
 import React, { useState } from 'react';
-import { SafeAreaView, View, Text, StyleSheet, TextInput, Button } from 'react-native'
+import { SafeAreaView, View, Text, StyleSheet, TextInput, Button, FlatList, ScrollView } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import ActivityCard from '../components/ActivityCard';
-
 
 const HomeScreen = ({navigation}) => {
 
 const [map, setMap] = useState(false);
 
+// require('../assets/sport-photos/yoga.jpg')
+
+const activityData = [{name:"Yoga", city: "Lille", date: "19 mai 18h", titre: "Yoga Vinyasa à la citadelle"}, {name:"Surf", city: "Wissant", date: "22 mai 11h", titre: "Initiation au surf", image:'../assets/sport-photos/surf.jpg'}, {name:"Boxe", city: "Lille", date: "25 mai 7h", titre: "Cours boxe thaïlandaise"}, {name:"Tennis", city: "Roubaix", date: "28 mai 12h", titre: "Tennis en exterieur"}, {name:"Beach-Volley", city: "Malo", date: "30 mai 12h", titre: "Tournoi de Beach-Volley"}, {name:"Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun"}, {name:"Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun"}, {name:"Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun"}, {name:"Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun"}, {name:"Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun"}]
+
+
     return (
         <SafeAreaView style={styles.container}>
 
             <View style={styles.topInfos}>
-            <   FontAwesome name='align-center' size={25} color='#121C6E' style={styles.filterIcon} />
+            <   FontAwesome5 name='sliders-h' size={25} color='#121C6E' style={styles.filterIcon} />
                 <TextInput placeholder='Rechercher une activité' style={styles.input}></TextInput>
                 <View style={styles.userIconContainer}>
                     <FontAwesome name='user' size={25} color='#f8f8ff' style={styles.userIcon} onPress={() => navigation.navigate('Profil')}/>
@@ -32,23 +37,36 @@ const [map, setMap] = useState(false);
         <View style={styles.principalContent}>
             {/* <View style={styles.populate}> */}
                 <Text style={styles.titlePopulate}>Activités populaires autour de moi</Text>
-                <View style={styles.cardContainerTop}>
-                    <ActivityCard />
-                    <ActivityCard />
-                </View>
+                 <FlatList
+                        data={activityData}
+                        renderItem={({item}) => {
+                       return <ActivityCard {...item}/>
+                        }
+                    }
+                        keyExtractor={(item, i) => i}
+                        contentContainerStyle={styles.cardContainerTop}
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}
+                />
+                
             {/* </View> */}
             {/* <View style={styles.forMe}> */}
                 <Text style={styles.titleForMe}>Pour moi</Text>
-                <View style={styles.cardContainer}>
-                    <ActivityCard />
-                    <ActivityCard />
-                    <ActivityCard />
-                    <ActivityCard />
-                    <ActivityCard />
-                    <ActivityCard />
-                    <ActivityCard />
-                    <ActivityCard />
-                </View>
+                <FlatList
+                        data={activityData}
+                        renderItem={({item}) => {
+                    
+                       return <ActivityCard {...item}/>
+                       
+                        }
+                    }
+                        keyExtractor={(item, i) => i}
+                        contentContainerStyle={styles.cardContainer}
+                        horizontal={false}
+                        showsHorizontalScrollIndicator={false}
+                        numColumns={2}
+                        // ListFooterComponent={<View style={{height: 120}}/>}
+                />
             {/* </View> */}
         </View>
             {/* <Button onPress={navigation.navigate('SignUpPreferences')} title="Sign Up"/>                     */}
@@ -106,12 +124,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     },
 
-    // userIcon: {
-    // padding: 10,
-    // // backgroundColor: '#121C6E',
-    // // borderRadius: 50, 
-    // }, 
-
     filterIcon: {
         padding: 10,
     },
@@ -145,7 +157,9 @@ const styles = StyleSheet.create({
     principalContent: {
     alignItems:'flex-start',
     width: '100%',
+    // height: '100%',
     marginLeft: 27.5,
+    marginRight: 2, 
     },
 
    titlePopulate:{
@@ -154,6 +168,7 @@ const styles = StyleSheet.create({
     color: '#121C6E',
     marginBottom:10,
     marginTop:30,
+    marginLeft: 12,
    }, 
 
    titleForMe:{
@@ -162,6 +177,7 @@ const styles = StyleSheet.create({
     color: '#121C6E',
     marginBottom:10,
     marginTop:20,
+    marginLeft: 12,
    }, 
 
    forMe:{
@@ -173,20 +189,33 @@ const styles = StyleSheet.create({
    },
 
    cardContainer: {
-    flexDirection: 'row',
+    // flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '94%',
-    flexWrap: 'wrap',
-    // overflow: 'scroll',
-   }, 
+    // flex: 5, 
+    // height: '100%',
+    // flexWrap: 'wrap',
+    overflow: 'scroll',
+   },
 
    cardContainerTop: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     overflow: 'scroll',
+    // marginRight: 20, 
    },
 
 });
 
+{/* <View style={{ height: `93%` }}>
+  <FlatList
+    contentContainerStyle={{ minHeight: `100%` }}
+    scrollEnabled={true}
+    ...props
+    renderItem={({item}) => (
+      <View style={{ flex: 1 }}>
+        ...
+      </View>
+    )} */}

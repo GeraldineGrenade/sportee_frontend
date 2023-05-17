@@ -1,14 +1,16 @@
 import React from 'react'
 import { View, Image, Text, StyleSheet } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 const Activity = (props) => {
+    console.log(props.name)
     return (
         <View style={styles.cardContainer}>
             {/* <View style={styles.photoContainer}> */}
                 <Image style={styles.sportPhoto} source={require('../assets/sport-photos/yoga.jpg')}/>
-
-                <Text style={styles.activityName}>Yoga</Text>
+                {/* source = {uri : ${props.photo}} */}
+                <Text style={styles.activityName}>{props.name}</Text>
 
             {/* </View> */}
 
@@ -16,17 +18,17 @@ const Activity = (props) => {
 
                 <View style={styles.topInfos}>
                     <View style={styles.locInfos}>
-                        <FontAwesome name='map-pin' size={15} color='#121C6E' style={styles.mapIcon} />
-                        <Text style={styles.city}>Lille</Text>
+                        <FontAwesome name='map-pin' size={15} color='#000' style={styles.mapIcon} />
+                        <Text style={styles.city}>{props.city}</Text>
                     </View>
 
                     <Text style={styles.nbrParticipants}>Participants 2/5</Text>
                 </View>
                     <View style={styles.dateInfos}>
-                        <FontAwesome name='calendar' size={15} color='#121C6E' style={styles.mapIcon} />
-                        <Text style={styles.date}>11 juin 15h</Text> 
+                        <FontAwesome5 name='calendar-alt' size={15} color='#000' style={styles.mapIcon} />
+                        <Text style={styles.date}>{props.date}</Text> 
                     </View>
-                <Text style={styles.activityTitle}>YOGA VINYASA A LA CITADELLE</Text> 
+                <Text style={styles.activityTitle}>{props.titre}</Text> 
 
             </View>
             
@@ -96,6 +98,7 @@ const styles = StyleSheet.create({
         marginTop: 4,
         marginLeft: 4,
         marginRight: 4, 
+        textTransform: 'uppercase',
     }, 
 
     date: {
