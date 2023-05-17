@@ -315,7 +315,7 @@ const styles = StyleSheet.create({
   },
 
   create: {
-    marginTop: 35,
+    marginTop: 85,
     alignItems: 'center',
   },
 
@@ -324,8 +324,8 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     borderColor: '#121C6E',
     borderWidth: 1,
-    width: 314,
-    height: 62,
+    width: 270,
+    height: 50,
     justifyContent: 'center',
     alignItems: 'center',
   },
