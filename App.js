@@ -15,10 +15,11 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Connection from './components/Connection'
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
-import user from './reducers/user'
+import user from './reducers/user';
+import preferences from './reducers/preferences';
 
 const store = configureStore({
-  reducer: { user },
+  reducer: { user, preferences },
 });
 
 const Tab = createBottomTabNavigator();

@@ -51,7 +51,7 @@ const [map, setMap] = useState(false);
                 </View>
             {/* </View> */}
         </View>
-            {/* <Button onPress={navigation.navigate('SignUpPreferences')} title="Sign Up"/>                     */}
+            <Button onPress={navigation.navigate('SignUpPreferences')} title="Sign Up"/>  
 
         </SafeAreaView>
     )

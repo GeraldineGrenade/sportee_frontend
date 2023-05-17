@@ -3,71 +3,68 @@ import { View, StyleSheet, TextInput, Text, ScrollView } from 'react-native'
 
 import SelectionSport from './SelectionSport'
 
+//Info to send in props : closeModal(), sports
+
 export default ModaleSports = (props) => {
-    console.log('props from parent---', props.sports)
     const [search, setSearch] = useState('');
     const [selectedSports, setSelectedSports] = useState([]);
-    const [sportsList, setSportsList] = useState([])
+    const [sportsList, setSportsList] = useState([]);
 
+    //permet de récupérer un sport
     const selectSport = (sport) => {
-        let newSport = {id : sport.id, name: sport.name, icon : sport.icon}
-        //selectedSports.length<5 && 
-        setSelectedSports([...selectedSports, newSport])
-        console.log('sport selected in modale---',selectedSports)
-        props.closeModal(selectedSports)
+        let newSport = { id: sport.id, name: sport.name, icon: sport.icon }
+        props.closeModal(newSport)
         setSearch('')
     }
-    useEffect(()=>{
-        //Set previously selected sports on opening modal
-        setSelectedSports(props.sports)
-    }, [])
+   
+    // useEffect(() => {
+    //     //Set previously selected sports on opening modal
+    //     setSelectedSports(props.sports)
+    // }, [])
 
-    useEffect(()=>{
+    useEffect(() => {
         //Get list of sports from API which adapts to the user's search
         fetch(`https://sportee-backend.vercel.app/sports/${search}`)
             .then(response => response.json())
             .then(data => {
                 if (data.result) {
-                    let sportsData = data.sports.map((e, i) => {
-                        //Verify if the sport has been selected beforehand
-                        let isSelected = selectedSports.some(sport => sport.name === e.name)
-                        return <SelectionSport key={i} isSelected={isSelected} name={e.name} icon={e.icon} selectSport={selectSport} id={e._id} />
-                    })
-                    setSportsList(sportsData)
+                    setSportsList(data.sports)
                 } else {
                     console.log('Error in fetching sports')
                 }
             })
     }, [search])
-
+     let sports = sportsList.map((e, i) => {
+        //Verify if the sport has been selected beforehand
+        // let isSelected = selectedSports.some(sport => sport.name === e.name)
+        return <SelectionSport key={i} isSelected={false} name={e.name} icon={e.icon} selectSport={selectSport} id={e._id} />
+    })
     return (
-        <View style={styles.modalView}>
-            <Text style={styles.modalTitle} >Choisis ton sport</Text>
-            <TextInput
-                style={styles.search}
-                // Change image in input bar
-                inlineImageLeft='search_icon'
-                inlineImagePadding={10}
-                inputMode='text'
-                autoCapitalize="none"
-                placeholder="Rechercher un sport"
-                onChangeText={(value) => setSearch(value)}
-                value={search}
-            />
-            <ScrollView contentContainerStyle={styles.sportsList}>
-                {sportsList}
-            </ScrollView>
-        </View>
+        <View style={styles.container}>
+            <View style={styles.modalView}>
+                <Text style={styles.modalTitle} >Choisis ton sport</Text>
+                <TextInput
+                    style={styles.search}
+                    // Change image in input bar
+                    inlineImageLeft='search_icon'
+                    inlineImagePadding={10}
+                    inputMode='text'
+                    autoCapitalize="none"
+                    placeholder="Rechercher un sport"
+                    onChangeText={(value) => setSearch(value)}
+                    value={search}
+                />
+                <ScrollView contentContainerStyle={styles.sportsList}>
+                    {sports}
+                </ScrollView>
+            </View>
+        </View >
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        borderColor: '#D9D9D9',
-        borderRadius: 10,
-        borderWidth: 1,
-        height: 60,
-        width: 60,
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -85,7 +82,7 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 5,
         height: '80%',
-        width: '95%',
+        width: '80%',
     },
     modalTitle: {
         color: '#121C6E',
