@@ -100,15 +100,9 @@ const HomeScreen = ({ navigation }) => {
                     <ActivityCard />
                     <ActivityCard />
                 </View>
-<<<<<<< HEAD
-            {/* </View> */}
-        </View>
-            <Button onPress={navigation.navigate('SignUpPreferences')} title="Sign Up"/>  
-=======
                 {/* </View> */}
             </View>
             {/* <Button onPress={navigation.navigate('SignUpPreferences')} title="Sign Up"/>                     */}
->>>>>>> doudou
 
         </SafeAreaView >
     )
