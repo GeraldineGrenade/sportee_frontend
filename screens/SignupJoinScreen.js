@@ -149,7 +149,7 @@ const SignupJoinScreen = ({ navigation }) => {
             <Text style={styles.title}>Rejoins nous !</Text>
             <View style={styles.userContainer}>
                 {/* Add possibility to choose image from list */}
-                <Image source={avatarIconList[0]} style={styles.avatar} />
+                <Image title="avatar" source={avatarIconList[0]} style={styles.avatar} />
                 <View style={styles.userNameContainer}>
                     <Text>Nom d'utilisateur* :</Text>
                     <TextInput
