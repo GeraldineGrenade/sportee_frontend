@@ -4,7 +4,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 const Activity = (props) => {
-    console.log(props.name)
+    // console.log(props.name)
     return (
         <View style={styles.cardContainer}>
                 <Image style={styles.sportPhoto} source={require('../assets/sport-photos/yoga.jpg')}/>

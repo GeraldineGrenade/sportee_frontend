@@ -7,7 +7,13 @@ import * as Location from 'expo-location';
 const Map = (props) => {
 
 const [currentPosition, setCurrentPosition] = useState({});
-const [goodCoordinates, setGoodCoordinates] = useState(null);
+const [modalVisible, setModalVisible] = useState(false);
+const [coordinates, setCoordinates] = useState(null);
+
+// const [currentLatitude, setCurrentLatitude] = useState ({});
+// const [currentLongitude, setCurrentLongitude] = useState ({})
+
+
 
     useEffect(() => {
         (async () => {
@@ -23,11 +29,27 @@ const [goodCoordinates, setGoodCoordinates] = useState(null);
         })();
        }, []);
 
+    const onLongPress = (e) => {
+        setCoordinates(e.nativeEvent.coordinate);
+        setModalVisible(true);
+    };
+
+    const handleClosePopUp = () => {
+        setModalVisible(false);
+        setNewPlace('');
+      };
+
     return (
         <View>
         <MapView
             style={styles.map}
             mapType= 'hybrid'>
+            {/* initialRegion={{
+        latitude: parseFloat(position.coords.latitude),
+        longitude: parseFloat(position.coords.longitude),
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+}} */}
         {currentPosition && <Marker coordinate={currentPosition} title="My position" pinColor="#fecb2d" />}
         </MapView>
         </View>
