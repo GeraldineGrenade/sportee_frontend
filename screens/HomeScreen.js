@@ -72,7 +72,7 @@ const HomeScreen = ({ navigation }) => {
                     numColumns={2}
                 />
             </View>
-            {/* <Button onPress={navigation.navigate('SignUpPreferences')} title="Sign Up"/>                     */}
+            <Button onPress={navigation.navigate('SignUpJoin')} title="Sign Up"/>                    
             
         </SafeAreaView >
     )

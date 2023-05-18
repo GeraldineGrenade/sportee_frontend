@@ -5,6 +5,7 @@ import ModaleSports from '../components/ModaleSports';
 import SelectionTxt from '../components/SelectionTxt';
 import SelectionSport from '../components/SelectionSport';
 import { addSport, removeSport, addHabit, removeHabit, selectLevel } from '../reducers/preferences';
+import { signIn } from '../reducers/user';
 
 import Feather from 'react-native-vector-icons/Feather';
 
@@ -32,7 +33,6 @@ const SignUpPreferencesScreen = ({ navigation, route }) => {
     const selectedLevel = useSelector((state) => state.preferences.value.level);
     const [levelError, setLevelError] = useState(false);
     const [sportIndex, setSportIndex] = useState(null);
-    const userInfo = route.params;
     let dispatch = useDispatch();
 
     //On selecting habit or level, dispatch selection to store
@@ -40,7 +40,7 @@ const SignUpPreferencesScreen = ({ navigation, route }) => {
         if (data.category === 'habits') {
             selectedHabits.includes(data.title) ? dispatch(removeHabit(data.title)) : dispatch(addHabit(data.title))
         }
-        if(data.category === 'level')  dispatch(selectLevel(data.title))
+        if (data.category === 'level') dispatch(selectLevel(data.title))
     }
 
     //on selecting sport, open modal and get the index of the modified element in array of selectedSports
@@ -65,7 +65,7 @@ const SignUpPreferencesScreen = ({ navigation, route }) => {
     const levelList = levelTitles.map((e, i) => {
         //Verify if the level has been selected beforehand
         let isSelected = false
-        if (selectedLevel === e) isSelected=true
+        if (selectedLevel === e) isSelected = true
 
         return <SelectionTxt key={i} category='level' isSelected={isSelected} selectTxt={selectTxt} title={e} />
     })
@@ -79,13 +79,25 @@ const SignUpPreferencesScreen = ({ navigation, route }) => {
         return <SelectionSport key={i} index={i} isSelected={false} name={e.name} icon={e.icon} selectSport={selectSport} />
     })
 
-    
+
     //Validate user preferences
     const handleValidate = () => {
-        //Check if the user has chosen all his preferences and if not add error text
+        //Check if the user has chosen all his preferences and if not add appropriate error text
+
+        //Check sports
+        const numUnselectedSports = selectedSports.reduce((acc, curr) => {
+            curr === null && acc++
+            return acc
+        }, 0)
+        if (numUnselectedSports > 3) {
+            setSportsError(true)
+            return
+        } else {
+            setSportsError(false)
+        }
 
         //Check habits
-        if(!selectedHabits.length) {
+        if (!selectedHabits.length) {
             setHabitsError(true)
             return
         } else {
@@ -93,12 +105,39 @@ const SignUpPreferencesScreen = ({ navigation, route }) => {
         }
 
         //Check level
-        if(selectLevel ==='') {
+        if (selectedLevel === '') {
             setLevelError(true)
             return
         } else {
             setLevelError(false)
         }
+
+        //if all preferences are correct fetch signup route to create new user with personnal info and preferences
+        //Get array of ids of selectedSports
+        let selectedSportsIds = []
+        selectedSports.forEach(e => {
+            e !== null && selectedSportsIds.push(e.id)
+        });
+
+        const preferences = {
+            level: selectedLevel,
+            sports: selectedSportsIds,
+            habits: selectedHabits,
+        }
+  
+        fetch('https://sportee-backend.vercel.app/users/signup', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({...route.params, preferences}),
+		})
+        .then(response => response.json())
+			.then(data => {
+				if (data) {
+                    dispatch(signIn(data.user))  
+                    navigation.navigate("TabNavigator")    
+				}
+			});
+
     }
 
 
@@ -113,6 +152,7 @@ const SignUpPreferencesScreen = ({ navigation, route }) => {
             <View style={styles.choices}>
                 {sportList}
             </View>
+            {sportsError && <Text style={styles.error}>Choisis au moins un sport préféré</Text>}
 
             <Text style={styles.subTitle}>Je fais du sport ...</Text>
             <View style={styles.choices}>
@@ -154,19 +194,20 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: '700',
         paddingTop: 8,
-        paddingBottom: 20,
+        paddingBottom: 15,
     },
     subTitle: {
         color: '#121C6E',
         fontSize: 16,
-        marginBottom: 10,
+        marginBottom: 8,
+        marginTop: 5,
+
     },
     choices: {
         flexDirection: 'row',
         width: '100%',
         justifyContent: 'space-between',
         flexWrap: 'wrap',
-        marginBottom: 5,
     },
     validateBtn: {
         backgroundColor: '#121C6E',
@@ -183,8 +224,7 @@ const styles = StyleSheet.create({
     error: {
         color: 'red',
         fontSize: 10,
-        width: 150,
+        width: '100%',
         fontStyle: 'italic',
-        alignSelf: 'flex-end',
     },
 })
