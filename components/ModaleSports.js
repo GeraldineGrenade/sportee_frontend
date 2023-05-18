@@ -55,7 +55,7 @@ export default ModaleSports = (props) => {
                     value={search}
                 />
                 <ScrollView contentContainerStyle={styles.sportsList}>
-                    <SelectionSport isSelected={false} name='remove' icon='https://res.cloudinary.com/dsd7uux0v/image/upload/v1684388773/sportee/icons8-minus-96_g5glhq.png' selectSport={selectSport}/>
+                    <SelectionSport isSelected={false} name='remove' icon='https://res.cloudinary.com/dsd7uux0v/image/upload/v1684405714/sportee/garbage_mtwpiy.png' selectSport={selectSport}/>
                     {sportsList}
                 </ScrollView>
             </View>

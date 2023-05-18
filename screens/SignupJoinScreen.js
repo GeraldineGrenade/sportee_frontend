@@ -5,12 +5,12 @@ import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const avatarIconList = [
-    require('../assets/avatar-icons/avatar1.png'),
-    require('../assets/avatar-icons/avatar2.png'),
-    require('../assets/avatar-icons/avatar3.png'),
-    require('../assets/avatar-icons/avatar4.png'),
-    require('../assets/avatar-icons/avatar5.png'),
-    require('../assets/avatar-icons/avatar6.png'),
+    'https://res.cloudinary.com/dsd7uux0v/image/upload/v1684405796/sportee/avatar1_suh7vc.png',
+    'https://res.cloudinary.com/dsd7uux0v/image/upload/v1684405796/sportee/avatar2_nmbj4l.png',
+    'https://res.cloudinary.com/dsd7uux0v/image/upload/v1684405796/sportee/avatar3_jzjn5u.png',
+    'https://res.cloudinary.com/dsd7uux0v/image/upload/v1684405796/sportee/avatar4_ug3mjt.png',
+    'https://res.cloudinary.com/dsd7uux0v/image/upload/v1684405796/sportee/avatar5_ywvehs.png',
+    'https://res.cloudinary.com/dsd7uux0v/image/upload/v1684405796/sportee/avatar6_gvkxhz.png',
 ]
 
 const emailRegex = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
@@ -32,15 +32,17 @@ const SignupJoinScreen = ({ navigation }) => {
     const [lastnameError, setLastnameError] = useState(false);
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState(false);
+    const [emailErrorTxt, setEmailErrorTxt] = useState('')
     const [confirmEmail, setConfirmEmail] = useState('')
     const [confirmEmailError, setConfirmEmailError] = useState(false);
-    const [telephone, setTelephone] = useState(null);
-    const [dateOfBirth, setDateOfBirth] = useState(new Date());
+    const [phone, setPhone] = useState('');
+    const [dateOfBirth, setDateOfBirth] = useState(null);
     const [showModalDate, setShowModalDate] = useState(false);
     const [password, setPassword] = useState('');
     const [passwordError, setPasswordError] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState(false);
+    const [avatar, setAvatar] = useState(avatarIconList[0])
     
     //!\ DATE PICKER DOES NOT WORK
     const selectDate = (event, selectedDate) => {
@@ -103,9 +105,21 @@ const SignupJoinScreen = ({ navigation }) => {
         //Check email
         if (!emailRegex.test(email)) {
             setEmailError(true)
+            setEmailErrorTxt("Entrer une addresse mail valide") 
             return
         } else {
-            setEmailError(false)
+            fetch(`https://sportee-backend.vercel.app/users/checkEmail/${email}`)
+            .then(response => response.json())
+                .then(data => {
+                    if (!data.result) {
+                        setEmailError(true)
+                        setEmailErrorTxt("Email déjà utilisé, choisis-en un autre")
+                        return
+                    } else {
+                        setEmailError(false)
+                        setEmailErrorTxt('')
+                    }
+                })
         }
         
         //Check confirm mail
@@ -135,10 +149,10 @@ const SignupJoinScreen = ({ navigation }) => {
         }
         
         //if all input are correct, navigate to preference page with info in route.params
-        navigation.navigate('SignUpPreferences', {username, firstname, lastname, email, telephone, dateOfBirth, password})
+        navigation.navigate('SignUpPreferences', {username, firstname, lastname, email, phone, dateOfBirth, password, avatar})
     }
     
-    //change style of inputs according to whether error or not 
+    //!\change style of inputs according to whether error or not 
     
     return (
         <View style={styles.container}>
@@ -149,7 +163,7 @@ const SignupJoinScreen = ({ navigation }) => {
             <Text style={styles.title}>Rejoins nous !</Text>
             <View style={styles.userContainer}>
                 {/* Add possibility to choose image from list */}
-                <Image title="avatar" source={avatarIconList[0]} style={styles.avatar} />
+                <Image title="avatar" src={avatar} style={styles.avatar} />
                 <View style={styles.userNameContainer}>
                     <Text>Nom d'utilisateur* :</Text>
                     <TextInput
@@ -211,7 +225,7 @@ const SignupJoinScreen = ({ navigation }) => {
                         value={email}
                     />
                 </View>
-                {emailError && <Text style={styles.error}>Entrer une addresse mail valide</Text>}
+                {emailError && <Text style={styles.error}>{emailErrorTxt}</Text>}
                 <View style={styles.inputPair}>
                     <Text>Confirmer mon email* :</Text>
                     <TextInput
@@ -236,8 +250,8 @@ const SignupJoinScreen = ({ navigation }) => {
                         inlineImagePadding={10}
                         inputMode='tel'
                         placeholder="0600000000"
-                        onChangeText={(value) => setTelephone(value)}
-                        value={telephone}
+                        onChangeText={(value) => setPhone(value)}
+                        value={phone}
                     />
                 </View>
                 <View style={styles.inputPair}>
