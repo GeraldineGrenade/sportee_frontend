@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { View, StyleSheet, TextInput, Text, ScrollView } from 'react-native';
-import SelectionSport from './SelectionSport'
+import SelectionSport from './SelectionSport';
 
 //Info to send in props : closeModal(), sports
 
@@ -30,7 +30,6 @@ export default ModaleSports = (props) => {
             })
     }, [search])
 
-    //!\Add a blanck component to remove sport 
     
      let sportsList = allSports.map((e, i) => {
         //Verify if the sport has been selected beforehand
@@ -56,6 +55,7 @@ export default ModaleSports = (props) => {
                     value={search}
                 />
                 <ScrollView contentContainerStyle={styles.sportsList}>
+                    <SelectionSport isSelected={false} name='remove' icon='https://res.cloudinary.com/dsd7uux0v/image/upload/v1684388773/sportee/icons8-minus-96_g5glhq.png' selectSport={selectSport}/>
                     {sportsList}
                 </ScrollView>
             </View>

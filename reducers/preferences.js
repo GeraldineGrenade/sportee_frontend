@@ -14,7 +14,7 @@ export const preferencesSlice = createSlice({
      state.value.sports.splice(sportIndex, 1, sport);
    },
    removeSport: (state, action) => {
-    state.value.sports = state.value.sports.filter(e => e.name !== action.payload)
+    state.value.sports.splice(action.payload.sportIndex, 1, null);
   },
    removeAllSports: (state) => {
     state.value.sports = []

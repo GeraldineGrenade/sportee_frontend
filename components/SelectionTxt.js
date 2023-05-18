@@ -8,7 +8,7 @@ export default SelectionTxt = (props) => {
     props.isSelected ? color="#EA7810" : color="white"
    
     return (
-        <TouchableOpacity style={[styles.container, { backgroundColor: color}]} onPress={() =>props.selectTxt(props.category, props.title)}>
+        <TouchableOpacity style={[styles.container, { backgroundColor: color}]} onPress={() =>props.selectTxt(props)}>
             <Text style={styles.text}>{props.title}</Text>
         </TouchableOpacity>
     )

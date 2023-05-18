@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { View, Text, TouchableOpacity, Button, StyleSheet, Modal } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import ModaleSports from '../components/ModaleSports';
 import SelectionTxt from '../components/SelectionTxt';
 import SelectionSport from '../components/SelectionSport';
-import { addSport, addHabit, removeHabit, selectLevel } from '../reducers/preferences';
+import { addSport, removeSport, addHabit, removeHabit, selectLevel } from '../reducers/preferences';
 
 import Feather from 'react-native-vector-icons/Feather';
 
@@ -26,27 +26,34 @@ const levelTitles = [
 const SignUpPreferencesScreen = ({ navigation, route }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const selectedSports = useSelector((state) => state.preferences.value.sports);
+    const [sportsError, setSportsError] = useState(false);
     const selectedHabits = useSelector((state) => state.preferences.value.habits);
+    const [habitsError, setHabitsError] = useState(false);
     const selectedLevel = useSelector((state) => state.preferences.value.level);
+    const [levelError, setLevelError] = useState(false);
     const [sportIndex, setSportIndex] = useState(null);
     const userInfo = route.params;
     let dispatch = useDispatch();
 
-    const selectTxt = (cat, txt) => {
-        if (cat === 'habits') {
-            selectedHabits.includes(txt) ? dispatch(removeHabit(txt)) : dispatch(addHabit(txt))
+    //On selecting habit or level, dispatch selection to store
+    const selectTxt = (data) => {
+        if (data.category === 'habits') {
+            selectedHabits.includes(data.title) ? dispatch(removeHabit(data.title)) : dispatch(addHabit(data.title))
         }
+        if(data.category === 'level')  dispatch(selectLevel(data.title))
     }
-    console.log(selectedHabits)
+
+    //on selecting sport, open modal and get the index of the modified element in array of selectedSports
     const selectSport = (data) => {
         setIsModalVisible(true)
         setSportIndex(data.index)
     }
+
+    //on closing the modal, dispatch the chosen sport to store along with the index of the modified element in array of selectedSports. If user choose to remove sport, remove sport from store
     const closeModal = (sport) => {
         setIsModalVisible(false)
-        dispatch(addSport({ sport, sportIndex }))
+        sport.name === 'remove' ? dispatch(removeSport({ sport, sportIndex })) : dispatch(addSport({ sport, sportIndex }))
     }
-
 
     const habitList = habitTitles.map((e, i) => {
         //Verify if the habit has been selected beforehand
@@ -56,8 +63,11 @@ const SignUpPreferencesScreen = ({ navigation, route }) => {
         return <SelectionTxt key={i} category='habits' isSelected={isSelected} selectTxt={selectTxt} title={e} />
     })
     const levelList = levelTitles.map((e, i) => {
-        {/* modify isSelected to implement */ }
-        return <SelectionTxt key={i} category='level' isSelected={false} selectTxt={selectTxt} title={e} />
+        //Verify if the level has been selected beforehand
+        let isSelected = false
+        if (selectedLevel === e) isSelected=true
+
+        return <SelectionTxt key={i} category='level' isSelected={isSelected} selectTxt={selectTxt} title={e} />
     })
 
     let sportList = selectedSports.map((e, i) => {
@@ -69,6 +79,28 @@ const SignUpPreferencesScreen = ({ navigation, route }) => {
         return <SelectionSport key={i} index={i} isSelected={false} name={e.name} icon={e.icon} selectSport={selectSport} />
     })
 
+    
+    //Validate user preferences
+    const handleValidate = () => {
+        //Check if the user has chosen all his preferences and if not add error text
+
+        //Check habits
+        if(!selectedHabits.length) {
+            setHabitsError(true)
+            return
+        } else {
+            setHabitsError(false)
+        }
+
+        //Check level
+        if(selectLevel ==='') {
+            setLevelError(true)
+            return
+        } else {
+            setLevelError(false)
+        }
+    }
+
 
     return (
         <View style={styles.container}>
@@ -76,21 +108,28 @@ const SignUpPreferencesScreen = ({ navigation, route }) => {
                 <Feather name='arrow-left' size={25} color='grey' />
             </TouchableOpacity>
             <Text style={styles.title}>Choisis tes préférences</Text>
+
             <Text style={styles.subTitle}>Mes activités sportives préférées</Text>
             <View style={styles.choices}>
                 {sportList}
             </View>
+
             <Text style={styles.subTitle}>Je fais du sport ...</Text>
             <View style={styles.choices}>
                 {habitList}
             </View>
+            {habitsError && <Text style={styles.error}>Choisis au moins une habitude de sport</Text>}
+
             <Text style={styles.subTitle}>Je suis plûtot</Text>
             <View style={styles.choices}>
                 {levelList}
             </View>
+            {levelError && <Text style={styles.error}>Choisis ton niveau</Text>}
+
             <TouchableOpacity style={styles.validateBtn} onPress={() => handleValidate()}>
                 <Text style={styles.validateBtnTxt}>Valider mes préférences</Text>
             </TouchableOpacity>
+
             <Modal visible={isModalVisible} animationType="fade" transparent>
                 <ModaleSports closeModal={closeModal} />
             </Modal>
@@ -141,5 +180,11 @@ const styles = StyleSheet.create({
     validateBtnTxt: {
         color: 'white',
     },
-
+    error: {
+        color: 'red',
+        fontSize: 10,
+        width: 150,
+        fontStyle: 'italic',
+        alignSelf: 'flex-end',
+    },
 })

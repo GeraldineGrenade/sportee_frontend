@@ -1,7 +1,7 @@
 import React from 'react'
 import { TouchableOpacity, Image, View, Text, StyleSheet } from 'react-native'
 
-//Data to send in props : name, id, icon, selectSport(), isSelected
+//Data to send in props : name, id, icon, selectSport(), isSelected, index
 
 export default SelectionSport = (props) => {
 
