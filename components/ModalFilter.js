@@ -1,27 +1,25 @@
-import React, { useState } from 'react'
-import { SafeAreaView, View, Text, StyleSheet, TextInput, Button, TouchableOpacity, Modal } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { SafeAreaView, View, Text, StyleSheet, TextInput, Button, TouchableOpacity, Modal, FlatList } from 'react-native'
 import { Entypo } from 'react-native-vector-icons';
 import { Fontisto } from 'react-native-vector-icons';
 import RangeSlider, { Slider } from 'react-native-range-slider-expo'
 import { useDispatch, useSelector } from 'react-redux';
-import { addSport, removeSport } from '../reducers/preferences'
+import { addSport, removeSport, selectLevel } from '../reducers/preferences'
 import ModaleSports from './ModaleSports';
 import SelectionSport from './SelectionSport';
 import SelectionTxt from './SelectionTxt';
-import DatePicker from 'react-native-datepicker'
+import DateTimePicker from '@react-native-community/datetimepicker'
 import DropDownPicker from 'react-native-dropdown-picker'
+import { updateSliderValue } from '../reducers/preferences';
 
 const ModalFilter = ({ modalVisible, setModalVisible }) => {
     let dispatch = useDispatch();
-    const [sportModalVisible, setSportModalVisible] = useState(false);
-    // const [fromValue, setFromValue] = useState(0);
-    // const [toValue, setToValue] = useState(0);
-    const [value, setValue] = useState(0)
-    const selectedSports = useSelector((state) => state.preferences.value.sports);
-    const [sportIndex, setSportIndex] = useState(null);
-    const [date, setDate] = useState('')
+    const [sportModalVisible, setSportModalVisible] = useState(false)
+    const selectedSports = useSelector((state) => state.preferences.value.sports)
+    const [sportIndex, setSportIndex] = useState(null)
+    const [date, setDate] = useState(new Date())
     const [toValue, setToValue] = useState(null)
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(false)
     const [items, setItems] = useState([
         { label: 'Matin', value: 'Matin' },
         { label: 'Midi', value: 'Midi' },
@@ -29,22 +27,71 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
         { label: 'Soir', value: 'Soir' },
         { label: 'Week-end', value: 'Week-end' },
     ])
+    const [peopleValue, setPeopleValue] = useState(null)
+    const [peopleOpen, setPeopleOpen] = useState(false)
+    const [people, setPeople] = useState([
+        { label: '1', value: '1' },
+        { label: '2', value: '2' },
+        { label: '3', value: '3' },
+        { label: '4', value: '4' },
+        { label: '5', value: '5' },
+    ])
+    const sliderValue = useSelector(state => state.preferences.value.sliderValue)
+    const [searchValue, setSearchValue] = useState('')
+    const [suggestions, setSuggestions] = useState([])
 
+    const selectCity = (city) => {
+        setSearchValue(city.properties.label)
+    }
 
+    useEffect(() => {
+        const fetchCities = async () => {
+            try {
+                const response = await fetch(
+                    `https://api-adresse.data.gouv.fr/search/?q=${searchValue}&autocomplete=1`
+                );
+                const data = await response.json()
+                if (data.features) {
+                    setSuggestions(data.features)
+                } else {
+                    console.log('Error in fetching cities')
+                }
+            } catch (error) {
+                console.log('Error in fetching cities', error)
+            }
+        }
+
+        if (searchValue) {
+            fetchCities()
+        } else {
+            setSuggestions([])
+        }
+    }, [searchValue])
+
+    const renderCityItem = ({ item }) => (
+        <TouchableOpacity onPress={() => selectCity(item)}>
+            <Text>{item.properties.label}</Text>
+        </TouchableOpacity>
+    )
+
+    const handleSliderChange = (value) => {
+        dispatch(updateSliderValue(value))
+    }
 
     const closeModal = () => {
         setModalVisible(false);
     }
 
     const selectSport = (data) => {
-        setSportModalVisible(true)
-        const { name, icon, index } = data
-        setSportIndex(index)
+        setSportModalVisible(true);
+        const { name, icon, index } = data;
+        setSportIndex(index);
     }
     const closeSportModal = (sport) => {
-        setSportModalVisible(false)
-        dispatch(addSport({ sport, sportIndex }))
+        setSportModalVisible(false);
+        sport.name === 'remove' ? dispatch(removeSport({ sport, sportIndex })) : dispatch(addSport({ sport, sportIndex }));
     }
+
 
     let sportList = selectedSports.map((e, i) => {
         {/* modify isSelected to implement */ }
@@ -63,13 +110,17 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
             style={styles.modalFilter}
         >
             <View style={styles.topModal}>
-                <TouchableOpacity onPress={closeModal}>
-                    <Entypo name='cross' size={40} color='#121C6E' style={styles.exitIcon} />
-                </TouchableOpacity>
-                <Text>Filtrer</Text>
-                <TouchableOpacity>
-                    <Text>effacer les filtres</Text>
-                </TouchableOpacity>
+                <View style={styles.exit}>
+                    <TouchableOpacity onPress={closeModal}>
+                        <Entypo name='cross' size={40} color='#121C6E' style={styles.exitIcon} />
+                    </TouchableOpacity>
+                    <Text style={styles.filter}>Filtrer</Text>
+                </View>
+                <View style={styles.delete}>
+                    <TouchableOpacity>
+                        <Text>effacer les filtres</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
             <View>
                 <Text style={styles.searchText}>Où cherches tu ?</Text>
@@ -78,10 +129,31 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
                 <Fontisto name='map-marker-alt' size={25} color='#121C6E' />
                 <Text style={styles.around}>Autour de moi</Text>
             </View>
-            <TextInput placeholder='Rechercher une activité' style={styles.searchBar} />
+            <>
+                <TextInput
+                    placeholder='Rechercher une activité'
+                    style={styles.searchBar}
+                    value={searchValue}
+                    onChangeText={value => setSearchValue(value)}
+                />
+                {/* <Modal
+                // animationType='fade'
+                // transparent={false}
+                // // visible={modalVisible}
+                // // onRequestClose={() => setModalVisible(false)}
+                // style={styles.modalFlatList}
+                > */}
+                <FlatList
+                    data={suggestions}
+                    keyExtractor={item => item.properties.id}
+                    renderItem={renderCityItem}
+                />
+                {/* </Modal> */}
+            </>
+
             <View style={styles.slider}>
                 <Slider min={5} max={100} step={5}
-                    valueOnChange={value => setValue(value)}
+                    valueOnChange={handleSliderChange}
                     initialValue={5}
                     knobColor='#EA7810'
                     valueLabelsBackgroundColor='#EA7810'
@@ -114,9 +186,9 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
                 <Text style={styles.when}>Quand souhaites-tu faire ton activité ?</Text>
             </View>
             <View style={styles.activityDate}>
-                <DatePicker
+                <DateTimePicker
                     style={styles.datePicker}
-                    date={date}
+                    value={date}
                     mode="date"
                     placeholder="select date"
                     format="DD/MM/YYYY"
@@ -150,15 +222,40 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
                     }}
                 />
                 <DropDownPicker
+                    style={styles.dropDown}
                     open={open}
-                    value={value}
+                    value={toValue}
                     items={items}
                     setOpen={setOpen}
                     setValue={setToValue}
                     setItems={setItems}
-                    style={styles.dropDown}
+                    zIndex={999}
+
+                    theme="LIGHT"
+                    multiple={true}
+                    mode="BADGE"
+                    badgeDotColors={["#e76f51", "#00b4d8", "#e9c46a", "#e76f51", "#8ac926", "#00b4d8", "#e9c46a"]}
+
                 />
             </View>
+            <View>
+                <Text style={styles.people}>Pour combien de personnes ?</Text>
+            </View>
+            <View style={styles.peopleContainer}>
+                <DropDownPicker
+                    style={styles.dropDownPeople}
+                    open={peopleOpen}
+                    value={peopleValue}
+                    items={people}
+                    setOpen={setPeopleOpen}
+                    setValue={setPeopleValue}
+                    setItems={setPeople}
+                    theme="LIGHT"
+                />
+            </View>
+            <TouchableOpacity style={styles.resultBtn}>
+                <Text style={styles.bottomBtn}>Afficher les résultats</Text>
+            </TouchableOpacity>
         </Modal>
     )
 }
@@ -197,12 +294,12 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 7,
         fontSize: 16,
-        height: '3%',
+        height: '4%',
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: '5%',
         textAlign: 'center',
-        marginLeft: '20%'
+        marginLeft: '20%',
     },
     slider: {
         marginTop: '-5%',
@@ -248,15 +345,65 @@ const styles = StyleSheet.create({
     },
     dropDown: {
         width: '40%',
-        marginLeft: 40
+        marginLeft: 40,
+        backgroundColor: '#ffffff',
+        // zIndex: 9999,
     },
     activityDate: {
         flexDirection: 'row',
         width: '100%',
         marginTop: 10,
         alignItems: 'center',
-        textAlign: 'center'
+        textAlign: 'center',
+        zIndex: 999
+    },
+    people: {
+        color: '#121C6E',
+        fontWeight: 'bold',
+        fontSize: 20,
+        marginLeft: 15,
+        marginTop: 20,
+    },
+    peopleContainer: {
+        width: '100%',
+        zIndex: 999
+    },
+    dropDownPeople: {
+        marginLeft: 15,
+        marginTop: 15,
+        width: '40%'
+    },
+    bottomBtn: {
+        color: '#ffffff',
+        fontWeight: 'bold',
+        fontSize: 20
+    },
+    resultBtn: {
+        backgroundColor: '#121C6E',
+        width: '80%',
+        marginTop: 25,
+        height: '5%',
+        marginLeft: '10%',
+        textAlign: 'center',
+        borderRadius: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    exit: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    filter: {
+        fontSize: 30,
+        fontWeight: 'bold'
+    },
+    delete: {
+        marginRight: 15
+    },
+    modalFlatList: {
+        height: '30%',
+        width: '60%'
     }
 })
 
-export default ModalFilter
+export default ModalFilter;
