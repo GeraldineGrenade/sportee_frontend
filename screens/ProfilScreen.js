@@ -67,7 +67,6 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: '#f2f2f2',
-    //   alignItems: 'center',
     },
 
     title: {
@@ -93,7 +92,6 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
     padding: 8,
-    // marginRight: 20,
     },
 
     plus: {
@@ -109,7 +107,6 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         width: 25,
         height: 25,
-        // padding: 4,
         marginLeft: 70,
         marginTop: 5,
     },
@@ -133,11 +130,9 @@ const styles = StyleSheet.create({
         width: 115,
         height: 115,
         padding: 30,
-        // marginRight: 20,
         },
 
     userIcon: {
-        // padding: 10,
         marginLeft: 4,
         },
 
@@ -196,7 +191,6 @@ const styles = StyleSheet.create({
     },
 
     description: {
-        // marginTop:40,
         marginBottom: 40,
         marginLeft: 27.5,
     },
@@ -240,7 +234,6 @@ const styles = StyleSheet.create({
 
     favoriteSport: {
         flexDirection: 'row',
-        // justifyContent: 'space-between',
     }, 
 
     sportContent: {

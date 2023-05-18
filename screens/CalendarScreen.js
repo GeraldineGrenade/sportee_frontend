@@ -138,7 +138,6 @@ const styles = StyleSheet.create({
     }, 
 
     cardContainer: {
-    // marginTop: 10, 
     marginBottom: 10,
     justifyContent: 'center',
     marginLeft:20,

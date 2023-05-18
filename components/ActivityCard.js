@@ -7,12 +7,8 @@ const Activity = (props) => {
     console.log(props.name)
     return (
         <View style={styles.cardContainer}>
-            {/* <View style={styles.photoContainer}> */}
                 <Image style={styles.sportPhoto} source={require('../assets/sport-photos/yoga.jpg')}/>
-                {/* source = {uri : ${props.photo}} */}
                 <Text style={styles.activityName}>{props.name}</Text>
-
-            {/* </View> */}
 
             <View style={styles.infosContainer}>
 
@@ -51,8 +47,6 @@ const styles = StyleSheet.create({
     },
 
     photoContainer: {
-        // width: '30%',
-        // height: '25%',
       
     }, 
 
@@ -87,9 +81,6 @@ const styles = StyleSheet.create({
         height: 90,
         borderTopLeftRadius:10,
         borderTopRightRadius:10,
-   
-        // zIndex: 1,
-        // z-index: 1
     }, 
 
     activityTitle: {
@@ -125,14 +116,12 @@ const styles = StyleSheet.create({
     locInfos: {
         flexDirection: 'row',
         marginLeft: 1,
-        // justifyContent: 'space-around',
     }, 
 
     dateInfos: {
         flexDirection: 'row',
         marginLeft: 4,
         marginRight: 4, 
-        // justifyContent: 'space-around',
     },
 
 
