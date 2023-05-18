@@ -4,6 +4,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import CalendarScreen from './screens/CalendarScreen';
 import HomeScreen from './screens/HomeScreen';
+import ConnectionScreen from './screens/ConnectionScreen';
+import ConnectionMailScreen from './screens/ConnectionMailScreen';
 import CreateScreen from './screens/CreateScreen';
 import MessagesListScreen from './screens/MessagesListScreen';
 import ProfilScreen from './screens/ProfilScreen';
@@ -11,9 +13,7 @@ import MessagesScreen from './screens/MessagesScreen';
 import ActivityScreen from './screens/ActivityScreen';
 import SignupJoinScreen from './screens/SignupJoinScreen';
 import SignUpPreferencesScreen from './screens/SignupPreferencesScreen';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import Connection from './components/Connection'
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import user from './reducers/user';
@@ -106,9 +106,10 @@ export default function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName="TabNavigator" screenOptions={{ headerShown: false }}>
           <Stack.Screen name="TabNavigator" component={TabNavigator} />
-          {/* <Stack.Screen name="Profil" component={ProfilScreen} />  */}
+          <Stack.Screen name="ConnectionAll" component={ConnectionScreen} />
+          <Stack.Screen name="ConnectionMail" component={ConnectionMailScreen} />
           <Stack.Screen name="SignUpJoin" component={SignupJoinScreen} />
           <Stack.Screen name="SignUpPreferences" component={SignUpPreferencesScreen} />
         </Stack.Navigator>

@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
-export default ModalConnect = (props) => {
+export default ModalConnect = ({ navigation }) => {
     return(
-        <View>
-            <Text>Pour découvrir les activités à venir ...</Text>
+        <View style={styles.container}>
+            <View style={styles.modalView}>
+                <Text style={styles.modalTitle}>Pour découvrir les activités à venir ...</Text>
+                <TouchableOpacity style={styles.connectBtn} onPress={()=> navigation.navigate('ConnectionAll')}>
+                    <Text style={styles.connectBtnTxt}>Connecte toi</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     )
 }
@@ -21,6 +24,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 30,
         alignItems: 'center',
+        justifyContent: 'center',
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
@@ -29,26 +33,25 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5,
-        height: '80%',
-        width: '80%',
+        height: '40%',
+        width: '75%',
     },
     modalTitle: {
         color: '#121C6E',
         fontSize: 18,
         marginBottom: 8,
     },
-    search: {
-        borderColor: '#D9D9D9',
-        borderWidth: 1,
+    connectBtn: {
+        backgroundColor: '#121C6E',
+        padding: 10,
+        width: 150,
+        alignItems: 'center',
+        alignSelf: 'center',
         borderRadius: 5,
-        width: '100%',
-        fontSize: 12,
-        marginBottom: 20,
+        marginTop: 15,
     },
-    sportsList: {
-        flexDirection: 'row',
-        width: '100%',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
+    connectBtnTxt: {
+        color: 'white',
+        fontSize: 16,
     },
 });
