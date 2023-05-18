@@ -84,7 +84,7 @@ export default function App() {
     const sendUserInfoToDatabase = async (userInfo) => {
         try {
             console.log('user infos', userInfo)
-            const response = await fetch('https://sportee-backend.vercel.app/users', {
+            const response = await fetch('https://sportee-backend.vercel.app/users/social', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
