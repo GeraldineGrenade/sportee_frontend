@@ -81,12 +81,8 @@ content = <Map/>
             <View style={styles.principalContent}>
             {content}
             </View>
-<<<<<<< HEAD
-            <Button onPress={navigation.navigate('SignUpJoin')} title="Sign Up"/>                    
-=======
 
             {/* <Button onPress={navigation.navigate('SignUpPreferences')} title="Sign Up"/>                     */}
->>>>>>> Josie
             
         </SafeAreaView >
     )
