@@ -2,7 +2,32 @@ import React from 'react'
 import { SafeAreaView, View, Text, StyleSheet } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
+const BACKEND_ADRESS = 'https://sportee-backend.vercel.app/'
+
+
+
 const ActivityScreen = ({navigation}) => {
+
+
+fetch(`${BACKEND_ADRESS}/activities`)
+    .then(response => {
+        if (response.ok) {
+            response.json()
+        }else {
+            throw new Error('Erreur lors de la récupération de l\'activité')
+        }
+    }).then(data => {
+        console.log(data);
+    }).catch(error => {
+        console.error(error);
+    })
+
+    
+    
+
+
+
+    
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.topContainer}>
