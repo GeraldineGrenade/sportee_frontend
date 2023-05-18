@@ -1,22 +1,106 @@
-import React from "react";
+import React, { useState }from "react";
 import {
   SafeAreaView,
   View,
   Text,
   StyleSheet,
   TextInput,
-  TouchableOpacity, Button
+  TouchableOpacity, Button, KeyboardAvoidingView, ScrollView, Modal
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import SelectionSport from '../components/SelectionSport';
+import { useSelector, useDispatch } from 'react-redux';
+import ModaleSports from '../components/ModaleSports';
+import DropDownPicker from "react-native-dropdown-picker";
 
-
+const activityData = {
+  name: 'Nom de l\'activité',
+  sport: 'Sport de l\'activité',
+  description: 'Description de l\'activité',
+  place: 'Lieu de l\'activité',
+  level: 'Niveau de l\'activité',
+  time: 'Durée de l\'activité',
+  nbMaxParticipants: 10,
+  conversation: 'Conversation associée',
+  user: 'Utilisateur associé',
+  particpants: ['Participant 1', 'Participant 2', ''],
+};
+const BACKEND_ADRESS = 'https://sportee-backend.vercel.app/'
 
 
 const CreateScreen = ({ navigation }) => {
 
+  const [newSport, setNewSport] = useState({name:'Choisis ton sport' , icon:'https://res.cloudinary.com/dsd7uux0v/image/upload/v1684260544/sportee/addition-thick-symbol_b3edkd.png' })
+
+  const selectSport = () => {
+    setIsModalVisible(true)
+    
+}
+
+const [open, setOpen] = useState(false);
+const [value, setValue] = useState(null);
+const [items, setItems] = useState([
+  {label: '1', value:'1' },
+  {label: '2', value:'2' },
+  {label: '3', value:'3' },
+  {label: '4', value:'4' },
+  {label: '5', value:'5' },
+  {label: '6', value:'6' },
+  {label: '7', value:'7' },
+  {label: '8', value:'8' },
+  {label: '9', value:'9' },
+  {label: '10', value:'10' },
+  {label: '11', value:'11' },
+  {label: '12', value:'12' },
+  {label: '13', value:'13' },
+  {label: '14', value:'14' },
+  {label: '15', value:'15' },
+  {label: '16', value:'16' },
+  {label: '17', value:'17' },
+  {label: '18', value:'18' },
+  {label: '19', value:'19' },
+  {label: '20', value:'20' },
+  
+
+]);
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const closeModal = (sport) => {
+  setIsModalVisible(false)
+  setNewSport(sport)
+}   
+
+
+  const handleCreate = () => {
+
+    fetch(`${BACKEND_ADRESS}/activities`, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(activityData)
+  }).then(response => {
+      if(response.ok) {
+          return response.json()
+      }else {
+        throw new Error('Erreur lors de la création de l\'activité')
+      }
+  }).then(data => {
+      console.log(data);
+  }).catch(error => {
+      console.error(error);
+  })
+  }
+
+  
+
+  const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0
   
   return (
-    <SafeAreaView style={styles.container}>
+    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={keyboardVerticalOffset}>
+    {/* <SafeAreaView style={styles.container}> */}
+    <ScrollView>
       <View style={styles.topContainer}>
         <Text style={styles.title}>Créé ton activité</Text>
         <View style={styles.userIconContainer}>
@@ -37,8 +121,11 @@ const CreateScreen = ({ navigation }) => {
         </View>
         <View style={styles.select}>
           <TouchableOpacity style={styles.selectSport}>
-            <FontAwesome name="plus" color="#d8e0e4" size={15} />
-            <Text style={styles.textSport}>Choisis un sport</Text>
+            <SelectionSport name={newSport.name} icon={newSport.icon}
+             selectSport={selectSport} />
+            <Modal visible={isModalVisible} animationType="fade" transparent>
+                <ModaleSports closeModal={closeModal} />
+            </Modal>
           </TouchableOpacity>
           <View style={styles.description}>
             <Text style={styles.textDescription}>
@@ -79,17 +166,23 @@ const CreateScreen = ({ navigation }) => {
             <Text style={styles.textInvitation}>Je souhaite inviter</Text>
             <View style={styles.nbPersonne} >
             <TextInput style={styles.inputInvitation} placeholder='Nombre' />
+            {/* <DropDownPicker
+              style={styles.dropdown}
+              open={open} value={value} items={items} setOpen={setOpen} setValue=
+            /> */}
             <Text style={styles.personne}>personnes</Text>
             </View>
         </View>
 
         <View style={styles.create} >
-            <TouchableOpacity style={styles.createBtn}> 
+            <TouchableOpacity onPress={() => handleCreate()} style={styles.createBtn}> 
             <Text style={styles.textBtn}>Créer mon activité</Text>
             </TouchableOpacity>
         </View>
       </View>
-    </SafeAreaView>
+      </ScrollView>
+    {/* </SafeAreaView> */}
+    </KeyboardAvoidingView>
   );
 };
 
@@ -99,7 +192,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f2f2f2",
-    //   alignItems: 'center',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
 
   title: {
@@ -158,22 +252,22 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 7,
     fontSize: 15,
-    // marginLeft: 15,
+    marginLeft: 15,
     paddingLeft: 10,
   },
 
   selectSport: {
-    backgroundColor: "#f2f2f2",
-    borderRadius: 7,
-    borderWidth: 1,
-    borderColor: "#D9D9D9",
-    width: 71,
-    height: 71,
-    alignItems: "center",
-    paddingTop: 10,
-    // marginLeft: 8,
-    marginTop: 15,
-    textAlign: "center",
+    // backgroundColor: "#f2f2f2",
+    // borderRadius: 7,
+    // borderWidth: 1,
+    // borderColor: "#D9D9D9",
+    // width: 71,
+    // height: 71,
+    // alignItems: "center",
+    // paddingTop: 10,
+    // // marginLeft: 8,
+    marginTop: 17,
+    // textAlign: "center",
   },
 
   select: {
@@ -191,6 +285,7 @@ const styles = StyleSheet.create({
   description: {
     flexDirection: "column",
     marginTop: 10,
+    marginLeft: 15,
   },
 
   textDescription: {
@@ -320,7 +415,7 @@ const styles = StyleSheet.create({
   },
 
   create: {
-    marginTop: 85,
+    marginTop: 65,
     alignItems: 'center',
   },
 
