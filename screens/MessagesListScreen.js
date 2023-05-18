@@ -1,8 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { SafeAreaView, View, Text, StyleSheet, TextInput } from 'react-native'
+import { useSelector } from 'react-redux';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const MessagesListScreen = ({navigation}) => {
+    const connectedUser = useSelector((state) => state.user.value);
+
+  //Redirects to ConnectionScreen if no user connected
+  useEffect(() => {
+    !connectedUser.email && navigation.navigate('ConnectionMail')
+  }, [])
+  
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.topContainer}>

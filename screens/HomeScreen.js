@@ -80,10 +80,7 @@ content = <Map/>
                 
             <View style={styles.principalContent}>
             {content}
-            </View>
-
-            {/* <Button onPress={navigation.navigate('SignUpPreferences')} title="Sign Up"/>                     */}
-            
+            </View>            
         </SafeAreaView >
     )
 }
