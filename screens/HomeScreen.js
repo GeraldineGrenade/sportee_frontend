@@ -9,6 +9,11 @@ import ModalFilter from '../components/ModalFilter';
 const HomeScreen = ({ navigation }) => {
     const [showMap, setShowMap] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
+    const [colorButton, setColorButton] = useState(false);
+
+    const changeButtonColor = () => {
+        setColorButton(colorButton);
+      };
 
     const activityData = [{ name: "Yoga", city: "Lille", date: "19 mai 18h", titre: "Yoga Vinyasa à la citadelle" }, { name: "Surf", city: "Wissant", date: "22 mai 11h", titre: "Initiation au surf", image: '../assets/sport-photos/surf.jpg' }, { name: "Boxe", city: "Lille", date: "25 mai 7h", titre: "Cours boxe thaïlandaise" }, { name: "Tennis", city: "Roubaix", date: "28 mai 12h", titre: "Tennis en exterieur" }, { name: "Beach-Volley", city: "Malo", date: "30 mai 12h", titre: "Tournoi de Beach-Volley" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }]
 
@@ -71,8 +76,9 @@ content = <Map/>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.mapIconContainer}>
-                    <TouchableOpacity onPress={() => setShowMap(true)}>
-                        <FontAwesome name='map' size={25} color='#121C6E' style={styles.mapIcon} />
+                    <TouchableOpacity onPress={() => setShowMap(true) && changeButtonColor}>
+                        <FontAwesome name='map' size={25} color='#121C6E'  
+                        style={styles.mapIcon} />
                         <Text style={styles.texte}>Carte</Text>
                     </TouchableOpacity>
                 </View>
