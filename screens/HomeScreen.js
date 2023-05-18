@@ -3,6 +3,7 @@ import { SafeAreaView, View, Text, StyleSheet, TextInput, Button, TouchableOpaci
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import ActivityCard from '../components/ActivityCard';
+import Map from '../components/Map';
 import ModalFilter from '../components/ModalFilter';
 
 const HomeScreen = ({ navigation }) => {
@@ -11,6 +12,42 @@ const HomeScreen = ({ navigation }) => {
 
     const activityData = [{ name: "Yoga", city: "Lille", date: "19 mai 18h", titre: "Yoga Vinyasa à la citadelle" }, { name: "Surf", city: "Wissant", date: "22 mai 11h", titre: "Initiation au surf", image: '../assets/sport-photos/surf.jpg' }, { name: "Boxe", city: "Lille", date: "25 mai 7h", titre: "Cours boxe thaïlandaise" }, { name: "Tennis", city: "Roubaix", date: "28 mai 12h", titre: "Tennis en exterieur" }, { name: "Beach-Volley", city: "Malo", date: "30 mai 12h", titre: "Tournoi de Beach-Volley" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }]
 
+
+const listContent = (
+    <View>
+    <Text style={styles.titlePopulate}>Activités populaires autour de moi</Text>
+    <FlatList
+        data={activityData}
+        renderItem={({ item }) => {
+            return <ActivityCard {...item} />
+        }
+        }
+        keyExtractor={(item, i) => i}
+        contentContainerStyle={styles.cardContainerTop}
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+    />
+
+    <Text style={styles.titleForMe}>Pour moi</Text>
+    <FlatList
+        data={activityData}
+        renderItem={({ item }) => {
+            return <ActivityCard {...item} />
+        }
+        }
+        keyExtractor={(item, i) => i}
+        contentContainerStyle={styles.cardContainer}
+        horizontal={false}
+        showsHorizontalScrollIndicator={false}
+        numColumns={2}
+    />
+    </View>
+)
+
+let content = listContent
+if (showMap) {
+content = <Map/>
+}
 
     return (
         <SafeAreaView style={styles.container}>
@@ -40,39 +77,16 @@ const HomeScreen = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
             </View>
-
-            {/* {showMap ? (<MapView style={styles.map} />) : ( */}
                 
             <View style={styles.principalContent}>
-
-                <Text style={styles.titlePopulate}>Activités populaires autour de moi</Text>
-                <FlatList
-                    data={activityData}
-                    renderItem={({ item }) => {
-                        return <ActivityCard {...item} />
-                    }
-                    }
-                    keyExtractor={(item, i) => i}
-                    contentContainerStyle={styles.cardContainerTop}
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                />
-
-                <Text style={styles.titleForMe}>Pour moi</Text>
-                <FlatList
-                    data={activityData}
-                    renderItem={({ item }) => {
-                        return <ActivityCard {...item} />
-                    }
-                    }
-                    keyExtractor={(item, i) => i}
-                    contentContainerStyle={styles.cardContainer}
-                    horizontal={false}
-                    showsHorizontalScrollIndicator={false}
-                    numColumns={2}
-                />
+            {content}
             </View>
+<<<<<<< HEAD
             <Button onPress={navigation.navigate('SignUpJoin')} title="Sign Up"/>                    
+=======
+
+            {/* <Button onPress={navigation.navigate('SignUpPreferences')} title="Sign Up"/>                     */}
+>>>>>>> Josie
             
         </SafeAreaView >
     )
@@ -119,10 +133,12 @@ const styles = StyleSheet.create({
 
     mapIcon: {
         marginBottom: 10,
+        marginLeft:5,
     },
 
     listIcon: {
         marginBottom: 10,
+        marginLeft:2.5,
     },
 
     filterIcon: {
@@ -143,43 +159,41 @@ const styles = StyleSheet.create({
 
     mapIconContainer: {
         flexDirection: 'column',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         alignItems: 'center',
         marginLeft: 5,
     },
 
     listIconContainer: {
         flexDirection: 'column',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         alignItems: 'center',
         marginRight: 5,
     },
 
     principalContent: {
-        alignItems: 'flex-start',
-        flexGrow: 1,
+        // alignItems: 'flex-start',
+        // flexGrow: 1,
         width: '100%',
         // height: '100%',
-        marginLeft: 27.5,
-        marginRight: 2,
     },
 
     titlePopulate: {
         fontSize: 18,
         fontWeight: '500',
         color: '#121C6E',
-        marginBottom: 10,
-        marginTop: 30,
-        marginLeft: 12,
+        marginBottom: 15,
+        marginTop: 10,
+        marginLeft: 23,
     },
 
     titleForMe: {
         fontSize: 18,
         fontWeight: '500',
         color: '#121C6E',
-        marginBottom: 10,
+        marginBottom: 5,
         marginTop: 20,
-        marginLeft: 12,
+        marginLeft: 23,
     },
 
     cardContainer: {
@@ -187,14 +201,21 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         width: '94%',
+        flexGrow: 1,
         // flexWrap: 'wrap',
         // overflow: 'scroll',
+         marginLeft: 12,
+         marginRight: 10,
     },
 
     cardContainerTop: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        height: 152,
         overflow: 'scroll',
+        marginBottom: 10,
+        marginLeft: 12,
+        marginRight: 10,
     },
 });
