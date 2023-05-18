@@ -1,14 +1,36 @@
 import React, { useState } from 'react'
 import { SafeAreaView, View, Text, Image, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { useDispatch } from 'react-redux';
+import { signIn } from '../reducers/user';
+
 
 export default ConnectionMailScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
+    let dispatch = useDispatch();
 
     handleLogin = () => {
+        //Verify if fields are not empty
+        if(email === '' || password === '') {
+            setError(true)
+            return
+        } else {
+            setError(false)
+        }
 
+        fetch('https://sportee-backend.vercel.app/users/signin', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ email, password }),
+		})
+        .then(response => response.json())
+		.then(data => {
+            data.result && dispatch(signIn(data.user))
+            navigation.navigate("TabNavigator")    
+        });
+        setEmail('');
+        setPassword('')
     }
 
     return (
