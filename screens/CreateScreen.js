@@ -1,11 +1,11 @@
-import React, { useState }from "react";
+import React, { useState, useEffect }from "react";
 import {
   SafeAreaView,
   View,
   Text,
   StyleSheet,
   TextInput,
-  TouchableOpacity, KeyboardAvoidingView, ScrollView, Modal,
+  TouchableOpacity, KeyboardAvoidingView, ScrollView, Modal, FlatList
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import SelectionSport from '../components/SelectionSport';
@@ -46,6 +46,9 @@ const [newSport, setNewSport] = useState({name:'Choisis ton sport' , icon:'https
 const [level, setLevel] = useState('')
  
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+  const [cityModalVisible, setCityModalVisible] = useState(false)
 
   const selectSport = () => {
     setIsModalVisible(true)
@@ -60,6 +63,49 @@ const [level, setLevel] = useState('')
   setIsModalVisible(false)
   setNewSport(sport)
 }   
+
+// useEffect(() => {
+//   const fetchCities = async () => {
+//       try {
+//           const response = await fetch(
+//               `https://api-adresse.data.gouv.fr/search/?q=${searchValue}&autocomplete=1`
+//               `https://api-adresse.data.gouv.fr/search/?q=paris&type=street`
+//           )
+//           const data = await response.json()
+//           if (data.features) {
+//               setSuggestions(data.features)
+//           } else {
+//               console.log('Error in fetching cities')
+//           }
+//       } catch (error) {
+//           console.log('Error in fetching cities', error)
+//       }
+//   }
+
+//   if (searchValue) {
+//       fetchCities()
+//   } else {
+//       setSuggestions([])
+//   }
+// }, [searchValue])
+
+// const renderCityItem = ({ item }) => {
+//   return (
+//       <TouchableOpacity style={styles.cityItem} onPress={() => {
+//           setSuggestions([])
+//           setSearchValue('')
+//           setCityValue(item.properties.city)
+//       }}>
+//           <Text style={styles.cityItemText}>
+//               {item.properties.postcode}{item.properties.city}
+//           </Text>
+//       </TouchableOpacity>
+//   )
+// }
+// const closeCitySearch = () => {
+//   cityModalVisible(false)
+//   console.log(closeCitySearch)
+// }
 
 // VALIDATE CREATE ACTIVITY
   const handleCreate = () => {
@@ -135,6 +181,12 @@ const [level, setLevel] = useState('')
         <View style={styles.adress}>
           <Text style={styles.textAdress}>Adresse du point de rendez-vous</Text>
           <TextInput style={styles.inputAdress}/>
+          {/* <FlatList
+              data={suggestions}
+              keyExtractor={item => item.properties.id}
+              renderItem={renderCityItem}
+              onPress={() => { closeCitySearch }}
+                        /> */}
         </View>
 
          <View style={styles.level}>
