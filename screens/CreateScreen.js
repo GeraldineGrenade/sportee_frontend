@@ -5,7 +5,7 @@ import {
   Text,
   StyleSheet,
   TextInput,
-  TouchableOpacity, Button, KeyboardAvoidingView, ScrollView, Modal
+  TouchableOpacity, KeyboardAvoidingView, ScrollView, Modal,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import SelectionSport from '../components/SelectionSport';
@@ -40,37 +40,10 @@ const levelTitles = [
 
 const CreateScreen = ({ navigation }) => {
 
-  const [newSport, setNewSport] = useState({name:'Choisis ton sport' , icon:'https://res.cloudinary.com/dsd7uux0v/image/upload/v1684260544/sportee/addition-thick-symbol_b3edkd.png' })
+  //CREATE STATE SELECT SPORT
+const [newSport, setNewSport] = useState({name:'Choisis ton sport' , icon:'https://res.cloudinary.com/dsd7uux0v/image/upload/v1684260544/sportee/addition-thick-symbol_b3edkd.png' })
 
-    const [level, setLevel] = useState('')
-
-const [open, setOpen] = useState(false);
-const [value, setValue] = useState(null);
-const [items, setItems] = useState([
-  {label: '1', value:'1' },
-  {label: '2', value:'2' },
-  {label: '3', value:'3' },
-  {label: '4', value:'4' },
-  {label: '5', value:'5' },
-  {label: '6', value:'6' },
-  {label: '7', value:'7' },
-  {label: '8', value:'8' },
-  {label: '9', value:'9' },
-  {label: '10', value:'10' },
-  {label: '11', value:'11' },
-  {label: '12', value:'12' },
-  {label: '13', value:'13' },
-  {label: '14', value:'14' },
-  {label: '15', value:'15' },
-  {label: '16', value:'16' },
-  {label: '17', value:'17' },
-  {label: '18', value:'18' },
-  {label: '19', value:'19' },
-  {label: '20', value:'20' },
-  
-
-]);
-  
+const [level, setLevel] = useState('')
  
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -88,7 +61,7 @@ const [items, setItems] = useState([
   setNewSport(sport)
 }   
 
-
+// VALIDATE CREATE ACTIVITY
   const handleCreate = () => {
 
     fetch(`${BACKEND_ADRESS}/activities`, {
@@ -109,7 +82,7 @@ const [items, setItems] = useState([
       console.error(error);
   })
   }
-
+  // CHOICE THE LEVEL 
   const levelList = levelTitles.map((e, i) => {
     //Verify if the level has been selected beforehand
     let isSelected = false
@@ -123,7 +96,7 @@ const [items, setItems] = useState([
   return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={keyboardVerticalOffset}>
     {/* <SafeAreaView style={styles.container}> */}
-    <ScrollView>
+      <ScrollView>
       <View style={styles.topContainer}>
         <Text style={styles.title}>Créé ton activité</Text>
         <View style={styles.userIconContainer}>
@@ -161,7 +134,7 @@ const [items, setItems] = useState([
         </View>
         <View style={styles.adress}>
           <Text style={styles.textAdress}>Adresse du point de rendez-vous</Text>
-          <TextInput style={styles.inputAdress} />
+          <TextInput style={styles.inputAdress}/>
         </View>
 
          <View style={styles.level}>
@@ -186,11 +159,8 @@ const [items, setItems] = useState([
         <View style={styles.invitation} >
             <Text style={styles.textInvitation}>Je souhaite inviter</Text>
             <View style={styles.nbPersonne} >
-            <TextInput style={styles.inputInvitation} placeholder='Nombre' />
-            {/* <DropDownPicker
-              style={styles.dropdown}
-              open={open} value={value} items={items} setOpen={setOpen} setValue=
-            /> */}
+            <TextInput style={styles.inputInvitation} placeholder='Nombre' keyboardType="numeric"/>
+                                 
             <Text style={styles.personne}>personnes</Text>
             </View>
         </View>
@@ -202,7 +172,7 @@ const [items, setItems] = useState([
         </View>
       </View>
       </ScrollView>
-    {/* </SafeAreaView> */}
+      {/* </SafeAreaView> */}
     </KeyboardAvoidingView>
   );
 };
@@ -455,6 +425,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "#f2f2f2",
     
+  },
+
+  dropDown: {
+    width:'10%',
   },
 
 
