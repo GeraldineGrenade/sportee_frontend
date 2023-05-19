@@ -62,7 +62,7 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
             try {
                 const response = await fetch(
                     `https://api-adresse.data.gouv.fr/search/?q=${searchValue}&autocomplete=1`
-                    )
+                )
                 const data = await response.json()
                 if (data.features) {
                     setSuggestions(data.features)
@@ -252,13 +252,9 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
                     onDateChange={(date) => {
                         setDate(date)
                     }}
-<<<<<<< HEAD
-                /> */}
-=======
                 />
 
                 {/* DROPDOWNPICKER TO SELECT THE SLOT */}
->>>>>>> dodo
                 <DropDownPicker
                     style={styles.dropDown}
                     open={open}
