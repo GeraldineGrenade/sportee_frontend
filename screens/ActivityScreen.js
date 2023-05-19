@@ -31,10 +31,17 @@ const ActivityScreen = ({ navigation, route }) => {
         'https://res.cloudinary.com/dsd7uux0v/image/upload/v1684405796/sportee/avatar5_ywvehs.png',
     ]
 
+ 
+
     const participantList = participants.map((data, i) => {
         return <Image key={i} title="avatar" src={data} style={styles.avatar} />
     })
-
+    
+    //Number of places left in activity - to replace with data from route.params
+    const remainingPlaces = 5-participants.length
+    for(let i=0; i<remainingPlaces; i++) {
+        participantList.push(<View style={styles.emptyAvatar}></View>)
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -73,7 +80,7 @@ const ActivityScreen = ({ navigation, route }) => {
             <View>
                 <Text style={styles.subTitle}>Description</Text>
                 <Text style={styles.descriptionTxt}>Venez faire des brasses tranquilles, sans prises de tête, pour un max de fun</Text>
-                <Text style={styles.subTitle}>Participants</Text>
+                <Text style={styles.subTitle}>Participants 3/5</Text>
                 <View style={styles.participants}>
                     {participantList}
                 </View>
@@ -120,6 +127,14 @@ const styles = StyleSheet.create({
         marginLeft: 4,
     },
     avatar: {
+        borderRadius: 50,
+        width: 35,
+        height: 35,
+        marginRight: 10,
+    },
+    emptyAvatar: {
+        borderColor: '#D9D9D9',
+        borderWidth: 1,
         borderRadius: 50,
         width: 35,
         height: 35,
