@@ -8,7 +8,7 @@ import { addSport, removeSport, selectLevel } from '../reducers/preferences'
 import ModaleSports from './ModaleSports';
 import SelectionSport from './SelectionSport';
 import SelectionTxt from './SelectionTxt';
-import DateTimePicker from '@react-native-community/datetimepicker'
+// import DateTimePicker from '@react-native-community/datetimepicker'
 import DropDownPicker from 'react-native-dropdown-picker'
 import { updateSliderValue } from '../reducers/preferences';
 
@@ -186,7 +186,7 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
                 <Text style={styles.when}>Quand souhaites-tu faire ton activité ?</Text>
             </View>
             <View style={styles.activityDate}>
-                <DateTimePicker
+                {/* <DateTimePicker
                     style={styles.datePicker}
                     value={date}
                     mode="date"
@@ -220,7 +220,7 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
                     onDateChange={(date) => {
                         setDate(date);
                     }}
-                />
+                /> */}
                 <DropDownPicker
                     style={styles.dropDown}
                     open={open}
