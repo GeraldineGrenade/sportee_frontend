@@ -4,7 +4,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import ModaleSports from '../components/ModaleSports';
 import SelectionTxt from '../components/SelectionTxt';
 import SelectionSport from '../components/SelectionSport';
-import { addSport, removeSport, addHabit, removeHabit, selectLevel } from '../reducers/preferences';
+import { addSport, removeSport, addHabit, removeHabit, selectLevel, removeAllSports, removeAllHabits } from '../reducers/preferences';
 import { signIn } from '../reducers/user';
 
 import Feather from 'react-native-vector-icons/Feather';
@@ -134,6 +134,10 @@ const SignUpPreferencesScreen = ({ navigation, route }) => {
 			.then(data => {
 				if (data) {
                     dispatch(signIn(data.user))  
+                    //Reset preference store and navigate to tabNavigator
+                    dispatch(removeAllSports())
+                    dispatch(removeAllHabits())
+                    dispatch(selectLevel(''))
                     navigation.navigate("TabNavigator")    
 				}
 			});
