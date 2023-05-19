@@ -18,9 +18,10 @@ import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import user from './reducers/user';
 import preferences from './reducers/preferences';
+import activities from './reducers/activities';
 
 const store = configureStore({
-  reducer: { user, preferences },
+  reducer: { user, preferences, activities },
 });
 
 const Tab = createBottomTabNavigator();

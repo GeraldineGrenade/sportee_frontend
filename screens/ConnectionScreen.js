@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Button } from "react-native";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google"
 import Svg, { Path } from "react-native-svg"
@@ -125,7 +125,8 @@ export default  ConnectionScreen = ({ navigation }) => {
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('SignUpJoin')}>
                             <Text style={styles.buttonText}>S'inscrire</Text>
-                        </TouchableOpacity>                       
+                        </TouchableOpacity> 
+                        <Button title="Activity" onPress={() => navigation.navigate('Activity')}/>                      
                     </View>
             ) : (
                 <Text style={styles.text}>Welcome: {JSON.stringify(userInfo)}</Text>
