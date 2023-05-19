@@ -5,17 +5,10 @@ import { Fontisto } from 'react-native-vector-icons'
 import RangeSlider, { Slider } from 'react-native-range-slider-expo'
 import { useDispatch, useSelector } from 'react-redux'
 import { addSport, removeSport, selectLevel } from '../reducers/preferences'
-<<<<<<< HEAD
-import ModaleSports from './ModaleSports';
-import SelectionSport from './SelectionSport';
-import SelectionTxt from './SelectionTxt';
-// import DateTimePicker from '@react-native-community/datetimepicker'
-=======
 import ModaleSports from './ModaleSports'
 import SelectionSport from './SelectionSport'
 import SelectionTxt from './SelectionTxt'
 import DateTimePicker from '@react-native-community/datetimepicker'
->>>>>>> dodo
 import DropDownPicker from 'react-native-dropdown-picker'
 import { updateSliderValue } from '../reducers/preferences'
 
@@ -252,13 +245,9 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
                     onDateChange={(date) => {
                         setDate(date)
                     }}
-<<<<<<< HEAD
-                /> */}
-=======
                 />
 
                 {/* DROPDOWNPICKER TO SELECT THE SLOT */}
->>>>>>> dodo
                 <DropDownPicker
                     style={styles.dropDown}
                     open={open}
