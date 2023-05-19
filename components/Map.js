@@ -7,13 +7,10 @@ import * as Location from 'expo-location';
 const Map = (props) => {
 
 const [currentPosition, setCurrentPosition] = useState({});
-const [modalVisible, setModalVisible] = useState(false);
-const [coordinates, setCoordinates] = useState(null);
+const [mapRegion, setMapRegion] = useState(null);
 
-// const [currentLatitude, setCurrentLatitude] = useState ({});
-// const [currentLongitude, setCurrentLongitude] = useState ({})
-
-
+// const [modalVisible, setModalVisible] = useState(false);
+// const [coordinates, setCoordinates] = useState(null);
 
     useEffect(() => {
         (async () => {
@@ -44,12 +41,6 @@ const [coordinates, setCoordinates] = useState(null);
         <MapView
             style={styles.map}
             mapType= 'hybrid'>
-            {/* initialRegion={{
-        latitude: parseFloat(position.coords.latitude),
-        longitude: parseFloat(position.coords.longitude),
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-}} */}
         {currentPosition && <Marker coordinate={currentPosition} title="My position" pinColor="#fecb2d" />}
         </MapView>
         </View>
@@ -75,3 +66,16 @@ const styles = StyleSheet.create({
     },
 
 })
+
+
+
+            {/* initialRegion={{
+        latitude: parseFloat(position.coords.latitude),
+        longitude: parseFloat(position.coords.longitude),
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+}} */}
+
+// const [currentLatitude, setCurrentLatitude] = useState ({});
+// const [currentLongitude, setCurrentLongitude] = useState ({})
+
