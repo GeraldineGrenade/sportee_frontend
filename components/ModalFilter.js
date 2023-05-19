@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { SafeAreaView, View, Text, StyleSheet, TextInput, Button, TouchableOpacity, Modal, FlatList } from 'react-native'
-import { Entypo } from 'react-native-vector-icons';
-import { Fontisto } from 'react-native-vector-icons';
+import { Entypo } from 'react-native-vector-icons'
+import { Fontisto } from 'react-native-vector-icons'
 import RangeSlider, { Slider } from 'react-native-range-slider-expo'
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux'
 import { addSport, removeSport, selectLevel } from '../reducers/preferences'
-import ModaleSports from './ModaleSports';
-import SelectionSport from './SelectionSport';
-import SelectionTxt from './SelectionTxt';
+import ModaleSports from './ModaleSports'
+import SelectionSport from './SelectionSport'
+import SelectionTxt from './SelectionTxt'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import DropDownPicker from 'react-native-dropdown-picker'
-import { updateSliderValue } from '../reducers/preferences';
+import { updateSliderValue } from '../reducers/preferences'
 
 const levelTitles = [
     'Sportif du dimanche',
@@ -20,7 +20,7 @@ const levelTitles = [
 ]
 
 const ModalFilter = ({ modalVisible, setModalVisible }) => {
-    let dispatch = useDispatch();
+    let dispatch = useDispatch()
     const selectedLevel = useSelector((state) => state.preferences.value.level)
     const [sportModalVisible, setSportModalVisible] = useState(false)
     const selectedSports = useSelector((state) => state.preferences.value.sports)
@@ -88,29 +88,24 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
         )
     }
 
-    const closeCitySearch = () => {
-        cityModalVisible(false)
-        console.log(closeCitySearch)
-    }
-
     const handleSliderChange = (value) => {
         dispatch(updateSliderValue(value))
     }
 
     const closeModal = () => {
-        setModalVisible(false);
+        setModalVisible(false)
     }
 
     const selectSport = (data) => {
-        setSportModalVisible(true);
-        const { name, icon, index } = data;
-        setSportIndex(index);
+        setSportModalVisible(true)
+        const { name, icon, index } = data
+        setSportIndex(index)
     }
+
     const closeSportModal = (sport) => {
         setSportModalVisible(false)
         sport.name === 'remove' ? dispatch(removeSport({ sport, sportIndex })) : dispatch(addSport({ sport, sportIndex }))
     }
-
 
     let sportList = selectedSports.map((e, i) => {
         {/* modify isSelected to implement */ }
@@ -119,6 +114,7 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
         }
         return <SelectionSport key={i} index={i} isSelected={false} name={e.name} icon={e.icon} selectSport={selectSport} />
     })
+
     const selectTxt = (data) => {
         dispatch(selectLevel(data.title))
     }
@@ -127,7 +123,6 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
         //Verify if the level has been selected beforehand
         let isSelected = false
         if (selectedLevel === e) isSelected = true
-
         return <SelectionTxt key={i} isSelected={isSelected} selectTxt={selectTxt} title={e} />
     })
 
@@ -157,13 +152,13 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
             </View>
             <View style={styles.aroundMe}>
                 <Fontisto name='map-marker-alt' size={25} color='#121C6E' />
-                <Text style={styles.around}>Autour de moi</Text>
+                <Text style={styles.around}>{cityValue}</Text>
             </View>
 
             {/* INPUT FOR SEARCH CITY  */}
             <>
                 <TextInput
-                    placeholder='Rechercher une activité'
+                    placeholder='Localisation'
                     style={styles.searchBar}
                     value={searchValue}
                     onChangeText={value => {
@@ -177,9 +172,7 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
                             data={suggestions}
                             keyExtractor={item => item.properties.id}
                             renderItem={renderCityItem}
-                            onPress={() => { closeCitySearch }}
                         />
-                        <Text>{cityValue}</Text>
                     </View>
                 </View>
 
@@ -250,9 +243,11 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
                         }
                     }}
                     onDateChange={(date) => {
-                        setDate(date);
+                        setDate(date)
                     }}
                 />
+
+                {/* DROPDOWNPICKER TO SELECT THE SLOT */}
                 <DropDownPicker
                     style={styles.dropDown}
                     open={open}
@@ -262,17 +257,20 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
                     setValue={setToValue}
                     setItems={setItems}
                     zIndex={10}
-
+                    dropDownDirection="TOP"
+                    placeholder="Créneau"
+                    language="FR"
                     theme="LIGHT"
                     multiple={true}
                     mode="BADGE"
                     badgeDotColors={["#e76f51", "#00b4d8", "#e9c46a", "#e76f51", "#8ac926", "#00b4d8", "#e9c46a"]}
-
                 />
             </View>
             <View>
                 <Text style={styles.people}>Pour combien de personnes ?</Text>
             </View>
+
+            {/* DROPDOWNPICKER TO SELECT THE NUMBER OF PARTICIPANTS */}
             <View style={styles.peopleContainer}>
                 <DropDownPicker
                     style={styles.dropDownPeople}
@@ -282,6 +280,7 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
                     setOpen={setPeopleOpen}
                     setValue={setPeopleValue}
                     setItems={setPeople}
+                    placeholder="Nombre de participants"
                     theme="LIGHT"
                 />
             </View>
@@ -317,7 +316,10 @@ const styles = StyleSheet.create({
         marginLeft: 15
     },
     around: {
-        marginLeft: 15
+        marginLeft: 15,
+        fontWeight: 'bold',
+        fontSize: 18,
+        color: '#121C6E'
     },
 
     searchBar: {
@@ -334,14 +336,14 @@ const styles = StyleSheet.create({
         marginLeft: '20%',
     },
     slider: {
-        marginTop: '-5%',
+        marginTop: '-3%',
         zIndex: 10,
     },
     activity: {
         color: '#121C6E',
         fontWeight: 'bold',
         fontSize: 20,
-        marginTop: '25%',
+        marginTop: '22%',
         textAlign: 'center'
     },
     selectSport: {
@@ -403,7 +405,7 @@ const styles = StyleSheet.create({
     dropDownPeople: {
         marginLeft: 15,
         marginTop: 15,
-        width: '40%'
+        width: '40%',
     },
     bottomBtn: {
         color: '#ffffff',
@@ -451,8 +453,7 @@ const styles = StyleSheet.create({
     cityItemText: {
         fontSize: 20,
         fontWeight: "600",
-    }
-
+    },
 })
 
-export default ModalFilter;
+export default ModalFilter
