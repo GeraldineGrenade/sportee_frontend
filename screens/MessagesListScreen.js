@@ -1,4 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
+
+import {useFocusEffect} from '@react-navigation/native';
 import { SafeAreaView, View, Text, StyleSheet, TextInput } from 'react-native'
 import { useSelector } from 'react-redux';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -7,9 +9,9 @@ const MessagesListScreen = ({navigation}) => {
     const connectedUser = useSelector((state) => state.user.value);
 
   //Redirects to ConnectionScreen if no user connected
-  useEffect(() => {
+  useFocusEffect(() => {
     !connectedUser.email && navigation.navigate('ConnectionAll')
-  }, [])
+  })
   
 
     return (

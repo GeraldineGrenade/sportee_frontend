@@ -4,8 +4,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-// const BACKEND_ADRESS = 'https://sportee-backend.vercel.app/'
-// fetch(`${BACKEND_ADRESS}/activities`)
+//      fetch('https://sportee-backend.vercel.app/activities')
 //     .then(response => {
 //         if (response.ok) {
 //             response.json()
@@ -17,7 +16,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 //     }).catch(error => {
 //         console.error(error);
 //     })
-
 
 const ActivityScreen = ({ navigation, route }) => {
 
