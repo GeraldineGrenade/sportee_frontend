@@ -46,10 +46,6 @@ const styles = StyleSheet.create({
     margin:10,    
     },
 
-    photoContainer: {
-      
-    }, 
-
     infosContainer: {
         marginTop: 31,
         borderBottomRightRadius: 10,
