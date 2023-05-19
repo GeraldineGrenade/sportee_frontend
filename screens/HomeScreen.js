@@ -5,6 +5,8 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import ActivityCard from '../components/ActivityCard';
 import Map from '../components/Map';
 import ModalFilter from '../components/ModalFilter';
+import { useSelector } from 'react-redux';
+import ModaleConnect from '../components/ModaleConnect';
 
 const HomeScreen = ({ navigation }) => {
     const [showMap, setShowMap] = useState(false);
@@ -13,6 +15,7 @@ const HomeScreen = ({ navigation }) => {
     const [mapTextColor, setMapTextColor] = useState('#121C6E');
     const [listIconColor, setListIconColor] = useState('#121C6E');
     const [listTextColor, setListTextColor] = useState('#121C6E');
+    const connectedUser = useSelector((state) => state.user.value);
 
 
     const activityData = [{ name: "Yoga", city: "Lille", date: "19 mai 18h", titre: "Yoga Vinyasa à la citadelle" }, { name: "Surf", city: "Wissant", date: "22 mai 11h", titre: "Initiation au surf", image: '../assets/sport-photos/surf.jpg' }, { name: "Boxe", city: "Lille", date: "25 mai 7h", titre: "Cours boxe thaïlandaise" }, { name: "Tennis", city: "Roubaix", date: "28 mai 12h", titre: "Tennis en exterieur" }, { name: "Beach-Volley", city: "Malo", date: "30 mai 12h", titre: "Tournoi de Beach-Volley" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }]
@@ -49,9 +52,21 @@ const listContent = (
     </View>
 )
 
+const handleNavigate = () => {
+    navigation.navigate('ConnectionAll')
+}
+
 let content = listContent
 if (showMap) {
-content = <Map/>
+content = (
+<View>
+        {!connectedUser.email && <ModaleConnect handleNavigate={handleNavigate}/>}
+
+        <Map/> 
+  
+</View>
+
+)
 }
 
     return (

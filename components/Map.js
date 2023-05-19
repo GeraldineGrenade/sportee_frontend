@@ -12,6 +12,10 @@ const [currentPosition, setCurrentPosition] = useState({});
 const [modalVisible, setModalVisible] = useState(false);
 const [pinIconColor, setPinIconColor] = useState('#00bfff');
 
+    //Modale appear and redirects to ConnectionScreen if no user connected
+  //   useEffect(() => {
+  //   !connectedUser.email && navigation.navigate('ConnectionAll')
+  // }, [])
 
     useEffect(() => {
         (async () => {
@@ -43,35 +47,39 @@ const [pinIconColor, setPinIconColor] = useState('#00bfff');
 
     return (
       <View>
+      <TouchableOpacity>
         <Modal visible={modalVisible} animationType="fade" transparent>
           <View style={styles.bottomView}>
           <View style={styles.modalView}>
-            <View style={styles.photoButton}>
               <View style={styles.photoContainer}>          
                 <Image style={styles.sportPhoto} source={require('../assets/sport-photos/surf.jpg')}/>
-                <Text style={styles.activityName}>Surf</Text>
+                {/* <Text style={styles.activityName}>Surf</Text> */}
               </View>
-              <TouchableOpacity onPress={() => handleClosePopUp()} style={styles.button} activeOpacity={0.8}>
-                <Text style={styles.textButton}>X</Text>
-              </TouchableOpacity>
-            </View>
+          <View style={styles.infoButtonContainer}>
             <View style={styles.infosContainer}>
-              <View style={styles.topInfos}>
+            <Text style={styles.activityTitle}>Initiation au surf</Text>
                 <View style={styles.locInfos}>
                   <FontAwesome name='map-pin' size={16} color='#121C6E' style={styles.mapIcon} />
                   <Text style={styles.city}>28 rue du Général de Gaulle</Text>
                 </View>
-              </View>
               <View style={styles.dateInfos}>
                         <FontAwesome5 name='calendar-alt' size={16} color='#121C6E' style={styles.calendarIcon} />
                         <Text style={styles.date}>2 juin 12h</Text> 
                     </View>
-                <Text style={styles.activityTitle}>Initiation au surf</Text>
-                {/* <Text style={styles.nbrParticipants}>Participants 2/5</Text>  */}
+                <View style={styles.nbrContainer}>
+                        <FontAwesome name='user' size={16} color='#121C6E' style={styles.calendarIcon} />
+                        <Text style={styles.nbrParticipants}>Participants 2/5</Text> 
+                </View>
             </View>
+            <TouchableOpacity onPress={() => handleClosePopUp()} style={styles.button} activeOpacity={0.8}>
+                <Text style={styles.textButton}>x</Text>
+            </TouchableOpacity>
+        </View>
           </View>
         </View>
       </Modal>
+    </TouchableOpacity>
+
 
         <MapView
             style={styles.map}
@@ -86,11 +94,6 @@ const [pinIconColor, setPinIconColor] = useState('#00bfff');
 export default Map
 
 const styles = StyleSheet.create({
-    // container: {
-    //   flex: 1,
-    //   backgroundColor: '#f2f2f2',
-    // //   alignItems: 'center',
-    // },
 
     map : {
     width: Dimensions.get('window').width,
@@ -104,28 +107,27 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: 'flex-end',
       alignItems: 'center',
-      marginBottom: 50,
+      marginBottom: 100,
     },
     modalView: {
       backgroundColor: 'white',
       borderRadius: 20,
-      padding: 20,
-      paddingLeft: 35,
+      flexDirection: 'row', 
       alignItems: 'center',
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 4,
+       shadowColor: '#000',
+       shadowOffset: {
+         width: 0,
+         height: 2,
+       },
+       shadowOpacity: 0.25,
+       shadowRadius: 4,
       elevation: 5,
     },
 
 
-    photoButton: {
+    infoButtonContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    paddingRight: 10, 
     }, 
 
     topInfos: {
@@ -139,68 +141,82 @@ const styles = StyleSheet.create({
       fontWeight: '600',
       width: '100%',
       textAlign: 'center',
-      marginTop: -65, 
   }, 
 
     sportPhoto: {
-      width: 210,
-      height: 115,
-      borderRadius:10,
+      width: 160,
+      height: 100,
+      borderTopLeftRadius:20,
+      borderBottomLeftRadius:20,
   }, 
 
     activityTitle: {
-      fontSize: 13,
+      fontSize: 14,
       textTransform: 'uppercase',
       color: '#121C6E',
-  }, 
+    }, 
 
     date: {
-      fontWeight: '600',
+      fontWeight: '800',
       fontSize: 12,
       color: '#121C6E',
+      paddingTop: 1,
   },
 
     city: {
       fontSize: 12,
       color: '#121C6E',
+      paddingTop: 1,
     },
 
     nbrParticipants: {
       color: '#121C6E',
       fontWeight: '500',
-      fontSize: 13,
-  }, 
+      fontSize: 12,
+      paddingTop: 1.5,
+  },
+  
+  nbrContainer: {
+    flexDirection: 'row',
+  },
 
     locInfos: {
       flexDirection: 'row',
       marginBottom: 3,
   }, 
 
+  mapIcon: {
+    marginLeft: 2,
+    marginRight: 6,
+  },
+
     dateInfos: {
       flexDirection: 'row',
       marginBottom: 3,
   },
 
+  calendarIcon: {
+    marginRight: 4,
+  }, 
+
     button: {
       width: 20,
       height: 20,
       alignItems: 'center',
-      // marginTop: 20,
-      // paddingTop: 8,
       backgroundColor: 'grey',
       borderRadius: 30,
     },
+
     textButton: {
       color: '#ffffff',
-      height: 25,
+      height: 20,
       fontWeight: '800',
       fontSize: 15,
-      paddingTop: 1,
     },
 
     infosContainer: {
-      marginTop: 50,
-      paddingRight: 60,
+      paddingRight: 15,
+      paddingLeft: 10,
     }, 
 
 })

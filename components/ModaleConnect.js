@@ -1,11 +1,11 @@
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
-export default ModalConnect = ({ navigation }) => {
+export default ModalConnect = ({ handleNavigate }) => {
     return(
         <View style={styles.container}>
             <View style={styles.modalView}>
                 <Text style={styles.modalTitle}>Pour découvrir les activités à venir ...</Text>
-                <TouchableOpacity style={styles.connectBtn} onPress={()=> navigation.navigate('ConnectionAll')}>
+                <TouchableOpacity style={styles.connectBtn} onPress={()=> handleNavigate()}>
                     <Text style={styles.connectBtnTxt}>Connecte toi</Text>
                 </TouchableOpacity>
             </View>
@@ -15,9 +15,13 @@ export default ModalConnect = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        // flex: 1,
+        width: '100%',
+        height: '70%',
+        position: 'absolute',
         justifyContent: 'center',
         alignItems: 'center',
+        zIndex: 2,
     },
     modalView: {
         backgroundColor: 'white',
@@ -33,8 +37,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5,
-        height: '40%',
-        width: '75%',
+        height: '25%',
+        width: '55%',
     },
     modalTitle: {
         color: '#121C6E',
