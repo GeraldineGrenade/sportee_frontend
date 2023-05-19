@@ -316,6 +316,7 @@ const styles = StyleSheet.create({
         marginLeft: 15
     },
     around: {
+        marginTop: 20,
         marginLeft: 15,
         fontWeight: 'bold',
         fontSize: 18,
