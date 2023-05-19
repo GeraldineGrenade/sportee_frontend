@@ -3,6 +3,7 @@ import { SafeAreaView, View, Text, Image, StyleSheet, TouchableOpacity, TextInpu
 import { useDispatch } from 'react-redux';
 import { signIn } from '../reducers/user';
 import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 
 export default ConnectionMailScreen = ({ navigation }) => {
@@ -38,6 +39,7 @@ export default ConnectionMailScreen = ({ navigation }) => {
         <SafeAreaView style={styles.container}>
             <Image />
             <Text style={styles.title}>CONNEXION</Text>
+
             <View style={styles.inputContainer}>
                 <View style={styles.input}>
                     <Feather name='mail' style={styles.icon} />
@@ -50,18 +52,20 @@ export default ConnectionMailScreen = ({ navigation }) => {
                         value={email}
                     />
                 </View>
-                <TextInput
-                        style={styles.input}
-                        // Change image in input bar
-                        inlineImageRight='search_icon'
-                        inlineImagePadding={10}
-                        autoCapitalize="none"
-                        inputMode='text'
-                        placeholder="********"
-                        secureTextEntry={true}
-                        onChangeText={(value) => setPassword(value)}
-                        value={password}
-                    />
+                <View style={styles.input}>
+                    <FontAwesome5 name='key' style={styles.icon} />
+                    <TextInput
+                            style={styles.inputText}
+                            autoCapitalize="none"
+                            inputMode='text'
+                            placeholder="Mon mot de passe"
+                            secureTextEntry={true}
+                            onChangeText={(value) => setPassword(value)}
+                            value={password}
+                        />
+
+                </View>
+
                 <Text style={styles.forgotten}>Mot de passe oublié ?</Text>
                 {error && <Text style={styles.error}>Email ou mot de passe incorrect</Text>}
             </View>
