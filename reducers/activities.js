@@ -9,11 +9,11 @@ export const activitiesSlice = createSlice({
 
   initialState,
  reducers: {
-   allActivities: (state, action) => {
+   addAllActivities: (state, action) => {
      state.value = action.payload;
    },
  },
 });
 
-export const { allActivities } = activitiesSlice.actions;
+export const { addAllActivities } = activitiesSlice.actions;
 export default activitiesSlice.reducer;

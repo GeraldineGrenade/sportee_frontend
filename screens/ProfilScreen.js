@@ -1,9 +1,14 @@
 import React from 'react'
-import { SafeAreaView, View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
+import { SafeAreaView, View, Text, StyleSheet, TouchableOpacity, TextInput, Image } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { useSelector } from 'react-redux';
 
+//{"__v": 0, "_id": "64662968107a0fa2af912a63", "avatar": "https://res.cloudinary.com/dsd7uux0v/image/upload/v1684405796/sportee/avatar1_suh7vc.png", "badges": [], "dateOfBirth": "2023-05-18T13:32:43.005Z", "description": "", "email": "geraldine.grenade@gmail.com", "firstname": "Géraldine", "lastname": "Grenade", "password": "$2b$10$A9LolEoehFP/dBJoGrkyvO4zwKLV3LaCej1UxhHg98Ht7A96lcDXG", "phone": "", "preferences": {"_id": "64662968107a0fa2af912a64", "habits": ["Le weekend"], "level": "Sportif du dimanche", "sports": ["6463959b0efb12e60cbd26c3", "646392ba0efb12e60cbd26b3", "646392870efb12e60cbd26b1"]}, "token": "8nTLZ_0xKgPdKA18iVRmbkgNkFcbzaTG", "username": "GG"}
 
 const ProfilScreen = ({navigation}) => {
+    const connectedUser = useSelector((state) => state.user.value);
+    // console.log(connectedUser)
+
     return (
         <SafeAreaView style={styles.container}>
 
@@ -16,7 +21,8 @@ const ProfilScreen = ({navigation}) => {
 
             <View style={styles.infosUser}>
                 <View style={styles.userPhotoContainer}>
-                    <FontAwesome name='user' size={70} color='#f8f8ff' style={styles.userIcon} onPress={() => navigation.navigate('Profil')}/>
+                    <Image title="avatar" src={connectedUser.avatar} style={styles.avatar} />
+                    {/* <FontAwesome name='user' size={70} color='#f8f8ff' style={styles.userIcon} onPress={() => navigation.navigate('Profil')}/> */}
                     <View style={styles.plusContainer}><Text style={styles.plus}>+</Text></View>
                 </View>
                 <View style={styles.infosUserText}>
@@ -92,6 +98,13 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
     padding: 8,
+    },
+
+    avatar: {
+        borderRadius: 50,
+        width: 100,
+        height: 100,
+        marginRight: 15,
     },
 
     plus: {
