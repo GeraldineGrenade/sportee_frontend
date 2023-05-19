@@ -8,7 +8,7 @@ const MessagesListScreen = ({navigation}) => {
 
   //Redirects to ConnectionScreen if no user connected
   useEffect(() => {
-    !connectedUser.email && navigation.navigate('ConnectionMail')
+    !connectedUser.email && navigation.navigate('ConnectionAll')
   }, [])
   
 

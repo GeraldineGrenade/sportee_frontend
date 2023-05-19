@@ -1,6 +1,6 @@
 import React, { useState, FC } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, Platform, StyleSheet, DateInput } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+//import DateTimePicker from '@react-native-community/datetimepicker';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -45,21 +45,21 @@ const SignupJoinScreen = ({ navigation }) => {
     const [avatar, setAvatar] = useState(avatarIconList[0])
     
     //!\ DATE PICKER DOES NOT WORK
-    const selectDate = (event, selectedDate) => {
-        const dob = selectedDate || dateOfBirth
-        setDateOfBirth(dob)
-    }
+    // const selectDate = (event, selectedDate) => {
+    //     const dob = selectedDate || dateOfBirth
+    //     setDateOfBirth(dob)
+    // }
 
-    let dateModal = <DateTimePicker 
-        mode="date" 
-        display="calendar" 
-        value ={dateOfBirth}
-        //onChange={selectDate()}
-        onSubmit={(date) => {
-            setDateOfBirth(date)
-            setShowModalDate(false)
-        }}
-    />
+    // let dateModal = <DateTimePicker 
+    //     mode="date" 
+    //     display="calendar" 
+    //     value ={dateOfBirth}
+    //     //onChange={selectDate()}
+    //     onSubmit={(date) => {
+    //         setDateOfBirth(date)
+    //         setShowModalDate(false)
+    //     }}
+    // />
 
    
     
@@ -264,7 +264,7 @@ const SignupJoinScreen = ({ navigation }) => {
                         inlineImagePadding={10}
                         placeholder="JJ/MM/AA"
                         // onChangeText={(value) => setDateOfBirth(value)}
-                        onFocus={() => setShowModalDate(true)}
+                        //onFocus={() => setShowModalDate(true)}
                         value={dateOfBirth}
                     />
                 </View>
@@ -306,7 +306,7 @@ const SignupJoinScreen = ({ navigation }) => {
             <TouchableOpacity style={styles.validateBtn} onPress={() => handleValidate()}>
                 <Text style={styles.validateBtnTxt}>Valider mes informations</Text>
             </TouchableOpacity>
-            {showModalDate && dateModal}
+            {/* {showModalDate && dateModal} */}
         </View>
     )
 }
