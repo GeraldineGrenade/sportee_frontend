@@ -4,13 +4,12 @@ import { Entypo } from 'react-native-vector-icons'
 import { Fontisto } from 'react-native-vector-icons'
 import RangeSlider, { Slider } from 'react-native-range-slider-expo'
 import { useDispatch, useSelector } from 'react-redux'
-import { addSport, removeSport, selectLevel } from '../reducers/preferences'
+import { addSport, removeSport, selectLevel, removeAllSports, updateSliderValue, setDateTime } from '../reducers/preferences'
 import ModaleSports from './ModaleSports'
 import SelectionSport from './SelectionSport'
 import SelectionTxt from './SelectionTxt'
 // import DateTimePicker from '@react-native-community/datetimepicker'
 import DropDownPicker from 'react-native-dropdown-picker'
-import { updateSliderValue } from '../reducers/preferences'
 
 const levelTitles = [
     'Sportif du dimanche',
@@ -21,6 +20,7 @@ const levelTitles = [
 
 const ModalFilter = ({ modalVisible, setModalVisible }) => {
     let dispatch = useDispatch()
+    const dateTime = useSelector((state) => state.preferences.dateTime)
     const selectedLevel = useSelector((state) => state.preferences.value.level)
     const [sportModalVisible, setSportModalVisible] = useState(false)
     const selectedSports = useSelector((state) => state.preferences.value.sports)
@@ -88,6 +88,40 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
         )
     }
 
+    const resetFilters = () => {
+        dispatch(selectLevel(''))
+        dispatch(removeAllSports())
+        dispatch(updateSliderValue(5))
+        setSportModalVisible(false)
+        setSportIndex(null)
+        setDate(new Date())
+        setToValue(null)
+        setOpen(false)
+        setItems([
+            { label: 'Matin', value: 'Matin' },
+            { label: 'Midi', value: 'Midi' },
+            { label: 'Après-midi', value: 'Après-midi' },
+            { label: 'Soir', value: 'Soir' },
+            { label: 'Week-end', value: 'Week-end' },
+        ])
+        setPeopleValue(null)
+        setPeopleOpen(false)
+        setPeople([
+            { label: '1', value: '1' },
+            { label: '2', value: '2' },
+            { label: '3', value: '3' },
+            { label: '4', value: '4' },
+            { label: '5', value: '5' },
+        ])
+        setSearchValue('')
+        setCityValue('')
+        setSuggestions([])
+    }
+
+    const handleResetFilters = () => {
+        resetFilters()
+    }
+
     const handleSliderChange = (value) => {
         dispatch(updateSliderValue(value))
     }
@@ -142,7 +176,7 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
                     <Text style={styles.filter}>Filtrer</Text>
                 </View>
                 <View style={styles.delete}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={handleResetFilters}>
                         <Text>effacer les filtres</Text>
                     </TouchableOpacity>
                 </View>
@@ -182,10 +216,10 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
             <View style={styles.slider}>
                 <Slider min={5} max={100} step={5}
                     valueOnChange={handleSliderChange}
-                    initialValue={5}
+                    initialValue={sliderValue}
                     knobColor='#EA7810'
                     valueLabelsBackgroundColor='#EA7810'
-                    inRangeBarColor='#000000'
+                    inRangeBarColor='#D9D9D9'
                     outOfRangeBarColor='#EA7810'
                     styleSize='small'
                 />
@@ -211,7 +245,7 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
                 <Text style={styles.when}>Quand souhaites-tu faire ton activité ?</Text>
             </View>
             <View style={styles.activityDate}>
-                {/* <DateTimePicker
+                <DateTimePicker
                     style={styles.datePicker}
                     value={date}
                     mode="date"
@@ -243,7 +277,7 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
                         }
                     }}
                     onDateChange={(date) => {
-                        setDate(date)
+                        dispatch(setDateTime(date))
                     }}
                 />
 
@@ -406,7 +440,7 @@ const styles = StyleSheet.create({
     dropDownPeople: {
         marginLeft: 15,
         marginTop: 15,
-        width: '40%',
+        width: '60%',
     },
     bottomBtn: {
         color: '#ffffff',
