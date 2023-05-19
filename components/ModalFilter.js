@@ -12,8 +12,16 @@ import DateTimePicker from '@react-native-community/datetimepicker'
 import DropDownPicker from 'react-native-dropdown-picker'
 import { updateSliderValue } from '../reducers/preferences';
 
+const levelTitles = [
+    'Sportif du dimanche',
+    'Débutant',
+    'Inter médiaire',
+    'Expert'
+]
+
 const ModalFilter = ({ modalVisible, setModalVisible }) => {
     let dispatch = useDispatch();
+    const selectedLevel = useSelector((state) => state.preferences.value.level)
     const [sportModalVisible, setSportModalVisible] = useState(false)
     const selectedSports = useSelector((state) => state.preferences.value.sports)
     const [sportIndex, setSportIndex] = useState(null)
@@ -38,18 +46,16 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
     ])
     const sliderValue = useSelector(state => state.preferences.value.sliderValue)
     const [searchValue, setSearchValue] = useState('')
+    const [cityValue, setCityValue] = useState('')
     const [suggestions, setSuggestions] = useState([])
-
-    const selectCity = (city) => {
-        setSearchValue(city.properties.label)
-    }
+    const [cityModalVisible, setCityModalVisible] = useState(false)
 
     useEffect(() => {
         const fetchCities = async () => {
             try {
                 const response = await fetch(
                     `https://api-adresse.data.gouv.fr/search/?q=${searchValue}&autocomplete=1`
-                );
+                )
                 const data = await response.json()
                 if (data.features) {
                     setSuggestions(data.features)
@@ -68,11 +74,24 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
         }
     }, [searchValue])
 
-    const renderCityItem = ({ item }) => (
-        <TouchableOpacity onPress={() => selectCity(item)}>
-            <Text>{item.properties.label}</Text>
-        </TouchableOpacity>
-    )
+    const renderCityItem = ({ item }) => {
+        return (
+            <TouchableOpacity style={styles.cityItem} onPress={() => {
+                setSuggestions([])
+                setSearchValue('')
+                setCityValue(item.properties.city)
+            }}>
+                <Text style={styles.cityItemText}>
+                    {item.properties.postcode}{item.properties.city}
+                </Text>
+            </TouchableOpacity>
+        )
+    }
+
+    const closeCitySearch = () => {
+        cityModalVisible(false)
+        console.log(closeCitySearch)
+    }
 
     const handleSliderChange = (value) => {
         dispatch(updateSliderValue(value))
@@ -88,8 +107,8 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
         setSportIndex(index);
     }
     const closeSportModal = (sport) => {
-        setSportModalVisible(false);
-        sport.name === 'remove' ? dispatch(removeSport({ sport, sportIndex })) : dispatch(addSport({ sport, sportIndex }));
+        setSportModalVisible(false)
+        sport.name === 'remove' ? dispatch(removeSport({ sport, sportIndex })) : dispatch(addSport({ sport, sportIndex }))
     }
 
 
@@ -99,6 +118,17 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
             return <SelectionSport key={i} index={i} isSelected={false} name='add' icon='https://res.cloudinary.com/dsd7uux0v/image/upload/v1684260544/sportee/addition-thick-symbol_b3edkd.png' selectSport={selectSport} />
         }
         return <SelectionSport key={i} index={i} isSelected={false} name={e.name} icon={e.icon} selectSport={selectSport} />
+    })
+    const selectTxt = (data) => {
+        dispatch(selectLevel(data.title))
+    }
+
+    const levelList = levelTitles.map((e, i) => {
+        //Verify if the level has been selected beforehand
+        let isSelected = false
+        if (selectedLevel === e) isSelected = true
+
+        return <SelectionTxt key={i} isSelected={isSelected} selectTxt={selectTxt} title={e} />
     })
 
     return (
@@ -129,28 +159,33 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
                 <Fontisto name='map-marker-alt' size={25} color='#121C6E' />
                 <Text style={styles.around}>Autour de moi</Text>
             </View>
+
+            {/* INPUT FOR SEARCH CITY  */}
             <>
                 <TextInput
                     placeholder='Rechercher une activité'
                     style={styles.searchBar}
                     value={searchValue}
-                    onChangeText={value => setSearchValue(value)}
+                    onChangeText={value => {
+                        setSearchValue(value)
+                        setCityModalVisible(true)
+                    }}
                 />
-                {/* <Modal
-                // animationType='fade'
-                // transparent={false}
-                // // visible={modalVisible}
-                // // onRequestClose={() => setModalVisible(false)}
-                // style={styles.modalFlatList}
-                > */}
-                <FlatList
-                    data={suggestions}
-                    keyExtractor={item => item.properties.id}
-                    renderItem={renderCityItem}
-                />
-                {/* </Modal> */}
+                <View style={styles.citiesListContainer}>
+                    <View style={styles.citiesList}>
+                        <FlatList
+                            data={suggestions}
+                            keyExtractor={item => item.properties.id}
+                            renderItem={renderCityItem}
+                            onPress={() => { closeCitySearch }}
+                        />
+                        <Text>{cityValue}</Text>
+                    </View>
+                </View>
+
             </>
 
+            {/* SLIDER FOR DEFINED CIRCLE OF RESEARCH */}
             <View style={styles.slider}>
                 <Slider min={5} max={100} step={5}
                     valueOnChange={handleSliderChange}
@@ -177,10 +212,7 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
                 <Text style={styles.level}>Ton niveau</Text>
             </View>
             <View style={styles.levelTxt}>
-                <SelectionTxt title='Sportif du dimanche' />
-                <SelectionTxt title='Débutant' />
-                <SelectionTxt title='Intermédiaire' />
-                <SelectionTxt title='Expert' />
+                {levelList}
             </View>
             <View>
                 <Text style={styles.when}>Quand souhaites-tu faire ton activité ?</Text>
@@ -229,7 +261,7 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
                     setOpen={setOpen}
                     setValue={setToValue}
                     setItems={setItems}
-                    zIndex={999}
+                    zIndex={10}
 
                     theme="LIGHT"
                     multiple={true}
@@ -303,7 +335,7 @@ const styles = StyleSheet.create({
     },
     slider: {
         marginTop: '-5%',
-        zIndex: 999,
+        zIndex: 10,
     },
     activity: {
         color: '#121C6E',
@@ -355,7 +387,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         alignItems: 'center',
         textAlign: 'center',
-        zIndex: 999
+        zIndex: 10
     },
     people: {
         color: '#121C6E',
@@ -366,7 +398,7 @@ const styles = StyleSheet.create({
     },
     peopleContainer: {
         width: '100%',
-        zIndex: 999
+        zIndex: 10
     },
     dropDownPeople: {
         marginLeft: 15,
@@ -403,7 +435,24 @@ const styles = StyleSheet.create({
     modalFlatList: {
         height: '30%',
         width: '60%'
+    },
+    citiesListContainer: {
+        position: 'absolute',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        top: '28%',
+        width: '100%',
+        zIndex: 20
+    },
+    cityItem: {
+        alignItems: 'center',
+        backgroundColor: 'white'
+    },
+    cityItemText: {
+        fontSize: 20,
+        fontWeight: "600",
     }
+
 })
 
 export default ModalFilter;
