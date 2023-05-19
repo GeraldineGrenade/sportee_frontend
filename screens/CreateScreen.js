@@ -12,6 +12,9 @@ import SelectionSport from '../components/SelectionSport';
 import { useSelector, useDispatch } from 'react-redux';
 import ModaleSports from '../components/ModaleSports';
 import DropDownPicker from "react-native-dropdown-picker";
+import SelectionTxt from '../components/SelectionTxt';
+
+const BACKEND_ADRESS = 'https://sportee-backend.vercel.app/'
 
 const activityData = {
   name: 'Nom de l\'activité',
@@ -25,17 +28,21 @@ const activityData = {
   user: 'Utilisateur associé',
   particpants: ['Participant 1', 'Participant 2', ''],
 };
-const BACKEND_ADRESS = 'https://sportee-backend.vercel.app/'
+
+
+const levelTitles = [
+  'Sportif du dimanche',
+  'Débutant',
+  'Inter médiaire',
+  'Expert'
+]
 
 
 const CreateScreen = ({ navigation }) => {
 
   const [newSport, setNewSport] = useState({name:'Choisis ton sport' , icon:'https://res.cloudinary.com/dsd7uux0v/image/upload/v1684260544/sportee/addition-thick-symbol_b3edkd.png' })
 
-  const selectSport = () => {
-    setIsModalVisible(true)
-    
-}
+    const [level, setLevel] = useState('')
 
 const [open, setOpen] = useState(false);
 const [value, setValue] = useState(null);
@@ -63,9 +70,19 @@ const [items, setItems] = useState([
   
 
 ]);
-
+  
+ 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
+  const selectSport = () => {
+    setIsModalVisible(true)
+    
+}
+  
+  const selectTxt = (data) => {
+    setLevel(data.title)
+}
+  console.log(level)
   const closeModal = (sport) => {
   setIsModalVisible(false)
   setNewSport(sport)
@@ -93,7 +110,13 @@ const [items, setItems] = useState([
   })
   }
 
-  
+  const levelList = levelTitles.map((e, i) => {
+    //Verify if the level has been selected beforehand
+    let isSelected = false
+    if (level === e) isSelected = true
+
+    return <SelectionTxt key={i} category='level' isSelected={isSelected} selectTxt={selectTxt} title={e} />
+})
 
   const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0
   
@@ -143,11 +166,9 @@ const [items, setItems] = useState([
 
          <View style={styles.level}>
             <Text style={styles.textLevel}>Cette activité s'adresse aux</Text>
-           <View style={styles.btn} >  
-            <TouchableOpacity style={styles.btn1}><Text> Sportifs du Dimanche </Text></TouchableOpacity>
-            <TouchableOpacity style={styles.btn1}><Text> Débutants </Text></TouchableOpacity>
-            <TouchableOpacity style={styles.btn1}><Text> Intermédiaires </Text></TouchableOpacity>
-            <TouchableOpacity style={styles.btn1}><Text> Experts </Text></TouchableOpacity>
+           <View style={styles.btn} >
+              {levelList}  
+            
           </View> 
         </View> 
 
