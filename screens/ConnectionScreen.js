@@ -126,7 +126,7 @@ export default  ConnectionScreen = ({ navigation }) => {
                         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('SignUpJoin')}>
                             <Text style={styles.buttonText}>S'inscrire</Text>
                         </TouchableOpacity> 
-                        <Button title="Activity" onPress={() => navigation.navigate('Activity')}/>                      
+                        <Button title="Activity" onPress={() => navigation.navigate('Activity')}/> 
                     </View>
             ) : (
                 <Text style={styles.text}>Welcome: {JSON.stringify(userInfo)}</Text>

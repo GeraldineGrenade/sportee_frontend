@@ -133,6 +133,7 @@ const SignUpPreferencesScreen = ({ navigation, route }) => {
         .then(response => response.json())
 			.then(data => {
 				if (data) {
+                    //!\ Add possibility to send complete sports (not just id) to store (aka populate)
                     dispatch(signIn(data.user))  
                     //Reset preference store and navigate to tabNavigator
                     dispatch(removeAllSports())
