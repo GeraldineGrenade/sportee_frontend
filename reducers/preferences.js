@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  value: { sports: [null, null, null, null], habits: [], level: '' },
+  value: { sports: [null, null, null, null], habits: [], level: '', sliderValue: 5 },
+  dateTime: null
 };
 
 export const preferencesSlice = createSlice({
@@ -17,7 +18,7 @@ export const preferencesSlice = createSlice({
       state.value.sports.splice(action.payload.sportIndex, 1, null);
     },
     removeAllSports: (state) => {
-      state.value.sports = []
+      state.value.sports = [null, null, null, null]
     },
     addHabit: (state, action) => {
       state.value.habits.push(action.payload);
@@ -34,8 +35,11 @@ export const preferencesSlice = createSlice({
     updateSliderValue: (state, action) => {
       state.value.sliderValue = action.payload;
     },
+    setDateTime: (state, action) => {
+      state.dateTime = action.payload;
+    },
   },
 });
 
-export const { addSport, removeSport, removeAllSports, addHabit, removeHabit, removeAllHabits, selectLevel, updateSliderValue } = preferencesSlice.actions;
+export const { addSport, removeSport, removeAllSports, addHabit, removeHabit, removeAllHabits, selectLevel, updateSliderValue, setDateTime } = preferencesSlice.actions;
 export default preferencesSlice.reducer;
