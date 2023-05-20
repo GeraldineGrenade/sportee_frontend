@@ -7,7 +7,6 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import ActivityCard from '../components/ActivityCard';
 import Map from '../components/Map';
 import ModalFilter from '../components/ModalFilter';
-import { useSelector } from 'react-redux';
 import ModaleConnect from '../components/ModaleConnect';
 
 const HomeScreen = ({ navigation }) => {

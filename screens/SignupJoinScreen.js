@@ -151,13 +151,11 @@ const SignupJoinScreen = ({ navigation }) => {
         //if all input are correct, navigate to preference page with info in route.params
         navigation.navigate('SignUpPreferences', {username, firstname, lastname, email, phone, dateOfBirth, password, avatar})
     }
-    
-    //!\change style of inputs according to whether error or not 
-    
+        
     return (
         <View style={styles.container}>
             {/* Change navigation destination to connection page */}
-            <TouchableOpacity onPress={() => navigation.navigate()}>
+            <TouchableOpacity onPress={() => navigation.navigate('ConnectionAll')}>
                 <Feather name='arrow-left' size={25} color='#D9D9D9' />
             </TouchableOpacity>
             <Text style={styles.title}>Rejoins nous !</Text>

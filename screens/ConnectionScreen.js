@@ -99,8 +99,12 @@ export default  ConnectionScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
+            <TouchableOpacity style={styles.backBtn} onPress={() => navigation.navigate('Recherche')}>
+                <Feather name='arrow-left' size={25} color='#D9D9D9' />
+                <Text style={styles.backBtnTxt} >Retour à la page d'acceuil</Text>
+            </TouchableOpacity>
             {userInfo === null ? (
-           
+                    
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity style={styles.button} onPress={handleGooglePressAsync}>
                             <Svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="30px" height="30px">
@@ -140,7 +144,17 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: "center",
-        justifyContent: "center",
+        padding: 27.5,
+    },
+    backBtn: {
+        alignSelf: 'flex-start',
+        marginTop: 15,
+        flexDirection: 'row',
+    },
+    backBtnTxt: {
+        color:'#D9D9D9',
+        marginLeft: 10,
+        fontSize: 16,
     },
     text: {
         fontSize: 20,
@@ -150,6 +164,7 @@ const styles = StyleSheet.create({
     buttonContainer: {
         justifyContent: "space-between",
         height: 250,
+        marginTop: 150,
     },
     button: {
         height: 50,

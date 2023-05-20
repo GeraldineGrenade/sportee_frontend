@@ -18,7 +18,7 @@ import SelectionSport from "../components/SelectionSport";
 import { useSelector, useDispatch } from "react-redux";
 import ModaleSports from "../components/ModaleSports";
 import SelectionTxt from "../components/SelectionTxt";
-import DateTimePicker from '@react-native-community/datetimepicker'
+//import DateTimePicker from '@react-native-community/datetimepicker'
 
 const BACKEND_ADRESS = "https://sportee-backend.vercel.app/";
 

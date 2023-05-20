@@ -245,7 +245,7 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
                 <Text style={styles.when}>Quand souhaites-tu faire ton activité ?</Text>
             </View>
             <View style={styles.activityDate}>
-                <DateTimePicker
+                {/* <DateTimePicker
                     style={styles.datePicker}
                     value={date}
                     mode="date"
@@ -279,7 +279,7 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
                     onDateChange={(date) => {
                         dispatch(setDateTime(date))
                     }}
-                />
+                /> */}
 
                 {/* DROPDOWNPICKER TO SELECT THE SLOT */}
                 <DropDownPicker
