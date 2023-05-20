@@ -30,7 +30,7 @@ export default ConnectionMailScreen = ({ navigation }) => {
             .then(data => {
                 if(data.result) {
                     dispatch(signIn(data.user))
-                    navigation.navigate("TabNavigator")
+                    navigation.navigate("Recherche")
                     setError(false)
                 } else {
                     setError(true)
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     backBtn: {
         marginLeft: 20,
         marginTop: 20,
-        marginBottom: 200,
+        marginBottom: 180,
     },
     connectionContainer: {
         justifyContent: 'center',

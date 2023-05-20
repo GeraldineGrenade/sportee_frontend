@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-
-import {useFocusEffect} from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import { SafeAreaView, View, Text, StyleSheet, TextInput } from 'react-native'
 import { useSelector } from 'react-redux';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';

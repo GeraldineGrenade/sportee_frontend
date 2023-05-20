@@ -98,7 +98,7 @@ content = (
                 <ModalFilter modalVisible={modalVisible} setModalVisible={setModalVisible} />
                 <TextInput placeholder='Rechercher une activité' style={styles.input}></TextInput>
                 <View style={styles.userIconContainer}>
-                    <FontAwesome name='user' size={25} color='#f8f8ff' style={styles.userIcon} onPress={() => navigation.navigate('Profil')} />
+                    <FontAwesome name='user' size={25} color='#f8f8ff' style={styles.userIcon} onPress={() => {connectedUser.email ? navigation.navigate('Profil') : navigation.navigate('ConnectionAll')}} />
                 </View>
             </View>
 

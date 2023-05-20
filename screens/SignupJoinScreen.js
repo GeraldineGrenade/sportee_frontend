@@ -283,9 +283,6 @@ const SignupJoinScreen = ({ navigation }) => {
                             />
                         </View>
                     </View>
-
-
-
                     {dateOfBirthError && <Text style={styles.error}>Entrer une date de naissance</Text>}
                     <View style={styles.inputPair}>
                         <Text style={styles.inputLabel}>Mon mot de passe* :</Text>
