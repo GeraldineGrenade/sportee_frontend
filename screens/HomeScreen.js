@@ -24,7 +24,6 @@ const HomeScreen = ({ navigation }) => {
      fetch('https://sportee-backend.vercel.app/activities')
     .then(response => {
         if (response.ok) {
-            console.log('route hit')
             return response.json()
         } else {
             throw new Error('Erreur lors de la récupération de l\'activité')

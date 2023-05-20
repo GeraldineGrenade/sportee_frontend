@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     },
     backBtn: {
         alignSelf: 'flex-start',
-        marginTop: 15,
+        marginTop: 50,
         flexDirection: 'row',
     },
     backBtnTxt: {
@@ -163,8 +163,8 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         justifyContent: "space-between",
-        height: 250,
-        marginTop: 150,
+        height: 300,
+        marginTop: 220,
     },
     button: {
         height: 50,

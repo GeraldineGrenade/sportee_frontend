@@ -14,7 +14,7 @@ export default ConnectionMailScreen = ({ navigation }) => {
 
     handleLogin = () => {
         //Verify if fields are not empty
-        if(email === '' || password === '') {
+        if (email === '' || password === '') {
             setError(true)
             return
         } else {
@@ -22,39 +22,46 @@ export default ConnectionMailScreen = ({ navigation }) => {
         }
 
         fetch('https://sportee-backend.vercel.app/users/signin', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ email, password }),
-		})
-        .then(response => response.json())
-		.then(data => {
-            data.result && dispatch(signIn(data.user))
-            navigation.navigate("TabNavigator")    
-        });
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if(data.result) {
+                    dispatch(signIn(data.user))
+                    navigation.navigate("TabNavigator")
+                    setError(false)
+                } else {
+                    setError(true)
+                }
+            });
         setEmail('');
         setPassword('')
     }
 
     return (
         <SafeAreaView style={styles.container}>
-            <Image />
-            <Text style={styles.title}>CONNEXION</Text>
-
-            <View style={styles.inputContainer}>
-                <View style={styles.input}>
-                    <Feather name='mail' style={styles.icon} />
-                    <TextInput
-                        style={styles.inputText}
-                        inputMode='email'
-                        autoCapitalize="none"
-                        placeholder="Mon adresse mail"
-                        onChangeText={(value) => setEmail(value)}
-                        value={email}
-                    />
-                </View>
-                <View style={styles.input}>
-                    <FontAwesome5 name='key' style={styles.icon} />
-                    <TextInput
+            <TouchableOpacity style={styles.backBtn} onPress={() => navigation.navigate('ConnectionAll')}>
+                <Feather name='arrow-left' size={25} color='#D9D9D9' />
+            </TouchableOpacity>
+            <View style={styles.connectionContainer}>
+                <Text style={styles.title}>CONNEXION</Text>
+                <View style={styles.inputContainer}>
+                    <View style={styles.input}>
+                        <Feather name='mail' style={styles.icon} />
+                        <TextInput
+                            style={styles.inputText}
+                            inputMode='email'
+                            autoCapitalize="none"
+                            placeholder="Mon adresse mail"
+                            onChangeText={(value) => setEmail(value)}
+                            value={email}
+                        />
+                    </View>
+                    <View style={styles.input}>
+                        <FontAwesome5 name='key' style={styles.icon} />
+                        <TextInput
                             style={styles.inputText}
                             autoCapitalize="none"
                             inputMode='text'
@@ -63,15 +70,14 @@ export default ConnectionMailScreen = ({ navigation }) => {
                             onChangeText={(value) => setPassword(value)}
                             value={password}
                         />
-
+                    </View>
+                    <Text style={styles.forgotten}>Mot de passe oublié ?</Text>
+                    {error && <Text style={styles.error}>Email ou mot de passe incorrect</Text>}
                 </View>
-
-                <Text style={styles.forgotten}>Mot de passe oublié ?</Text>
-                {error && <Text style={styles.error}>Email ou mot de passe incorrect</Text>}
+                <TouchableOpacity style={styles.connectBtn} onPress={() => handleLogin()}>
+                    <Text style={styles.connectBtnTxt}>Se connecter</Text>
+                </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.connectBtn} onPress={() => handleLogin()}>
-                <Text style={styles.connectBtnTxt}>Se connecter</Text>
-            </TouchableOpacity>
         </SafeAreaView>
     )
 }
@@ -80,45 +86,55 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'white',
+        // justifyContent: 'center',
+        // alignItems: 'center',
+    },
+    backBtn: {
+        marginLeft: 20,
+        marginTop: 20,
+        marginBottom: 200,
+    },
+    connectionContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        
     },
     title: {
         color: '#EA7810',
         fontSize: 24,
         fontWeight: '700',
         paddingTop: 8,
-        marginBottom: 20,
+        marginBottom: 40,
     },
     connectBtn: {
         backgroundColor: '#121C6E',
-        padding: 10,
+        padding: 15,
         width: 250,
         alignItems: 'center',
         alignSelf: 'center',
         borderRadius: 5,
+        marginTop: 20,
     },
     connectBtnTxt: {
         color: 'white',
-        fontSize: 18,
+        fontSize: 16,
     },
     input: {
         borderColor: '#D9D9D9',
         borderWidth: 1,
         borderRadius: 5,
-        marginBottom: 10,
+        marginBottom: 15,
         flexDirection: 'row',
         alignItems: 'center',
         paddingLeft: 5,
         width: 250,
+        height: 30,
     },
     icon: {
         color: '#D9D9D9',
         marginRight: 5,
     },
     inputText: {
-        fontSize: 12,
+        fontSize: 14,
     },
     inputContainer: {
         marginBottom: 15,
