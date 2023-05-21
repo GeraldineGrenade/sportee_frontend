@@ -1,26 +1,27 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { SafeAreaView, View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-//      fetch('https://sportee-backend.vercel.app/activities')
-//     .then(response => {
-//         if (response.ok) {
-//             response.json()
-//         }else {
-//             throw new Error('Erreur lors de la récupération de l\'activité')
-//         }
-//     }).then(data => {
-//         console.log(data);
-//     }).catch(error => {
-//         console.error(error);
-//     })
+//Activity ID to test : 6468e71e177bae8b6231ecf2
 
 const ActivityScreen = ({ navigation, route }) => {
+    const[currentActivity, setCurrentActivity] = useState({})
 
-    //Get activity info from previous page
-    const currentActivity = route.params
+    //Get activity info from id transmitted from previous page
+    useEffect(()=>{
+        //Replace ID with route.params
+        fetch('https://sportee-backend.vercel.app/activities/getActivity/6468e71e177bae8b6231ecf2')
+            .then(response => response.json())
+            .then(data => {
+                if (data.result) {
+                    setCurrentActivity(data.sports)
+                } else {
+                    console.log('Error in fetching activity')
+                }
+            })
+    },[])
 
     //To replace with data from route.params
     const participants = [
@@ -29,20 +30,19 @@ const ActivityScreen = ({ navigation, route }) => {
         'https://res.cloudinary.com/dsd7uux0v/image/upload/v1684405796/sportee/avatar5_ywvehs.png',
     ]
 
- 
 
     const participantList = participants.map((data, i) => {
         return <Image key={i} title="avatar" src={data} style={styles.avatar} />
     })
-    
+
     //Number of places left in activity - to replace with data from route.params
-    const remainingPlaces = 5-participants.length
-    for(let i=0; i<remainingPlaces; i++) {
+    const remainingPlaces = 5 - participants.length
+    for (let i = 0; i < remainingPlaces; i++) {
         participantList.push(<View style={styles.emptyAvatar}></View>)
     }
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <View style={styles.topContainer}>
                 <Text style={styles.title}>Piscine à la cool</Text>
                 <View style={styles.userIconContainer}>
@@ -56,7 +56,8 @@ const ActivityScreen = ({ navigation, route }) => {
             </View>
             <View style={styles.photoAddressLevelContainer}>
                 <View >
-                    <Image style={styles.sportPhoto} source={require('../assets/sport-photos/yoga.jpg')}/>
+                    {/* Change image to db image once created */}
+                    <Image style={styles.sportPhoto} source={require('../assets/sport-photos/yoga.jpg')} />
                     <Text style={styles.sportName}>Piscine</Text>
                 </View>
                 <View style={styles.addressLevelContainer}>
@@ -87,7 +88,7 @@ const ActivityScreen = ({ navigation, route }) => {
             <TouchableOpacity style={styles.participateBtn} onPress={() => handleValidate()}>
                 <Text style={styles.participateBtnTxt}>Participer</Text>
             </TouchableOpacity>
-        </SafeAreaView>
+        </View>
     )
 }
 
@@ -98,7 +99,8 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'white',
         paddingRight: 27.5,
-        paddingLeft : 27.5,
+        paddingLeft: 27.5,
+        paddingTop: 50,
         width: '100%',
         height: '100%',
     },
@@ -111,7 +113,7 @@ const styles = StyleSheet.create({
     topContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop: 30,
+        marginTop: 15,
         marginBottom: 10,
     },
     userIconContainer: {
@@ -144,51 +146,51 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     sportName: {
-        color: '#fff', 
+        color: '#fff',
         fontSize: 22,
         fontWeight: '600',
         width: '100%',
         textAlign: 'center',
-        marginTop: -58, 
-    }, 
+        marginTop: -58,
+    },
     sportPhoto: {
         width: 180,
         height: 100,
-        borderRadius:10,
-    }, 
+        borderRadius: 10,
+    },
     activityCreator: {
         flexDirection: 'row',
         alignItems: 'center',
-    }, 
+    },
     creatorName: {
         fontSize: 14,
         marginRight: 10,
     },
     addressLevelContainer: {
-        width : '100%',
+        width: '100%',
         marginLeft: 10,
-    }, 
+    },
     address: {
-        width : 120,
+        width: 120,
         marginBottom: 5,
         fontSize: 14,
     },
     level: {
         backgroundColor: '#EA7810',
         color: 'white',
-        borderRadius:20,
+        borderRadius: 20,
         textAlign: 'center',
-        width : 100, 
+        width: 100,
         paddingTop: 5,
-        paddingBottom : 5,
+        paddingBottom: 5,
 
     },
     dateTimeContainer: {
         flexDirection: 'row',
-        marginTop : 15,
+        marginTop: 15,
         justifyContent: 'space-between',
     },
-    dateTimeItem : {
+    dateTimeItem: {
         flexDirection: 'row',
         alignItems: 'center',
     },
@@ -198,8 +200,8 @@ const styles = StyleSheet.create({
     },
     subTitle: {
         color: '#121C6E',
-        marginTop : 15,
-        marginBottom : 5,
+        marginTop: 15,
+        marginBottom: 5,
         fontWeight: 'bold',
         fontSize: 18,
     },
@@ -220,7 +222,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignSelf: 'center',
         borderRadius: 5,
-        marginTop : 20,
+        marginTop: 20,
     },
     participateBtnTxt: {
         color: 'white',

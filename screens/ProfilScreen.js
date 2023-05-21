@@ -34,13 +34,16 @@ const ProfilScreen = ({ navigation }) => {
         setAvatar(avatar)
     }
 
-    let userSportList = connectedUser.preferences.sports.map((e, i) => {
-        return (
-            <View key={i} style={{marginRight: 10}}>
-                <SelectionSport name={e.name} icon={e.icon} />
-            </View>
-        )
-    });
+    let userSportList = []
+    if (connectedUser.email) {
+        userSportList = connectedUser.preferences.sports.map((e, i) => {
+            return (
+                <View key={i} style={{marginRight: 10}}>
+                    <SelectionSport name={e.name} icon={e.icon} />
+                </View>
+            )
+        });
+    } 
 
     // for (let i = 0; i < (4 - userSportList.length); i++) {
     //     userSportList.push(<SelectionSport />)
@@ -51,10 +54,10 @@ const ProfilScreen = ({ navigation }) => {
         setIsModifying(false)
     }
 
-    //On logging out, reset user store and navigate to HomeScreen /!\ does not work because nothing to map in return on dispatch sign out
+    //On logging out, reset user store and navigate to ConnectionAllScreen /!\ To adapt to be able to navigate to Homescreen - nested navigation to figure out
     const handleLogout = () => {
         dispatch(SignOut());
-        navigation.navigate('Recherche')
+        navigation.navigate('ConnectionAll')
     }
 
     //On click on the modify button, render ModifyProfile component
@@ -101,7 +104,7 @@ const ProfilScreen = ({ navigation }) => {
             <View style={styles.description}>
                 <Text style={styles.subtitleDesc}>Ma description : </Text>
                 <Text style={styles.input}>{connectedUser.description !== '' ? connectedUser.description : "Vous n'avez pas de description pour l'instant"}</Text>
-                <Text style={styles.counter}>/280</Text>
+                {/* <Text style={styles.counter}>/280</Text> */}
             </View>
 
             <View style={styles.bottomButtons}>
@@ -215,7 +218,7 @@ const styles = StyleSheet.create({
         width: '30%',
         height: 30,
         marginTop: 20,
-        marginLeft: 33,
+        marginLeft: 27.5,
     },
 
     legalInfosButton: {
@@ -248,7 +251,7 @@ const styles = StyleSheet.create({
 
     input: {
         color: 'grey',
-        borderColor: '#000',
+        borderColor: '#D9D9D9',
         borderRadius: 10,
         height: 150,
         width: '92%',
