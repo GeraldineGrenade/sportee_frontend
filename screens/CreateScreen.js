@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Modal,
+  Platform,
   FlatList,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -59,7 +60,7 @@ const CreateScreen = ({ navigation }) => {
   const [place, setPlace] = useState('')
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState((new Date()));
   const [nbMaxParticipants, setNbMaxParticipants] = useState('');
   const [time, setTime] = useState('');
 
@@ -76,7 +77,7 @@ const CreateScreen = ({ navigation }) => {
     setIsModalVisible(false);
     setNewSport(sport);
   };
-  //RECUPATION DE
+  //RETREVIAL OF THE ADDRESS OF THE PLACE OF THE ACTIVITY
   useEffect(() => {
     const fetchCities = async () => {
       try {
@@ -145,7 +146,9 @@ const CreateScreen = ({ navigation }) => {
       .catch((error) => {
         console.error(error);
       });
-  };
+
+   };
+
   // CHOICE THE LEVEL
   const levelList = levelTitles.map((e, i) => {
     //Verify if the level has been selected beforehand
@@ -163,8 +166,45 @@ const CreateScreen = ({ navigation }) => {
     );
   });
 
-  const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : 0;
-  console.log(isAvoiding)
+//CHOICE OF DATE AND TIME WITH DATETIMEPICKER
+
+  // const MySelector = () => {
+  //   const [selectedDate, setSelectedDate] = useState(new Date());
+  //   const [showPicker, setShowPicker] = useState(false);
+  
+  //   const handleDateChange = (event, date) => {
+  //     if (date !== undefined) {
+  //       setSelectedDate(date);
+  //     }
+  //     setShowPicker(Platform.OS === 'ios');
+  //   };
+  
+  //   const showDateTimePicker = () => {
+  //     setShowPicker(true);
+  //   };
+  
+  //   return (
+  //     <View style={styles.inputDate}>
+  //       <Button  title="Sélectionner la date et l'heure" onPress={showDateTimePicker} />
+  //       {showPicker && (
+  //         <DateTimePicker
+  //           style={styles.datePicker}
+  //           value={selectedDate}
+  //           mode="datetime" 
+  //           display="default"
+  //           onChange={handleDateChange}
+  //         />
+  //       )}
+        
+  //     </View>
+  //   );
+  // };
+  // const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : 0;
+
+  
+  
+
+  // console.log(isAvoiding)
   return (
     <KeyboardAvoidingView 
     style={isAvoiding ? { flex: 1, justifyContent: "flex-end" } : { flex: 1, justifyContent: "flex-start" }}
@@ -235,10 +275,10 @@ const CreateScreen = ({ navigation }) => {
               }}
             />
           </View>
-            <Text>{place}</Text>
-            <View style={styles.aroundMe}>
-                <Fontisto name='map-marker-alt' size={15} color='#121C6E' />
-                <Text style={styles.around}>{place.label}</Text>
+          <View style={styles.aroundMe}>
+                <Fontisto style={styles.fontisto} name='map-marker-alt' size={16} color='#121C6E' />
+                <Text style={styles.around} >{place}</Text>
+                <Text >{place.label}</Text>
             </View>
           
 
@@ -252,55 +292,28 @@ const CreateScreen = ({ navigation }) => {
               Elle se tiendra le ... ... et durera environ
             </Text>
             <View style={styles.input}>
-              {/* <DateTimePicker
+            <TextInput style={styles.inputDate} placeholder="date et heure"/>
+              {/* <TouchableOpacity  title="Sélectionner la date et l\'heure " onPress={showDateTimePicker}/>
+              {showPicker && (
+                <DateTimePicker
                     style={styles.datePicker}
-                    value={date}
-                onChangeText={value => {
-                  setDate(value) }}
-                    mode="date"
-                    placeholder="Date et heure"
-                    format="DD/MM/YYYY"
-                    minDate="01-01-2023"
-                    maxDate="01-01-2100"
-                    is24Hour={true}
-                    confirmBtnText="Confirm"
-                    cancelBtnText="Cancel"
-                    customStyles={{
-                        dateIcon: {
-                            position: 'absolute',
-                            right: -5,
-                            top: 4,
-                            marginLeft: 0,
-                        },
-                        dateInput: {
-                            borderColor: "gray",
-                            alignItems: "flex-start",
-                            borderWidth: 0,
-                            borderBottomWidth: 1,
-                        },
-                        placeholderText: {
-                            fontSize: 17,
-                            color: "gray"
-                        },
-                        dateText: {
-                            fontSize: 17,
-                        }
-                    }}
-                    onDateChange={(date) => {
-                        setDate(date)
-                    }}
-                /> */}
-                          
+                    value={selectedDate}
+                    mode="datetime"
+                    display="default"
+                onChange={handleDateChange}
+                />
+                )}           */}
 
               <TextInput
                 style={styles.inputHours}
                 placeholder="Heures"
-                value={time}
-                onChangeText={value => {
-                  setTime(value) }}
+                // value={time}
+                // onChangeText={value => {
+                //   setTime(value) }}
               ></TextInput>
+              </View>
             </View>
-          </View>
+         
           <View style={styles.invitation}>
             <Text style={styles.textInvitation}>Je souhaite inviter</Text>
             
@@ -334,9 +347,9 @@ const CreateScreen = ({ navigation }) => {
     
         </KeyboardAvoidingView>
   );
-};
 
-export default CreateScreen;
+}
+
 
 const styles = StyleSheet.create({
   title: {
@@ -386,12 +399,15 @@ const styles = StyleSheet.create({
     marginTop: 10,
     // marginLeft: 5,
     paddingRight: 8,
-    color: "#121C6E"
+    color: "#121C6E",
+    fontWeight: 'bold',
+
   },
 
   inputSport: {
     width: 216,
     height: 44,
+    backgroundColor:'white',
     borderColor: "#D9D9D9",
     borderWidth: 1,
     borderRadius: 7,
@@ -410,7 +426,7 @@ const styles = StyleSheet.create({
     // alignItems: "center",
     // paddingTop: 10,
     // // marginLeft: 8,
-    marginTop: 17,
+    marginTop: 27,
     // textAlign: "center",
   },
 
@@ -430,15 +446,20 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     marginTop: 10,
     marginLeft: 15,
+    
   },
 
   textDescription: {
     fontSize: 15,
     paddingTop: 5,
+    fontWeight: 'bold',
+    color: "#121C6E",
+
   },
 
   inputDescription: {
-    backgroundColor: "#f2f2f2",
+    marginTop: 10,
+    backgroundColor:'white',
     borderRadius: 7,
     borderWidth: 1,
     borderColor: "#D9D9D9",
@@ -456,15 +477,41 @@ const styles = StyleSheet.create({
 
   textAdress: {
     fontSize: 15,
+    fontWeight: 'bold',
+    color: "#121C6E",
   },
 
   inputAdress: {
+    marginTop: 10,
     width: "100%",
     height: 45,
-    backgroundColor: "#f2f2f2",
+    backgroundColor:'white',
     borderRadius: 7,
     borderWidth: 1,
     borderColor: "#D9D9D9",
+    paddingLeft: 10,
+  },
+
+  fontisto: {
+   
+  },
+
+  aroundMe: {
+    width:'100%',
+    flexDirection: 'row',
+    marginTop: 5,
+    textAlign: 'center',
+    alignItems: 'center',
+    // marginLeft: 5,
+    // paddingLeft: 5,
+  },
+
+  around: {
+    marginLeft: 20,
+    //  marginTop: 10,
+        fontWeight: 'bold',
+        fontSize: 13,
+        color: '#EA7810'
   },
 
   level: {
@@ -473,10 +520,12 @@ const styles = StyleSheet.create({
 
   textLevel: {
     fontSize: 15,
+    fontWeight: 'bold',
+    color: "#121C6E",
   },
 
   btn: {
-    marginTop: 5,
+    marginTop: 10,
     flexDirection: "row",
     justifyContent: "space-between",
   },
@@ -497,16 +546,23 @@ const styles = StyleSheet.create({
 
   textDate: {
     fontSize: 15,
+    fontWeight: 'bold',
+    color: "#121C6E",
   },
 
-  input: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
+  datePicker: {
+    marginLeft: 25
+},
+
+  input:  {
+    flexDirection:"row",
+    justifyContent: 'space-between',
+    
+},
 
   inputDate: {
-    marginTop: 5,
-    backgroundColor: "#f2f2f2",
+    marginTop: 10,
+    backgroundColor: "white",
     borderRadius: 7,
     borderWidth: 1,
     borderColor: "#D9D9D9",
@@ -517,8 +573,8 @@ const styles = StyleSheet.create({
   },
 
   inputHours: {
-    marginTop: 5,
-    backgroundColor: "#f2f2f2",
+    marginTop: 10,
+    backgroundColor: "white",
     borderRadius: 7,
     borderWidth: 1,
     borderColor: "#D9D9D9",
@@ -534,6 +590,8 @@ const styles = StyleSheet.create({
 
   textInvitation: {
     fontSize: 15,
+    fontWeight: 'bold',
+    color: "#121C6E",
   },
 
   nbPersonne: {
@@ -543,7 +601,7 @@ const styles = StyleSheet.create({
 
   inputInvitation: {
     marginTop: 5,
-    backgroundColor: "#f2f2f2",
+    backgroundColor: "white",
     borderRadius: 7,
     borderWidth: 1,
     borderColor: "#D9D9D9",
@@ -556,6 +614,9 @@ const styles = StyleSheet.create({
     fontSize: 15,
     paddingLeft: 5,
     marginTop: 10,
+    fontWeight: 'bold',
+    color: "#121C6E",
+    
   },
 
   create: {
@@ -585,19 +646,9 @@ const styles = StyleSheet.create({
     width: "10%",
   },
 
-  aroundMe: {
-    width:'100%',
-    flexDirection: 'row',
-    //  marginTop: 20,
-    textAlign: 'center',
-    alignItems: 'center',
-    marginLeft: 5
-  },
-
-  around: {
-    marginLeft: 50,
-        fontWeight: 'bold',
-        fontSize: 18,
-        color: '#121C6E'
-  },
+  
 });
+
+
+
+export default CreateScreen

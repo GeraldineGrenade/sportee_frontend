@@ -8,7 +8,7 @@ import { addSport, removeSport, selectLevel, removeAllSports, updateSliderValue,
 import ModaleSports from './ModaleSports'
 import SelectionSport from './SelectionSport'
 import SelectionTxt from './SelectionTxt'
-// import DateTimePicker from '@react-native-community/datetimepicker'
+import DateTimePicker from '@react-native-community/datetimepicker'
 import DropDownPicker from 'react-native-dropdown-picker'
 
 const levelTitles = [
