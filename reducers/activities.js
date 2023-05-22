@@ -1,18 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
- value: [],
+  value: [],
+
 };
 
 export const activitiesSlice = createSlice({
- name: 'activities',
+  name: 'activities',
 
   initialState,
- reducers: {
-   addAllActivities: (state, action) => {
-     state.value = action.payload;
-   },
- },
+  reducers: {
+    addAllActivities: (state, action) => {
+      state.value = action.payload;
+    },
+
+  },
 });
 
 export const { addAllActivities } = activitiesSlice.actions;

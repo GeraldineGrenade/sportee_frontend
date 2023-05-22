@@ -7,8 +7,8 @@ const Activity = (props) => {
     // console.log(props.name)
     return (
         <View style={styles.cardContainer}>
-                <Image style={styles.sportPhoto} source={require('../assets/sport-photos/yoga.jpg')}/>
-                <Text style={styles.activityName}>{props.name}</Text>
+            <Image style={styles.sportPhoto} source={require('../assets/sport-photos/yoga.jpg')} />
+            <Text style={styles.activityName}>{props.sport.name}</Text>
 
             <View style={styles.infosContainer}>
 
@@ -20,14 +20,14 @@ const Activity = (props) => {
 
                     <Text style={styles.nbrParticipants}>Participants 2/5</Text>
                 </View>
-                    <View style={styles.dateInfos}>
-                        <FontAwesome5 name='calendar-alt' size={15} color='#000' style={styles.mapIcon} />
-                        <Text style={styles.date}>{props.date}</Text> 
-                    </View>
-                <Text style={styles.activityTitle}>{props.titre}</Text> 
+                <View style={styles.dateInfos}>
+                    <FontAwesome5 name='calendar-alt' size={15} color='#000' style={styles.mapIcon} />
+                    <Text style={styles.date}>{props.date}</Text>
+                </View>
+                <Text style={styles.activityTitle}>{props.titre}</Text>
 
             </View>
-            
+
         </View>
     )
 }
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
 
 
     cardContainer: {
-    margin:10,    
+        margin: 10,
     },
 
     infosContainer: {
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 10,
         borderWidth: 1,
         borderColor: '#E4D8D8',
-    }, 
+    },
 
     topInfos: {
         flexDirection: 'row',
@@ -60,33 +60,33 @@ const styles = StyleSheet.create({
         marginBottom: 4,
         marginTop: 4,
         marginLeft: 4,
-        marginRight: 4, 
-    }, 
+        marginRight: 4,
+    },
 
     activityName: {
-        color: '#fff', 
+        color: '#fff',
         fontSize: 22,
         fontWeight: '600',
         width: '100%',
         textAlign: 'center',
-        marginTop: -58, 
-    }, 
+        marginTop: -58,
+    },
 
     sportPhoto: {
         width: 180,
         height: 90,
-        borderTopLeftRadius:10,
-        borderTopRightRadius:10,
-    }, 
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+    },
 
     activityTitle: {
         fontSize: 11,
         marginBottom: 4,
         marginTop: 4,
         marginLeft: 4,
-        marginRight: 4, 
+        marginRight: 4,
         textTransform: 'uppercase',
-    }, 
+    },
 
     date: {
         marginLeft: 5,
@@ -100,24 +100,24 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         fontSize: 11,
         paddingTop: 1,
-    }, 
+    },
 
-    city:{
+    city: {
         marginLeft: 10,
         fontWeight: '600',
         fontSize: 11,
         paddingTop: 2,
-    }, 
+    },
 
     locInfos: {
         flexDirection: 'row',
         marginLeft: 1,
-    }, 
+    },
 
     dateInfos: {
         flexDirection: 'row',
         marginLeft: 4,
-        marginRight: 4, 
+        marginRight: 4,
     },
 
 
