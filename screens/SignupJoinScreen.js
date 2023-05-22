@@ -24,7 +24,9 @@ const SignupJoinScreen = ({ navigation }) => {
     const [confirmEmail, setConfirmEmail] = useState('')
     const [confirmEmailError, setConfirmEmailError] = useState(false);
     const [phone, setPhone] = useState('');
+    const [datePicker, setDatePicker] = useState(false);
     const [dateOfBirth, setDateOfBirth] = useState(new Date());
+    const [dateString, setDateString] = useState('JJ/MM/AA')
     const [dateOfBirthError, setDateOfBirthError] = useState(false);
     const [password, setPassword] = useState('');
     const [passwordError, setPasswordError] = useState(false);
@@ -34,19 +36,29 @@ const SignupJoinScreen = ({ navigation }) => {
     const [showModalAvatar, setShowModalAvatar] = useState(false);
     const [isAvoiding, setIsAvoiding] = useState(false);
 
-    
+
     //On closing avatar modal, set new avatar to chosen one
     const closeAvatarModal = (avatar) => {
         setShowModalAvatar(false)
         setAvatar(avatar)
     }
-    
-    // console.log(dateOfBirth)
-    //!\ SET DATE FROM DATE TIME PICKER DOES NOT WORK
-    const setDate = (event, date) => {
-        setDateOfBirth(date)
-        console.log('date set')
-    }
+
+    //Date picker
+    const onDateSelected = (event, value) => {
+        setDateOfBirth(value);
+        let date = value.getDate()
+        if (date < 10) {
+            date = '0'+date
+        }
+        let month = value.getMonth()+1
+        if (month < 10) {
+            month = '0'+month
+        }
+        setDateString(date + '/' + month  + '/' + value.getFullYear());
+        setDatePicker(false);
+    };
+
+
 
     //Validate user info - Check if all fields are valid and if not add error text underneath input
     const handleValidate = () => {
@@ -115,7 +127,7 @@ const SignupJoinScreen = ({ navigation }) => {
         }
 
         //Check date 
-        if (dateOfBirth === new Date()) {
+        if (dateOfBirth.getFullYear() === new Date().getFullYear()) {
             setDateOfBirthError(true);
             return
         } else {
@@ -257,33 +269,24 @@ const SignupJoinScreen = ({ navigation }) => {
                         <Text style={styles.inputLabel}>Date de naissance* :</Text>
                         <View style={styles.input}>
                             <FontAwesome5 name='calendar-alt' style={styles.inputIcon} />
-                            {/* <TextInput
-                                style={styles.inputText}
-                                placeholder="JJ/MM/AA"
-                                onFocus={() => setIsAvoiding(true)}
-                                onBlur={() => setIsAvoiding(false)}
-                                // onChangeText={(value) => setDateOfBirth(value)}
-                                //onFocus={() => setShowModalDate(true)}
-                                value={dateOfBirth}
-                            /> */}
-                            <DateTimePicker
-                                style={styles.inputText}
-                                value={dateOfBirth}
-                                mode="date"
-                                placeholder="select date"
-                                format="DD/MM/YYYY"
-                                minDate="01-01-1920"
-                                maxDate="01-01-2018"
-                                confirmBtnText="Confirm"
-                                cancelBtnText="Cancel"
-                                customStyles={{
-                           
-                                }}
-                                onChange={this.setDate}
-                            />
+                            {datePicker && (
+                                <DateTimePicker
+                                    value={dateOfBirth}
+                                    mode='date'
+                                    display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                                    onChange={onDateSelected}
+                                />
+                            )}
+                            {!datePicker && (
+                                <View>
+                                    <TouchableOpacity onPress={() => setDatePicker(true)}>
+                                        <Text style={styles.inputText}>{dateString}</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            )}
                         </View>
                     </View>
-                    {dateOfBirthError && <Text style={styles.error}>Entrer une date de naissance</Text>}
+                    {dateOfBirthError && <Text style={styles.error}>Entrer une date de naissance conforme</Text>}
                     <View style={styles.inputPair}>
                         <Text style={styles.inputLabel}>Mon mot de passe* :</Text>
                         {/* Add eye to view password on click */}
@@ -408,6 +411,8 @@ const styles = StyleSheet.create({
     },
     inputText: {
         fontSize: 14,
+        color: '#ADABAB',
+
     },
     inputLabel: {
         width: 150,

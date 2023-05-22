@@ -12,34 +12,24 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 const ActivityScreen = ({ navigation, route }) => {
     const connectedUser = useSelector((state) => state.user.value);
     const [currentActivity, setCurrentActivity] = useState({});
-    const [participantList, setParticipantList] = useState([]);
     const [dayText, setDayText] = useState('');
     const [monthText, setMonthText] = useState('');
-    const [duration, setDuration] = useState(null);
     const [isParticipationModalVisible, setIsParticipationModalVisible] = useState(false);
     const [isValidateParticipationModalVisible, setIsValidateParticipationModalVisible] = useState(false);
-    const [buttonToRender, setButtonToRender] = useState(participateBtn)
+    const [status, setStatus] = useState('participate')
+
 
     //Get activity info from id transmitted from previous page
     useEffect(() => {
         //!\Replace ID with route.params
-        fetch('https://sportee-backend.vercel.app/activities/getActivity/646b1b753e5541193f69a64d')
+        fetch('https://sportee-backend.vercel.app/activities/getActivity/646b1b753e5541193f69a674')
             .then(response => response.json())
             .then(data => {
                 if (data.result) {
                     setCurrentActivity(data.activity)
 
-                    setParticipantList(data.participants.map((data, i) => {
-                        return <Image key={i} title="participant-avatar" src={data.user.avatar} style={styles.avatar} />
-                    }))
-                    //Push empty avatars for all remaining places in activity
-                    const remainingPlaces = data.nbMaxParticipants - data.participants.length
-                    for (let i = 0; i < remainingPlaces; i++) {
-                        setParticipantList([...participantList, <View style={styles.emptyAvatar}></View>])
-                    }
-
                     //Calculate day of week and month of event date
-                    let day = new Date(data.date).getDay();
+                    let day = new Date(data.activity.date).getDay();
                     if (day === 0) setDayText('Lundi');
                     if (day === 1) setDayText('Mardi');
                     if (day === 2) setDayText('Mercredi');
@@ -48,7 +38,7 @@ const ActivityScreen = ({ navigation, route }) => {
                     if (day === 5) setDayText('Samedi');
                     if (day === 6) setDayText('Dimanche')
 
-                    let month = new Date(data.date).getMonth();
+                    let month = new Date(data.activity.date).getMonth();
                     if (month === 0) setMonthText('Janvier');
                     if (month === 1) setMonthText('Février');
                     if (month === 2) setMonthText('Mars');
@@ -62,8 +52,12 @@ const ActivityScreen = ({ navigation, route }) => {
                     if (month === 10) setMonthText('Novembre');
                     if (month === 11) setMonthText('Décembre');
 
-                    //!\Calculate duration of event - to adapt according to DB
-                    setDuration(new Date(data.date).getTime() - new Date(data.time).getTime())
+                    //Define status of user relative to the activity
+                    if (connectedUser._id === data.activity.user._id) setStatus('creator')
+                    if (data.activity.participants.length === data.activity.nbMaxParticipants) setStatus('full')
+                    //!\Add logic to check if user is in participant list and is approved or not => chat and inProgress Btns 
+                    console.log(data.activity.participants.find(e => e.user._id === connectedUser._id && e.user.isApproved))
+
 
                 } else {
                     console.log('Error in fetching activity')
@@ -71,7 +65,17 @@ const ActivityScreen = ({ navigation, route }) => {
             })
     }, [])
 
-    //Modale confirmation de demande de participation
+    //Initialise participants lists according to participants and nbMaxParticipants
+    let participantList = []
+    for (let i = 0; i <= currentActivity.nbMaxParticipants; i++) {
+        if (!currentActivity.participants[i]) {
+            participantList.push(<View key={i} style={styles.emptyAvatar}></View>)
+        } else {
+            participantList.push(<Image key={i} title="participant-avatar" src={currentActivity.participants[i].user.avatar} style={styles.avatar} />)
+        }
+    }
+
+    //Modal to confirm that the user wants to request to participate
     const participationModal = (
         <View style={styles.modalContainer}>
             <View style={styles.modalView}>
@@ -101,7 +105,7 @@ const ActivityScreen = ({ navigation, route }) => {
         });
     }
 
-    //Modale confirmation de participation
+    //Modal to confirm that participation request has been sent
     const validateParticipationModal = (
         <View style={styles.modalContainer}>
             <View style={styles.modalView}>
@@ -117,40 +121,44 @@ const ActivityScreen = ({ navigation, route }) => {
         console.log('modify')
     }
 
-    const participateBtn = (
+    const handleManageParticipations = () => {
+        console.log('manage')
+    }
+
+    //Define button to render according to status of user
+    let buttonToRender
+    status === 'participate' && (buttonToRender = (
         <TouchableOpacity style={styles.participateBtn} onPress={() => setIsParticipationModalVisible(true)}>
             <Text style={styles.participateBtnTxt}>Participer</Text>
         </TouchableOpacity>
-    )
-    const completeEventBtn = (
-        <View style={[styles.participateBtn, {backgroundColor: '#D9D9D9'}]}>
+    ))
+    status === 'full' && (buttonToRender = (
+        <View style={[styles.participateBtn, { backgroundColor: '#D9D9D9' }]}>
             <Text style={styles.participateBtnTxt}>Complet</Text>
         </View>
-    )
-    const validationInProgressBtn = (
-        <View style={[styles.participateBtn, {backgroundColor: '#D9D9D9'}]}>
+    ))
+    status === 'notApproved' && (buttonToRender = (
+        <View style={[styles.participateBtn, { backgroundColor: '#D9D9D9' }]}>
             <Text style={styles.participateBtnTxt}>Demande en cours</Text>
         </View>
-    )
-    const chatBtn = (
+    ))
+    status === 'approved' && (buttonToRender = (
         //!\Add navigation to chat screen with id of activity in route.params
-        <TouchableOpacity style={[styles.participateBtn, {backgroundColor: '#EA7810'}]} onPress={() => console.log('chat')}>
+        <TouchableOpacity style={[styles.participateBtn, { backgroundColor: '#EA7810' }]} onPress={() => console.log('chat')}>
             <Text style={styles.participateBtnTxt}>Accéder au chat</Text>
         </TouchableOpacity>
-    )
-    const modifyBtn = (
-        <TouchableOpacity style={styles.participateBtn} onPress={() => handleModify()}>
-            <Text style={styles.participateBtnTxt}>Modifier</Text>
-        </TouchableOpacity>
-    )
+    ))
+    status === 'creator' && (buttonToRender = (
+        <View style={styles.creatorBtns}>
+            <TouchableOpacity style={styles.participateBtn} onPress={() => handleModify()}>
+                <Text style={styles.participateBtnTxt}>Modifier l'activité</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.participateBtn} onPress={() => handleManageParticipations()}>
+                <Text style={styles.participateBtnTxt}>Gérer les demandes de participations</Text>
+            </TouchableOpacity>
+        </View>
+    ))
 
-    //Define which button appears
-    if(connectedUser.name && connectedUser.email) {
-        if (connectedUser._id === currentActivity.user._id)  setButtonToRender(modifyBtn)
-        if (currentActivity.participants.length === currentActivity.nbMaxParticipants)  setButtonToRender(completeEventBtn)
-        //!\Add logic to check if user is in participant list and is approved or not => chat and inProgress Btns 
-        let isUser = currentActivity.participants.find(e => e.user._id === connectedUser._id)
-    }
 
     return (
         <View style={styles.container}>
@@ -189,9 +197,11 @@ const ActivityScreen = ({ navigation, route }) => {
                         </View>
                         <View style={styles.dateTimeItem}>
                             <Ionicons name='timer-outline' size={25} color='#000' />
-                            <Text style={styles.dateTimeTxt} >{duration}h</Text>
+                            <Text style={styles.dateTimeTxt} >{currentActivity.time}h</Text>
                         </View>
                     </View>
+                    {/* to remove after button tests */}
+                    {buttonToRender}
                     <View style={styles.mainBody}>
                         <Text style={styles.subTitle}>Description</Text>
                         <Text style={styles.descriptionTxt}>{currentActivity.description}</Text>
@@ -201,7 +211,7 @@ const ActivityScreen = ({ navigation, route }) => {
                         </View>
 
                     </View>
-                    {participateBtn}
+                    {buttonToRender}
                 </View>}
             {isParticipationModalVisible && participationModal}
             {isValidateParticipationModalVisible && validateParticipationModal}
@@ -403,5 +413,8 @@ const styles = StyleSheet.create({
     modalBtnTxt: {
         color: 'white',
         fontSize: 16,
+    },
+    creatorBtns: {
+        flexDirection: 'row',
     },
 });

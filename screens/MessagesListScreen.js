@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { SafeAreaView, View, Text, StyleSheet, TextInput } from 'react-native'
+import { SafeAreaView, View, Text, StyleSheet, TextInput, Button } from 'react-native'
 import { useSelector } from 'react-redux';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -17,6 +17,8 @@ const MessagesListScreen = ({navigation}) => {
         <SafeAreaView style={styles.container}>
             <View style={styles.topContainer}>
                 <Text style={styles.title}>Vos conversations</Text>
+                {/* to remove after button tests */}
+                <Button title="Activity" onPress={() => navigation.navigate('Activity')}/> 
                 <View style={styles.userIconContainer}>
                 <FontAwesome name='user' size={25} color='#f8f8ff' style={styles.userIcon} onPress={() => navigation.navigate('Profil')}/>
                 </View>         

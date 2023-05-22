@@ -22,6 +22,10 @@ import activities from './reducers/activities';
 
 const store = configureStore({
   reducer: { user, preferences, activities },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    immutableCheck: false,
+    serializableCheck: false,
+  }),
 });
 
 const Tab = createBottomTabNavigator();
