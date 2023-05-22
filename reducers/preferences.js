@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  value: { sports: [null, null, null, null], habits: [], level: '', sliderValue: 5, selectedOption: '', selectedParticipants: [] },
-  dateTime: null
+  value: { sports: [null, null, null, null], habits: [], level: '', sliderValue: 5, slotOption: '', selectedParticipants: [], dateTime: false },
+
 }
 
 export const preferencesSlice = createSlice({
@@ -36,10 +36,10 @@ export const preferencesSlice = createSlice({
       state.value.sliderValue = action.payload
     },
     setDateTime: (state, action) => {
-      state.dateTime = action.payload
+      state.value.dateTime = action.payload
     },
     setSlotOption: (state, action) => {
-      state.value.selectedOption = action.payload
+      state.value.slotOption = action.payload
     },
     setSelectedParticipants: (state, action) => {
       state.value.selectedParticipants = action.payload

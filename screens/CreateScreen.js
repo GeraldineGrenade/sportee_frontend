@@ -39,7 +39,7 @@ const CreateScreen = ({ navigation }) => {
     icon: "https://res.cloudinary.com/dsd7uux0v/image/upload/v1684260544/sportee/addition-thick-symbol_b3edkd.png",
   });
 
-  
+
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
@@ -58,7 +58,7 @@ const CreateScreen = ({ navigation }) => {
   const [user, setUser] = useState('');
   const [participants, setParticipants] = useState('');
   const [eventDate, setEventDate] = useState(new Date());
- 
+
 
   const activityData = {
     name: name,
@@ -70,10 +70,10 @@ const CreateScreen = ({ navigation }) => {
     nbMaxParticipants: nbMaxParticipants,
     conversation: conversation,
     user: user,
-    particpants:participants,
+    particpants: participants,
   };
-  
-  
+
+
   const selectSport = () => {
     setIsModalVisible(true);
   };
@@ -118,12 +118,12 @@ const CreateScreen = ({ navigation }) => {
         onPress={() => {
           setSuggestions([]);
           setSearchValue("");
-          setPlace(item.properties.label, item.properties.y,item.properties.x);
+          setPlace(item.properties.label, item.properties.y, item.properties.x);
         }}
       >
         <Text style={styles.cityItemText}>
-         {item.properties.label}
-         
+          {item.properties.label}
+
         </Text>
       </TouchableOpacity>
     );
@@ -156,7 +156,7 @@ const CreateScreen = ({ navigation }) => {
         console.error(error);
       });
 
-   };
+  };
 
   // CHOICE THE LEVEL
   const levelList = levelTitles.map((e, i) => {
@@ -175,165 +175,167 @@ const CreateScreen = ({ navigation }) => {
     );
   });
 
-//CHOICE OF DATE AND TIME WITH DATETIMEPICKER
+  //CHOICE OF DATE AND TIME WITH DATETIMEPICKER
 
-  
+
 
   // const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : 0;
 
-  
-  
+
+
 
   // console.log(isAvoiding)
   return (
-    <KeyboardAvoidingView 
-    style={isAvoiding ? { flex: 1, justifyContent: "flex-end" } : { flex: 1, justifyContent: "flex-start" }}
-   behavior={Platform.OS === "ios" ? "padding" : "height"} 
-   
->
-        <View style={styles.topContainer}>
-          <Text style={styles.title}>Créé ton activité</Text>
-          <View style={styles.userIconContainer}>
-            <FontAwesome
-              name="user"
-              size={25}
-              color="#f8f8ff"
-              style={styles.userIcon}
-              onPress={() => navigation.navigate("Profil")}
-            />
-          </View>
+    <KeyboardAvoidingView
+      style={isAvoiding ? { flex: 1, justifyContent: "flex-end" } : { flex: 1, justifyContent: "flex-start" }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+
+    >
+      <View style={styles.topContainer}>
+        <Text style={styles.title}>Créé ton activité</Text>
+        <View style={styles.userIconContainer}>
+          <FontAwesome
+            name="user"
+            size={25}
+            color="#f8f8ff"
+            style={styles.userIcon}
+            onPress={() => navigation.navigate("Profil")}
+          />
         </View>
-        <View style={styles.main}>
-          <View style={styles.name}>
-            <Text style={styles.titre}>Titre</Text>
-            <TextInput
-              placeholder="Nom de l'activité" value={name} 
-              style={styles.inputSport}
-              onChangeText={value => {
-                setName(value)
-           }} />
-          </View>
-          <View style={styles.select}>
-            <TouchableOpacity style={styles.selectSport}>
-              <SelectionSport
-                name={newSport.name}
-                icon={newSport.icon}
-                selectSport={selectSport}
-              />
-              <Modal visible={isModalVisible} animationType="fade" transparent>
-                <ModaleSports closeModal={closeModal} />
-              </Modal>
-            </TouchableOpacity>
-            <View style={styles.description}>
-              <Text style={styles.textDescription}>
-                Description de l'activité
-              </Text>
-              <TextInput
-                placeholder="Description" value={description}
-                style={styles.inputDescription} 
-                onChangeText={value => {
-                  setDescription(value) }}
-              />
-            </View>
-          </View>
-          <View style={styles.adress}>
-            <Text style={styles.textAdress}>
-              Adresse du point de rendez-vous
+      </View>
+      <View style={styles.main}>
+        <View style={styles.name}>
+          <Text style={styles.titre}>Titre</Text>
+          <TextInput
+            placeholder="Nom de l'activité" value={name}
+            style={styles.inputSport}
+            onChangeText={value => {
+              setName(value)
+            }} />
+        </View>
+        <View style={styles.select}>
+          <TouchableOpacity style={styles.selectSport}>
+            <SelectionSport
+              name={newSport.name}
+              icon={newSport.icon}
+              selectSport={selectSport}
+            />
+            <Modal visible={isModalVisible} animationType="fade" transparent>
+              <ModaleSports closeModal={closeModal} />
+            </Modal>
+          </TouchableOpacity>
+          <View style={styles.description}>
+            <Text style={styles.textDescription}>
+              Description de l'activité
             </Text>
-            <TextInput style={styles.inputAdress} placeholder='Localisation'
-                    value={searchValue}
-                    onChangeText={value => {
-                         setSearchValue(value)
-                         setCityModalVisible(true)
-                    }} />
-            <FlatList
-              data={suggestions}
-              keyExtractor={(item) => item.properties.id}
-              renderItem={renderCityItem}
-              onPress={() => {
-                closeCitySearch;
+            <TextInput
+              placeholder="Description" value={description}
+              style={styles.inputDescription}
+              onChangeText={value => {
+                setDescription(value)
               }}
             />
           </View>
-          <View style={styles.aroundMe}>
-                <Fontisto style={styles.fontisto} name='map-marker-alt' size={16} color='#121C6E' />
-                <Text style={styles.around} >{place}</Text>
-                <Text >{place.label}</Text>
-            </View>
-          
+        </View>
+        <View style={styles.adress}>
+          <Text style={styles.textAdress}>
+            Adresse du point de rendez-vous
+          </Text>
+          <TextInput style={styles.inputAdress} placeholder='Localisation'
+            value={searchValue}
+            onChangeText={value => {
+              setSearchValue(value)
+              setCityModalVisible(true)
+            }} />
+          <FlatList
+            data={suggestions}
+            keyExtractor={(item) => item.properties.id}
+            renderItem={renderCityItem}
+            onPress={() => {
+              closeCitySearch;
+            }}
+          />
+        </View>
+        <View style={styles.aroundMe}>
+          <Fontisto style={styles.fontisto} name='map-marker-alt' size={16} color='#121C6E' />
+          <Text style={styles.around} >{place}</Text>
+          <Text >{place.label}</Text>
+        </View>
 
-          <View style={styles.level}>
-            <Text style={styles.textLevel}>Cette activité s'adresse aux</Text>
-            <View style={styles.btn}>{levelList}</View>
-          </View>
 
-          <View style={styles.date}>
-            <Text style={styles.textDate}>
-              Elle se tiendra le ... ... et durera environ
-            </Text>
-            <View style={styles.input}>
-              <TouchableOpacity onPress={()=>setOpen()}>
+        <View style={styles.level}>
+          <Text style={styles.textLevel}>Cette activité s'adresse aux</Text>
+          <View style={styles.btn}>{levelList}</View>
+        </View>
+
+        <View style={styles.date}>
+          <Text style={styles.textDate}>
+            Elle se tiendra le ... ... et durera environ
+          </Text>
+          <View style={styles.input}>
+            <TouchableOpacity onPress={() => setOpen()}>
               <Text >Date/Heure</Text>
-              </TouchableOpacity>
-              <DateTimePicker
-                    
-                    value={eventDate}
-                    mode="date"
-                    placeholder="select date"
-                    format="DD/MM/YYYY"
-                    minDate="01-01-2023"
-                    maxDate="01-01-2100"
-                    confirmBtnText="Confirm"
-                    cancelBtnText="Cancel"
-                    onDateChange={(date) => {
-                        setEventDate(date)
-                    }}
-                />
-
-            
-
-              <TextInput
-                style={styles.inputHours}
-                placeholder="Heures"
-                // value={time}
-                // onChangeText={value => {
-                //   setTime(value) }}
-              ></TextInput>
-              </View>
-            </View>
-         
-          <View style={styles.invitation}>
-            <Text style={styles.textInvitation}>Je souhaite inviter</Text>
-            
-            <View style={styles.nbPersonne}>
-              <TextInput
-                style={styles.inputInvitation}
-                placeholder="Nombre"
-                keyboardType="numeric"
-                onFocus={() => setIsAvoiding(true)}
-                onBlur={() => setIsAvoiding(false)}
-                value={nbMaxParticipants}
-                onChangeText={value => {
-                  setNbMaxParticipants(value) }}
-
-              />
-
-              <Text style={styles.personne}>personnes</Text>
-            </View>
-            
-          </View>
-
-          <View style={styles.create}>
-            <TouchableOpacity
-              onPress={() => handleCreate()}
-              style={styles.createBtn}
-            >
-              <Text style={styles.textBtn}>Créer mon activité</Text>
             </TouchableOpacity>
+            <DateTimePicker
+
+              value={eventDate}
+              mode="date"
+              placeholder="select date"
+              format="DD/MM/YYYY"
+              minDate="01-01-2023"
+              maxDate="01-01-2100"
+              confirmBtnText="Confirm"
+              cancelBtnText="Cancel"
+              onDateChange={(date) => {
+                setEventDate(date)
+              }}
+            />
+
+
+
+            <TextInput
+              style={styles.inputHours}
+              placeholder="Heures"
+            // value={time}
+            // onChangeText={value => {
+            //   setTime(value) }}
+            ></TextInput>
           </View>
         </View>
-    
-        </KeyboardAvoidingView>
+
+        <View style={styles.invitation}>
+          <Text style={styles.textInvitation}>Je souhaite inviter</Text>
+
+          <View style={styles.nbPersonne}>
+            <TextInput
+              style={styles.inputInvitation}
+              placeholder="Nombre"
+              keyboardType="numeric"
+              onFocus={() => setIsAvoiding(true)}
+              onBlur={() => setIsAvoiding(false)}
+              value={nbMaxParticipants}
+              onChangeText={value => {
+                setNbMaxParticipants(value)
+              }}
+
+            />
+
+            <Text style={styles.personne}>personnes</Text>
+          </View>
+
+        </View>
+
+        <View style={styles.create}>
+          <TouchableOpacity
+            onPress={() => handleCreate()}
+            style={styles.createBtn}
+          >
+            <Text style={styles.textBtn}>Créer mon activité</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+    </KeyboardAvoidingView>
   );
 
 }
@@ -395,7 +397,7 @@ const styles = StyleSheet.create({
   inputSport: {
     width: 216,
     height: 44,
-    backgroundColor:'white',
+    backgroundColor: 'white',
     borderColor: "#D9D9D9",
     borderWidth: 1,
     borderRadius: 7,
@@ -434,7 +436,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     marginTop: 10,
     marginLeft: 15,
-    
+
   },
 
   textDescription: {
@@ -447,7 +449,7 @@ const styles = StyleSheet.create({
 
   inputDescription: {
     marginTop: 10,
-    backgroundColor:'white',
+    backgroundColor: 'white',
     borderRadius: 7,
     borderWidth: 1,
     borderColor: "#D9D9D9",
@@ -473,7 +475,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     width: "100%",
     height: 45,
-    backgroundColor:'white',
+    backgroundColor: 'white',
     borderRadius: 7,
     borderWidth: 1,
     borderColor: "#D9D9D9",
@@ -481,11 +483,11 @@ const styles = StyleSheet.create({
   },
 
   fontisto: {
-   
+
   },
 
   aroundMe: {
-    width:'100%',
+    width: '100%',
     flexDirection: 'row',
     marginTop: 5,
     textAlign: 'center',
@@ -497,9 +499,9 @@ const styles = StyleSheet.create({
   around: {
     marginLeft: 20,
     //  marginTop: 10,
-        fontWeight: 'bold',
-        fontSize: 13,
-        color: '#EA7810'
+    fontWeight: 'bold',
+    fontSize: 13,
+    color: '#EA7810'
   },
 
   level: {
@@ -540,13 +542,13 @@ const styles = StyleSheet.create({
 
   datePicker: {
     marginLeft: 25
-},
+  },
 
-  input:  {
-    flexDirection:"row",
+  input: {
+    flexDirection: "row",
     justifyContent: 'space-between',
-    
-},
+
+  },
 
   inputDate: {
     marginTop: 10,
@@ -604,7 +606,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontWeight: 'bold',
     color: "#121C6E",
-    
+
   },
 
   create: {
@@ -634,7 +636,7 @@ const styles = StyleSheet.create({
     width: "10%",
   },
 
-  
+
 });
 
 

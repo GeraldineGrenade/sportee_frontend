@@ -21,6 +21,7 @@ const levelTitles = [
 
 const ModalFilter = ({ modalVisible, setModalVisible }) => {
     let dispatch = useDispatch()
+    const [datePicker, setDatePicker] = useState(false)
     const dateTime = useSelector((state) => state.preferences.dateTime)
     const selectedLevel = useSelector((state) => state.preferences.value.level)
     const [sportModalVisible, setSportModalVisible] = useState(false)
@@ -116,6 +117,7 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
     }, [dispatch, peopleValue])
 
     const resetFilters = () => {
+        dispatch(setDateTime(false))
         dispatch(selectLevel(''))
         dispatch(removeAllSports())
         dispatch(updateSliderValue(5))
@@ -197,6 +199,45 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
         return <SelectionTxt key={i} isSelected={isSelected} selectTxt={selectTxt} title={e} />
     })
 
+    const onDateSelected = (event, value) => {
+        setDate(value)
+        setDatePicker(false)
+        const serializedDate = value.toISOString()
+        dispatch(setDateTime(serializedDate))
+    }
+    let dateTimePicker
+    if (Platform.OS === 'ios') {
+        dateTimePicker = (
+            <DateTimePicker
+                value={date}
+                mode='date'
+                //display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                onChange={onDateSelected}
+            />
+
+        )
+    } else {
+        dateTimePicker = (
+            <View>
+
+                {datePicker && (
+                    <DateTimePicker
+                        value={date}
+                        mode='date'
+                        display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                        onChange={onDateSelected}
+                    />
+                )}
+                {!datePicker && (
+                    <View style={styles.dateContainer}>
+                        <TouchableOpacity onPress={() => setDatePicker(true)} style={styles.date}>
+                            <Text  >Date</Text>
+                        </TouchableOpacity>
+                    </View>
+                )}
+            </View>
+        )
+    }
     return (
         <Modal
             animationType='fade'
@@ -282,41 +323,7 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
                 <Text style={styles.when}>Quand souhaites-tu faire ton activité ?</Text>
             </View>
             <View style={styles.activityDate}>
-                <DateTimePicker
-                    style={styles.datePicker}
-                    value={date}
-                    mode="date"
-                    placeholder="select date"
-                    format="DD/MM/YYYY"
-                    minDate="01-01-2023"
-                    maxDate="01-01-2100"
-                    confirmBtnText="Confirm"
-                    cancelBtnText="Cancel"
-                    customStyles={{
-                        dateIcon: {
-                            position: 'absolute',
-                            right: -5,
-                            top: 4,
-                            marginLeft: 0,
-                        },
-                        dateInput: {
-                            borderColor: "gray",
-                            alignItems: "flex-start",
-                            borderWidth: 0,
-                            borderBottomWidth: 1,
-                        },
-                        placeholderText: {
-                            fontSize: 17,
-                            color: "gray"
-                        },
-                        dateText: {
-                            fontSize: 17,
-                        }
-                    }}
-                    onDateChange={(date) => {
-                        dispatch(setDateTime(date))
-                    }}
-                />
+                {dateTimePicker}
 
                 {/* DROPDOWNPICKER TO SELECT THE SLOT */}
                 <DropDownPicker
@@ -457,14 +464,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         // zIndex: 9999,
     },
-    activityDate: {
-        flexDirection: 'row',
-        width: '100%',
-        marginTop: 10,
-        alignItems: 'center',
-        textAlign: 'center',
-        zIndex: 10
-    },
     people: {
         color: '#121C6E',
         fontWeight: 'bold',
@@ -528,6 +527,31 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: "600",
     },
+    activityDate: {
+        flexDirection: 'row',
+        width: '100%',
+        marginTop: 10,
+        alignItems: 'center',
+        textAlign: 'center',
+        zIndex: 10,
+        height: 50,
+        marginLeft: 30
+    },
+    date: {
+        marginLeft: 15,
+        width: '100%',
+        height: '100%',
+        borderWidth: 1,
+        textAlign: 'center',
+        borderRadius: 8,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    dateContainer: {
+        width: '40%',
+        height: '100%',
+        justifyContent: 'center',
+    }
 })
 
 export default ModalFilter
