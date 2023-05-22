@@ -19,22 +19,11 @@ import SelectionSport from "../components/SelectionSport";
 import { useSelector, useDispatch } from "react-redux";
 import ModaleSports from "../components/ModaleSports";
 import SelectionTxt from "../components/SelectionTxt";
-import DateTimePicker from '@react-native-community/datetimepicker'
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const BACKEND_ADRESS = "https://sportee-backend.vercel.app/";
 
-const activityData = {
-  name: "Nom de l'activité",
-  sport: "Sport de l'activité",
-  description: "Description de l'activité",
-  place: "Lieu de l'activité",
-  level: "Niveau de l'activité",
-  time: "Durée de l'activité",
-  nbMaxParticipants: 10,
-  conversation: "Conversation associée",
-  user: "Utilisateur associé",
-  particpants: ["Participant 1", "Participant 2", ""],
-};
+
 
 const levelTitles = [
   "Sportif du dimanche",
@@ -50,20 +39,40 @@ const CreateScreen = ({ navigation }) => {
     icon: "https://res.cloudinary.com/dsd7uux0v/image/upload/v1684260544/sportee/addition-thick-symbol_b3edkd.png",
   });
 
-  const [level, setLevel] = useState("");
-
+  
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [cityModalVisible, setCityModalVisible] = useState(false);
   const [isAvoiding, setIsAvoiding] = useState(false)
-  const [place, setPlace] = useState('')
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [date, setDate] = useState((new Date()));
-  const [nbMaxParticipants, setNbMaxParticipants] = useState('');
-  const [time, setTime] = useState('');
 
+
+  const [name, setName] = useState('');
+  const [sport, setSport] = useState('');
+  const [description, setDescription] = useState('');
+  const [place, setPlace] = useState('')
+  const [level, setLevel] = useState('');
+  const [time, setTime] = useState('');
+  const [nbMaxParticipants, setNbMaxParticipants] = useState('');
+  const [conversation, setConversation] = useState('');
+  const [user, setUser] = useState('');
+  const [participants, setParticipants] = useState('');
+  const [eventDate, setEventDate] = useState(new Date());
+ 
+
+  const activityData = {
+    name: name,
+    sport: sport,
+    description: description,
+    place: place,
+    level: level,
+    time: time,
+    nbMaxParticipants: nbMaxParticipants,
+    conversation: conversation,
+    user: user,
+    particpants:participants,
+  };
+  
   
   const selectSport = () => {
     setIsModalVisible(true);
@@ -168,37 +177,8 @@ const CreateScreen = ({ navigation }) => {
 
 //CHOICE OF DATE AND TIME WITH DATETIMEPICKER
 
-  // const MySelector = () => {
-  //   const [selectedDate, setSelectedDate] = useState(new Date());
-  //   const [showPicker, setShowPicker] = useState(false);
   
-  //   const handleDateChange = (event, date) => {
-  //     if (date !== undefined) {
-  //       setSelectedDate(date);
-  //     }
-  //     setShowPicker(Platform.OS === 'ios');
-  //   };
-  
-  //   const showDateTimePicker = () => {
-  //     setShowPicker(true);
-  //   };
-  
-  //   return (
-  //     <View style={styles.inputDate}>
-  //       <Button  title="Sélectionner la date et l'heure" onPress={showDateTimePicker} />
-  //       {showPicker && (
-  //         <DateTimePicker
-  //           style={styles.datePicker}
-  //           value={selectedDate}
-  //           mode="datetime" 
-  //           display="default"
-  //           onChange={handleDateChange}
-  //         />
-  //       )}
-        
-  //     </View>
-  //   );
-  // };
+
   // const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : 0;
 
   
@@ -292,17 +272,25 @@ const CreateScreen = ({ navigation }) => {
               Elle se tiendra le ... ... et durera environ
             </Text>
             <View style={styles.input}>
-            <TextInput style={styles.inputDate} placeholder="date et heure"/>
-              {/* <TouchableOpacity  title="Sélectionner la date et l\'heure " onPress={showDateTimePicker}/>
-              {showPicker && (
-                <DateTimePicker
-                    style={styles.datePicker}
-                    value={selectedDate}
-                    mode="datetime"
-                    display="default"
-                onChange={handleDateChange}
+              <TouchableOpacity onPress={()=>setOpen()}>
+              <Text >Date/Heure</Text>
+              </TouchableOpacity>
+              <DateTimePicker
+                    
+                    value={eventDate}
+                    mode="date"
+                    placeholder="select date"
+                    format="DD/MM/YYYY"
+                    minDate="01-01-2023"
+                    maxDate="01-01-2100"
+                    confirmBtnText="Confirm"
+                    cancelBtnText="Cancel"
+                    onDateChange={(date) => {
+                        setEventDate(date)
+                    }}
                 />
-                )}           */}
+
+            
 
               <TextInput
                 style={styles.inputHours}
