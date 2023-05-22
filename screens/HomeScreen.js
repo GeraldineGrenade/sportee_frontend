@@ -18,67 +18,108 @@ const HomeScreen = ({ navigation }) => {
     const [listIconColor, setListIconColor] = useState('#121C6E')
     const [listTextColor, setListTextColor] = useState('#121C6E')
     const connectedUser = useSelector((state) => state.user.value)
-    // const preferences = useSelector((state) => state.preferences.value)
+    const preferences = useSelector((state) => state.preferences.value)
+    const activityData = useSelector((state) => state.activities.value)
+    // const [filteredActivities, setFilteredActivities] = useState([])
     let dispatch = useDispatch()
 
-    // const filterActivities = () => {
-    //     const { sports, level, sliderValue, selectedOption, selectedParticipants } = preferences
-
-    //     // Filter by sport
-    //     let filteredBySports = activityData.filter(activity => {
-    //         return sports.includes(activity.name)
-    //     })
-
-    //     // Filter by lvl
-    //     let filteredByLevel = filteredBySports.filter(activity => {
-    //         return activity.level === level
-    //     })
-
-    //     // Filter with the slider
-    //     let filteredBySliderValue = filteredByLevel.filter(activity => {
-    //         return activity.sliderValue <= sliderValue
-    //     })
-
-    //     // Filter by slot
-    //     let filteredBySlotOption = filteredBySliderValue.filter(activity => {
-    //         return activity.slotOption === selectedOption
-    //     })
-
-    //     // Filter the number of participants
-    //     let filteredByParticipants = filteredBySlotOption.filter(activity => {
-    //         return activity.participants >= selectedParticipants
-    //     })
-
-    //     return filteredByParticipants
-    // }
-
     //On loading component, fetch all activities from DB and send then in activities store
-    useEffect(()=>{
-     fetch('https://sportee-backend.vercel.app/activities')
-    .then(response => {
-        if (response.ok) {
-            console.log('route hit')
-            return response.json()
-        } else {
-            throw new Error('Erreur lors de la récupération de l\'activité')
-        }
-    })
-    .then(data => {
-        dispatch(addAllActivities(data.activities))
-    })
-    .catch(error => {
-        console.error(error);
-    })
+    const { sports, level, sliderValue, selectedOption, selectedParticipants } = preferences
+    let filteredActivities = activityData
+    useEffect(() => {
+        fetch('https://sportee-backend.vercel.app/activities')
+            .then(response => {
+                if (response.ok) {
+                    console.log('route hit')
+                    return response.json()
+                } else {
+                    throw new Error('Erreur lors de la récupération de l\'activité')
+                }
+            })
+            .then(data => {
+                dispatch(addAllActivities(data.activities))
+                // setFilteredActivities(data.activities)
+            })
+            .catch(error => {
+                console.error(error);
+            })
     }, [])
 
+
+    !sports.every(e => e === null) && (filteredActivities = filteredActivities.filter(activity => {
+
+        return sports.some(e => e?.name === activity.sport?.name)
+    }))
+
+    selectedParticipants && (filteredActivities = filteredActivities.filter(activity => {
+        return (activity.nbMaxParticipants >= selectedParticipants)
+    }))
+
+    level && (filteredActivities = filteredActivities.filter(activity => {
+        return (activity.level === level)
+    }))
+
+    // Create algo to calculate the distance !!!!
+
+    // sliderValue && (filteredActivities = filteredActivities.filter(activity => {
+    //     return (activity.sliderValue <= sliderValue)
+    // }))
+
+
+
+    // Create algo to determine if a date is matin midi or soir !!!!
+
+    // !selectedOption && (filteredActivities = filteredActivities.filter(activity => {
+    //     return (activity.slotOption === selectedOption)
+    // }))
+
+
+
+    console.log(filteredActivities.map(e => e.sport))
+
+    // console.log(preferences)
+
+
+
+
+
+
+
+
+
+
+
+    // if (
+    //     !sports ||
+    //     !level ||
+    //     sliderValue === undefined ||
+    //     !selectedOption ||
+    //     selectedParticipants === undefined
+    // ) {
+    //     return activityData
+    // }
+
+    // return activityData.filter(activity => {
+    //     return (
+    //         sports.includes(activity.sport) &&
+    //         activity.level === level &&
+    //         activity.sliderValue <= sliderValue &&
+    //         activity.slotOption === selectedOption &&
+    //         activity.participants >= selectedParticipants
+    //     )
+    // })
+
+
+
     // const filteredActivities = filterActivities()
-    const activityData = [{ name: "Yoga", city: "Lille", date: "19 mai 18h", titre: "Yoga Vinyasa à la citadelle" }, { name: "Surf", city: "Wissant", date: "22 mai 11h", titre: "Initiation au surf", image: '../assets/sport-photos/surf.jpg' }, { name: "Boxe", city: "Lille", date: "25 mai 7h", titre: "Cours boxe thaïlandaise" }, { name: "Tennis", city: "Roubaix", date: "28 mai 12h", titre: "Tennis en exterieur" }, { name: "Beach-Volley", city: "Malo", date: "30 mai 12h", titre: "Tournoi de Beach-Volley" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }]
+    //console.log(filteredActivities)
+    // [{ name: "Yoga", city: "Lille", date: "19 mai 18h", titre: "Yoga Vinyasa à la citadelle" }, { name: "Surf", city: "Wissant", date: "22 mai 11h", titre: "Initiation au surf", image: '../assets/sport-photos/surf.jpg' }, { name: "Boxe", city: "Lille", date: "25 mai 7h", titre: "Cours boxe thaïlandaise" }, { name: "Tennis", city: "Roubaix", date: "28 mai 12h", titre: "Tennis en exterieur" }, { name: "Beach-Volley", city: "Malo", date: "30 mai 12h", titre: "Tournoi de Beach-Volley" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }]
 
     const listContent = (
         <View>
             <Text style={styles.titlePopulate}>Activités populaires autour de moi</Text>
             <FlatList
-                data={activityData}
+                data={filteredActivities}
                 renderItem={({ item }) => {
                     return <ActivityCard {...item} />
                 }
@@ -91,7 +132,7 @@ const HomeScreen = ({ navigation }) => {
 
             <Text style={styles.titleForMe}>Pour moi</Text>
             <FlatList
-                data={activityData}
+                data={filteredActivities}
                 renderItem={({ item }) => {
                     return <ActivityCard {...item} />
                 }
@@ -132,7 +173,7 @@ const HomeScreen = ({ navigation }) => {
                 <ModalFilter modalVisible={modalVisible} setModalVisible={setModalVisible} />
                 <TextInput placeholder='Rechercher une activité' style={styles.input}></TextInput>
                 <View style={styles.userIconContainer}>
-                    <FontAwesome name='user' size={25} color='#f8f8ff' style={styles.userIcon} onPress={() => {connectedUser.email ? navigation.navigate('Profil') : navigation.navigate('ConnectionAll')}} />
+                    <FontAwesome name='user' size={25} color='#f8f8ff' style={styles.userIcon} onPress={() => { connectedUser.email ? navigation.navigate('Profil') : navigation.navigate('ConnectionAll') }} />
                 </View>
             </View>
 

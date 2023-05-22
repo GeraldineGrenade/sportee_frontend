@@ -44,6 +44,16 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
         { label: '3', value: '3' },
         { label: '4', value: '4' },
         { label: '5', value: '5' },
+        { label: '6', value: '6' },
+        { label: '7', value: '7' },
+        { label: '8', value: '8' },
+        { label: '9', value: '9' },
+        { label: '10', value: '10' },
+        { label: '11', value: '11' },
+        { label: '12', value: '12' },
+        { label: '13', value: '13' },
+        { label: '14', value: '14' },
+        { label: '15', value: '15' },
     ])
     const sliderValue = useSelector(state => state.preferences.value.sliderValue)
     const [searchValue, setSearchValue] = useState('')
@@ -129,6 +139,16 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
             { label: '3', value: '3' },
             { label: '4', value: '4' },
             { label: '5', value: '5' },
+            { label: '6', value: '6' },
+            { label: '7', value: '7' },
+            { label: '8', value: '8' },
+            { label: '9', value: '9' },
+            { label: '10', value: '10' },
+            { label: '11', value: '11' },
+            { label: '12', value: '12' },
+            { label: '13', value: '13' },
+            { label: '14', value: '14' },
+            { label: '15', value: '15' },
         ])
         setSearchValue('')
         setCityValue('')
@@ -338,7 +358,7 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
                 />
             </View>
             <TouchableOpacity style={styles.resultBtn}>
-                <Text style={styles.bottomBtn}>Afficher les résultats</Text>
+                <Text style={styles.bottomBtn} onPress={closeModal}>Afficher les résultats</Text>
             </TouchableOpacity>
         </Modal>
     )
