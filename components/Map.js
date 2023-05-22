@@ -41,10 +41,6 @@ const [pinIconColor, setPinIconColor] = useState('#00bfff');
         setPinIconColor('#00bfff')
       };
 
-    // const markers = user.places.map((data, i) => {
-    //   return <Marker key={i} coordinate={{ latitude: data.latitude, longitude: data.longitude }} title={data.name} />;
-    // });
-
     return (
       <View>
       <TouchableOpacity>
@@ -221,4 +217,26 @@ const styles = StyleSheet.create({
 
 })
 
+
+
+// const [markers, setMarkers] = useState([]);
+
+// useEffect(() => {
+//     const markerData = props.markerData;
+//     setMarkers(markerData);
+//   }, [props.markerData]);
+
+// const renderMarkers = () => {
+//     return markers.map((marker, index) => (
+//       <Marker
+//         key={index}
+//         coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
+//         title={marker.name}
+//       />
+//     ));
+//   };
+
+// const markers = user.places.map((data, i) => {
+//     return <Marker key={i} coordinate={{ latitude: data.latitude, longitude: data.longitude }} title={data.name} />;
+//   });
 
