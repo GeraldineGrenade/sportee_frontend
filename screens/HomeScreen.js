@@ -74,46 +74,10 @@ const HomeScreen = ({ navigation }) => {
     // }))
 
 
-
     console.log(filteredActivities.map(e => e.sport))
 
     // console.log(preferences)
 
-
-
-
-
-
-
-
-
-
-
-    // if (
-    //     !sports ||
-    //     !level ||
-    //     sliderValue === undefined ||
-    //     !selectedOption ||
-    //     selectedParticipants === undefined
-    // ) {
-    //     return activityData
-    // }
-
-    // return activityData.filter(activity => {
-    //     return (
-    //         sports.includes(activity.sport) &&
-    //         activity.level === level &&
-    //         activity.sliderValue <= sliderValue &&
-    //         activity.slotOption === selectedOption &&
-    //         activity.participants >= selectedParticipants
-    //     )
-    // })
-
-
-
-    // const filteredActivities = filterActivities()
-    //console.log(filteredActivities)
-    // [{ name: "Yoga", city: "Lille", date: "19 mai 18h", titre: "Yoga Vinyasa à la citadelle" }, { name: "Surf", city: "Wissant", date: "22 mai 11h", titre: "Initiation au surf", image: '../assets/sport-photos/surf.jpg' }, { name: "Boxe", city: "Lille", date: "25 mai 7h", titre: "Cours boxe thaïlandaise" }, { name: "Tennis", city: "Roubaix", date: "28 mai 12h", titre: "Tennis en exterieur" }, { name: "Beach-Volley", city: "Malo", date: "30 mai 12h", titre: "Tournoi de Beach-Volley" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }]
 
     const listContent = (
         <View>
