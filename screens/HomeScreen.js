@@ -7,7 +7,10 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import ActivityCard from '../components/ActivityCard';
 import Map from '../components/Map';
 import ModalFilter from '../components/ModalFilter';
+<<<<<<< HEAD
 // import { useSelector } from 'react-redux';
+=======
+>>>>>>> camille
 import ModaleConnect from '../components/ModaleConnect';
 // import { addSport, removeSport, removeAllSports, addHabit, removeHabit, removeAllHabits, selectLevel, updateSliderValue } from '../reducers/preferences'
 
