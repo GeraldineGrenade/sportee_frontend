@@ -23,7 +23,7 @@ const ActivityScreen = ({ navigation, route }) => {
     //Get activity info from id transmitted from previous page
     useEffect(() => {
         //!\Replace ID with route.params
-        fetch('https://sportee-backend.vercel.app/activities/getActivity/6468e71e177bae8b6231ed09')
+        fetch('https://sportee-backend.vercel.app/activities/getActivity/646b1b743e5541193f69a62f')
             .then(response => response.json())
             .then(data => {
                 if (data.result) {

@@ -12,7 +12,7 @@ export default ModaleSports = (props) => {
 
     //Send selected sport data to parent component and close modal
     const selectSport = (sport) => {
-        let newSport = { id: sport.id, name: sport.name, icon: sport.icon }
+        let newSport = { id: sport.id, name: sport.name, icon: sport.icon, photo : sport.photo }
         props.closeModal(newSport)
         setSearch('')
     }
@@ -37,7 +37,7 @@ export default ModaleSports = (props) => {
         for(let i=0; i<selectedSports.length; i++) {
             if (selectedSports[i] !== null && selectedSports[i].name === e.name) isSelected=true
         }
-        return <SelectionSport key={i} isSelected={isSelected} name={e.name} icon={e.icon} selectSport={selectSport} id={e._id} />
+        return <SelectionSport key={i} isSelected={isSelected} name={e.name} icon={e.icon} selectSport={selectSport} id={e._id} photo={e.photo} />
     })
     return (
         <View style={styles.container}>
