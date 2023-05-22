@@ -354,7 +354,7 @@ const CreateScreen = ({ navigation }) => {
               </View>
             </View>
               {/* <View style={styles.dateAndTime} > */}
-            <Text style={styles.dateAndTime}>{dateAndTime.moment().format('LLL')}</Text>
+            <Text style={styles.dateAndTime}>{dateAndTime}</Text> 
             {/* </View> */}
 
           {/* <View style={styles.inputHours}>
