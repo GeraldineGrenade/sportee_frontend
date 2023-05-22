@@ -94,7 +94,7 @@ const HomeScreen = ({ navigation }) => {
                 showsHorizontalScrollIndicator={false}
             />
 
-            <Text style={styles.titleForMe}>Pour moi</Text>
+            <Text style={styles.titleForMe}>Activités liées à mes préférences</Text>
             <FlatList
                 data={filteredActivities}
                 renderItem={({ item }) => {
