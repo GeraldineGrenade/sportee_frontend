@@ -106,13 +106,15 @@ const HomeScreen = ({ navigation }) => {
             <FlatList
                 data={filteredActivities}
                 renderItem={({ item }) => {
+                    // console.log(item._id)
                     return <ActivityCard {...item} />
                 }
                 }
                 keyExtractor={(item, i) => i}
                 contentContainerStyle={styles.cardContainerTop}
                 horizontal={true}
-                showsHorizontalScrollIndicator={false}
+                vertical={false}
+                showsHorizontalScrollIndicator={true}
             />
 
             <Text style={styles.titleForMe}>Activités liées à mes préférences</Text>
@@ -283,10 +285,7 @@ const styles = StyleSheet.create({
     },
 
     principalContent: {
-        // alignItems: 'flex-start',
-        // flexGrow: 1,
         width: '100%',
-        // height: '100%',
     },
 
     titlePopulate: {
@@ -303,18 +302,15 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         color: '#121C6E',
         marginBottom: 5,
-        marginTop: 20,
+        marginTop: 35,
         marginLeft: 23,
     },
 
     cardContainer: {
-        // flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         width: '94%',
         flexGrow: 1,
-        // flexWrap: 'wrap',
-        // overflow: 'scroll',
         marginLeft: 12,
         marginRight: 10,
     },
@@ -323,12 +319,50 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        height: 152,
-        overflow: 'scroll',
         marginBottom: 10,
         marginLeft: 12,
         marginRight: 10,
+        paddingTop: 10, 
     },
 });
 
+
+// const listContent = (
+//     <View>
+//       <Text style={styles.titlePopulate}>Activités populaires autour de moi</Text>
+//       <FlatList
+//         data={filteredActivities}
+//         renderItem={({ item }) => {
+//           return (
+//             <ActivityCard
+//               // Pass the item data to the ActivityCard component
+//               {...item}
+//             />
+//           );
+//         }}
+//         keyExtractor={(item, i) => i.toString()} // Convert the key to a string
+//         contentContainerStyle={styles.cardContainerTop}
+//         horizontal={true}
+//         showsHorizontalScrollIndicator={false}
+//       />
+  
+//       <Text style={styles.titleForMe}>Activités liées à mes préférences</Text>
+//       <FlatList
+//         data={filteredActivities}
+//         renderItem={({ item }) => {
+//           return (
+//             <ActivityCard
+//               // Pass the item data to the ActivityCard component
+//               {...item}
+//             />
+//           );
+//         }}
+//         keyExtractor={(item, i) => i.toString()} // Convert the key to a string
+//         contentContainerStyle={styles.cardContainer}
+//         horizontal={false}
+//         showsHorizontalScrollIndicator={false}
+//         numColumns={2}
+//       />
+//     </View>
+//   );
 
