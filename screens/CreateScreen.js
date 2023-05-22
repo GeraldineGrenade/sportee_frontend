@@ -14,16 +14,14 @@ import {
   FlatList,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { Fontisto } from 'react-native-vector-icons'
+import { Fontisto } from "react-native-vector-icons";
 import SelectionSport from "../components/SelectionSport";
 import { useSelector, useDispatch } from "react-redux";
 import ModaleSports from "../components/ModaleSports";
 import SelectionTxt from "../components/SelectionTxt";
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 const BACKEND_ADRESS = "https://sportee-backend.vercel.app/";
-
-
 
 const levelTitles = [
   "Sportif du dimanche",
@@ -39,40 +37,20 @@ const CreateScreen = ({ navigation }) => {
     icon: "https://res.cloudinary.com/dsd7uux0v/image/upload/v1684260544/sportee/addition-thick-symbol_b3edkd.png",
   });
 
-
+  const userToken = useSelector((state) => state.user.value.token);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [cityModalVisible, setCityModalVisible] = useState(false);
-  const [isAvoiding, setIsAvoiding] = useState(false)
+  const [isAvoiding, setIsAvoiding] = useState(false);
 
-
-  const [name, setName] = useState('');
-  const [sport, setSport] = useState('');
-  const [description, setDescription] = useState('');
-  const [place, setPlace] = useState('')
-  const [level, setLevel] = useState('');
-  const [time, setTime] = useState('');
-  const [nbMaxParticipants, setNbMaxParticipants] = useState('');
-  const [conversation, setConversation] = useState('');
-  const [user, setUser] = useState('');
-  const [participants, setParticipants] = useState('');
-  const [eventDate, setEventDate] = useState(new Date());
-
-
-  const activityData = {
-    name: name,
-    sport: sport,
-    description: description,
-    place: place,
-    level: level,
-    time: time,
-    nbMaxParticipants: nbMaxParticipants,
-    conversation: conversation,
-    user: user,
-    particpants: participants,
-  };
-
+  const [name, setName] = useState("");
+  const [sport, setSport] = useState("");
+  const [description, setDescription] = useState("");
+  const [place, setPlace] = useState({});
+  const [level, setLevel] = useState("");
+  // const [time, setTime] = useState("");
+  const [nbMaxParticipants, setNbMaxParticipants] = useState("");
 
   const selectSport = () => {
     setIsModalVisible(true);
@@ -81,11 +59,12 @@ const CreateScreen = ({ navigation }) => {
   const selectTxt = (data) => {
     setLevel(data.title);
   };
-  console.log(level);
+
   const closeModal = (sport) => {
     setIsModalVisible(false);
     setNewSport(sport);
   };
+
   //RETREVIAL OF THE ADDRESS OF THE PLACE OF THE ACTIVITY
   useEffect(() => {
     const fetchCities = async () => {
@@ -96,6 +75,8 @@ const CreateScreen = ({ navigation }) => {
         const data = await response.json();
         if (data.features) {
           setSuggestions(data.features);
+          // console.log(data.features[0].properties.label)
+          console.log(data.features[0].geometry.co);
         } else {
           console.log("Error in fetching cities");
         }
@@ -118,21 +99,36 @@ const CreateScreen = ({ navigation }) => {
         onPress={() => {
           setSuggestions([]);
           setSearchValue("");
-          setPlace(item.properties.label, item.properties.y, item.properties.x);
+          setPlace({
+            address: item.properties.label,
+            coords: {
+              latitude: item.geometry.coordinates[0],
+              longitude: item.geometry.coordinates[1],
+            },
+          });
         }}
       >
-        <Text style={styles.cityItemText}>
-          {item.properties.label}
-
-        </Text>
+        <Text style={styles.cityItemText}>{item.properties.label}</Text>
       </TouchableOpacity>
     );
   };
+
   const closeCitySearch = () => {
     cityModalVisible(false);
     console.log(closeCitySearch);
   };
 
+  const activityData = {
+    name,
+    sport: newSport.id,
+    description,
+    place,
+    level,
+    date: new Date(),
+    time: 2,
+    nbMaxParticipants,
+    userToken,
+  };
   // VALIDATE CREATE ACTIVITY
   const handleCreate = () => {
     fetch(`${BACKEND_ADRESS}/activities`, {
@@ -155,10 +151,9 @@ const CreateScreen = ({ navigation }) => {
       .catch((error) => {
         console.error(error);
       });
-
   };
 
-  // CHOICE THE LEVEL
+  // CHOOSE THE LEVEL
   const levelList = levelTitles.map((e, i) => {
     //Verify if the level has been selected beforehand
     let isSelected = false;
@@ -175,21 +170,56 @@ const CreateScreen = ({ navigation }) => {
     );
   });
 
-  //CHOICE OF DATE AND TIME WITH DATETIMEPICKER
-
+  //CHOOSE OF DATE AND TIME WITH DATETIMEPICKER
+    
+      const [datePicker, setDatePicker] = useState(false);
+      const [date, setDate] = useState(new Date());
+      const [timePicker, setTimePicker] = useState(false);
+      const [time, setTime] = useState(new Date(Date.now()));
+      const [dateAndTime, setDateAndTime] = useState(new Date().toISOString());
+      
+      const onDateSelected = (event, value) => {
+        setDate(value);
+        setDatePicker(false);
+        setDateAndTime(
+            new Date(
+                [
+                    value.toISOString().split('T')[0],
+                    time.toISOString().split('T')[1],
+                ].join('T')
+            ).toISOString()
+        );
+    };
+  
+    const onTimeSelected = (event, value) => {
+   
+        const formattedValue = new Date(value.getTime() + 2 * 60 * 60 * 1000);
+        setTime(formattedValue);
+        setTimePicker(false);
+        setDateAndTime(
+            new Date(
+                [
+                    date.toISOString().split('T')[0],
+                    value.toISOString().split('T')[1],
+                ].join('T')
+                ).toISOString()
+                );
+    };
+    
+    // console.log(dateAndTime);
 
 
   // const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : 0;
 
-
-
-
   // console.log(isAvoiding)
   return (
     <KeyboardAvoidingView
-      style={isAvoiding ? { flex: 1, justifyContent: "flex-end" } : { flex: 1, justifyContent: "flex-start" }}
+      style={
+        isAvoiding
+          ? { flex: 1, justifyContent: "flex-end" }
+          : { flex: 1, justifyContent: "flex-start" }
+      }
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-
     >
       <View style={styles.topContainer}>
         <Text style={styles.title}>Créé ton activité</Text>
@@ -207,11 +237,13 @@ const CreateScreen = ({ navigation }) => {
         <View style={styles.name}>
           <Text style={styles.titre}>Titre</Text>
           <TextInput
-            placeholder="Nom de l'activité" value={name}
+            placeholder="Nom de l'activité"
+            value={name}
             style={styles.inputSport}
-            onChangeText={value => {
-              setName(value)
-            }} />
+            onChangeText={(value) => {
+              setName(value);
+            }}
+          />
         </View>
         <View style={styles.select}>
           <TouchableOpacity style={styles.selectSport}>
@@ -229,24 +261,26 @@ const CreateScreen = ({ navigation }) => {
               Description de l'activité
             </Text>
             <TextInput
-              placeholder="Description" value={description}
+              placeholder="Description"
+              value={description}
               style={styles.inputDescription}
-              onChangeText={value => {
-                setDescription(value)
+              onChangeText={(value) => {
+                setDescription(value);
               }}
             />
           </View>
         </View>
         <View style={styles.adress}>
-          <Text style={styles.textAdress}>
-            Adresse du point de rendez-vous
-          </Text>
-          <TextInput style={styles.inputAdress} placeholder='Localisation'
+          <Text style={styles.textAdress}>Adresse du point de rendez-vous</Text>
+          <TextInput
+            style={styles.inputAdress}
+            placeholder="Localisation"
             value={searchValue}
-            onChangeText={value => {
-              setSearchValue(value)
-              setCityModalVisible(true)
-            }} />
+            onChangeText={(value) => {
+              setSearchValue(value);
+              setCityModalVisible(true);
+            }}
+          />
           <FlatList
             data={suggestions}
             keyExtractor={(item) => item.properties.id}
@@ -257,51 +291,94 @@ const CreateScreen = ({ navigation }) => {
           />
         </View>
         <View style={styles.aroundMe}>
-          <Fontisto style={styles.fontisto} name='map-marker-alt' size={16} color='#121C6E' />
-          <Text style={styles.around} >{place}</Text>
-          <Text >{place.label}</Text>
+          <Fontisto
+            style={styles.fontisto}
+            name="map-marker-alt"
+            size={16}
+            color="#121C6E"
+          />
+          <Text style={styles.around}>{place.address}</Text>
         </View>
-
 
         <View style={styles.level}>
           <Text style={styles.textLevel}>Cette activité s'adresse aux</Text>
-          <View style={styles.btn}>{levelList}</View>
+          <View
+            style={styles.btn}
+            onChangeText={(value) => {
+              setLevel(value);
+            }}
+            value={level}
+          >
+            {levelList}
+          </View>
         </View>
 
         <View style={styles.date}>
           <Text style={styles.textDate}>
             Elle se tiendra le ... ... et durera environ
           </Text>
-          <View style={styles.input}>
-            <TouchableOpacity onPress={() => setOpen()}>
-              <Text >Date/Heure</Text>
-            </TouchableOpacity>
-            <DateTimePicker
+          <View style={styles.input} >
+          <View style={styles.inputDate}>
+            <View style={styles.datePicker} ></View>
+            {datePicker && (
+                <DateTimePicker
+                    value={date}
+                    mode='date'
+                    display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                    onChange={onDateSelected}
+                />
+            )}
+             {!datePicker && (
+                <View>
+                    <TouchableOpacity onPress={() => setDatePicker(true)}>
+                        <Text>Date</Text>
+                    </TouchableOpacity>
+                </View>
+            )}
+              <View style={styles.timePicker} >
+            {timePicker && (
+                <DateTimePicker
+                    value={time}
+                    mode='time'
+                    display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                    onChange={onTimeSelected}
+                />
+            )}
+            {!timePicker && (
+                <View>
+                    <TouchableOpacity onPress={() => setTimePicker(true)}>
+                        <Text>Heure</Text>
+                    </TouchableOpacity>
+                </View>
+            )}
+              </View>
+            </View>
+              {/* <View style={styles.dateAndTime} > */}
+            <Text style={styles.dateAndTime}>{dateAndTime}</Text> 
+            {/* </View> */}
 
-              value={eventDate}
-              mode="date"
-              placeholder="select date"
-              format="DD/MM/YYYY"
-              minDate="01-01-2023"
-              maxDate="01-01-2100"
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              onDateChange={(date) => {
-                setEventDate(date)
-              }}
-            />
-
-
-
-            <TextInput
-              style={styles.inputHours}
-              placeholder="Heures"
-            // value={time}
-            // onChangeText={value => {
-            //   setTime(value) }}
-            ></TextInput>
-          </View>
+          {/* <View style={styles.inputHours}>
+            {timePicker && (
+                <DateTimePicker
+                    value={time}
+                    mode='time'
+                    display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                    onChange={onTimeSelected}
+                />
+            )}
+            {!timePicker && (
+                <View>
+                    <TouchableOpacity onPress={() => setTimePicker(true)}>
+                        <Text>Time</Text>
+                    </TouchableOpacity>
+                </View>
+            )}
+        </View> */}
         </View>
+
+            
+        </View>
+       
 
         <View style={styles.invitation}>
           <Text style={styles.textInvitation}>Je souhaite inviter</Text>
@@ -314,15 +391,13 @@ const CreateScreen = ({ navigation }) => {
               onFocus={() => setIsAvoiding(true)}
               onBlur={() => setIsAvoiding(false)}
               value={nbMaxParticipants}
-              onChangeText={value => {
-                setNbMaxParticipants(value)
+              onChangeText={(value) => {
+                setNbMaxParticipants(value);
               }}
-
             />
 
             <Text style={styles.personne}>personnes</Text>
           </View>
-
         </View>
 
         <View style={styles.create}>
@@ -334,12 +409,9 @@ const CreateScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
-
     </KeyboardAvoidingView>
   );
-
-}
-
+};
 
 const styles = StyleSheet.create({
   title: {
@@ -390,14 +462,13 @@ const styles = StyleSheet.create({
     // marginLeft: 5,
     paddingRight: 8,
     color: "#121C6E",
-    fontWeight: 'bold',
-
+    fontWeight: "bold",
   },
 
   inputSport: {
     width: 216,
     height: 44,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderColor: "#D9D9D9",
     borderWidth: 1,
     borderRadius: 7,
@@ -436,20 +507,18 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     marginTop: 10,
     marginLeft: 15,
-
   },
 
   textDescription: {
     fontSize: 15,
     paddingTop: 5,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: "#121C6E",
-
   },
 
   inputDescription: {
     marginTop: 10,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 7,
     borderWidth: 1,
     borderColor: "#D9D9D9",
@@ -467,7 +536,7 @@ const styles = StyleSheet.create({
 
   textAdress: {
     fontSize: 15,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: "#121C6E",
   },
 
@@ -475,7 +544,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     width: "100%",
     height: 45,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 7,
     borderWidth: 1,
     borderColor: "#D9D9D9",
@@ -490,8 +559,8 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     marginTop: 5,
-    textAlign: 'center',
-    alignItems: 'center',
+    textAlign: "center",
+    alignItems: "center",
     // marginLeft: 5,
     // paddingLeft: 5,
   },
@@ -499,9 +568,9 @@ const styles = StyleSheet.create({
   around: {
     marginLeft: 20,
     //  marginTop: 10,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 13,
-    color: '#EA7810'
+    color: "#EA7810",
   },
 
   level: {
@@ -510,7 +579,7 @@ const styles = StyleSheet.create({
 
   textLevel: {
     fontSize: 15,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: "#121C6E",
   },
 
@@ -536,21 +605,32 @@ const styles = StyleSheet.create({
 
   textDate: {
     fontSize: 15,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: "#121C6E",
   },
 
   datePicker: {
-    marginLeft: 25
+    // marginLeft: 5,
+  },
+
+  timePicker: {
+    marginLeft: 10,
+  },
+
+  dateAndTime: {
+    fontWeight: "bold",
+    fontSize: 13,
+    color: "#EA7810",
   },
 
   input: {
-    flexDirection: "row",
-    justifyContent: 'space-between',
-
+    flexDirection: "column",
+    justifyContent: "space-between",
+    
   },
 
   inputDate: {
+    
     marginTop: 10,
     backgroundColor: "white",
     borderRadius: 7,
@@ -558,8 +638,9 @@ const styles = StyleSheet.create({
     borderColor: "#D9D9D9",
     width: 145,
     height: 34,
-    paddingLeft: 10,
+    // paddingLeft: 10,
     flexDirection: "row",
+    justifyContent: "space-between",
   },
 
   inputHours: {
@@ -580,7 +661,7 @@ const styles = StyleSheet.create({
 
   textInvitation: {
     fontSize: 15,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: "#121C6E",
   },
 
@@ -604,15 +685,14 @@ const styles = StyleSheet.create({
     fontSize: 15,
     paddingLeft: 5,
     marginTop: 10,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: "#121C6E",
-
   },
 
   create: {
     height: 120,
     alignItems: "center",
-    justifyContent: 'center'
+    justifyContent: "center",
   },
 
   createBtn: {
@@ -624,7 +704,7 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 15
+    marginBottom: 15,
   },
 
   textBtn: {
@@ -636,9 +716,7 @@ const styles = StyleSheet.create({
     width: "10%",
   },
 
-
+ 
 });
 
-
-
-export default CreateScreen
+export default CreateScreen;
