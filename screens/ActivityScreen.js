@@ -23,7 +23,7 @@ const ActivityScreen = ({ navigation, route }) => {
     //Get activity info from id transmitted from previous page
     useEffect(() => {
         //!\Replace ID with route.params
-        fetch('https://sportee-backend.vercel.app/activities/getActivity/6468e71e177bae8b6231ed09')
+        fetch('https://sportee-backend.vercel.app/activities/getActivity/646b1b753e5541193f69a64d')
             .then(response => response.json())
             .then(data => {
                 if (data.result) {
@@ -87,9 +87,18 @@ const ActivityScreen = ({ navigation, route }) => {
     )
 
     const handleParticipate = () => {
+    fetch(`https://sportee-backend.vercel.app/activities/646b1b7d3e5541193f69a8a0/646b48e29715944fd8d6a0e7`,
+         {
+           method: 'PUT',
+        //    headers: { 'Content-Type': 'application/json' },
+         })    
+         .then(response => response.json())
+         .then(data => {
+           console.log(data)
         console.log('participate')
         setIsParticipationModalVisible(false)
         setIsValidateParticipationModalVisible(true)
+        });
     }
 
     //Modale confirmation de participation
@@ -192,7 +201,7 @@ const ActivityScreen = ({ navigation, route }) => {
                         </View>
 
                     </View>
-                    {chatBtn}
+                    {participateBtn}
                 </View>}
             {isParticipationModalVisible && participationModal}
             {isValidateParticipationModalVisible && validateParticipationModal}
