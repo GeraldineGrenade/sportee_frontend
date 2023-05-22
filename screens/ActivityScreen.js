@@ -23,7 +23,7 @@ const ActivityScreen = ({ navigation, route }) => {
     //Get activity info from id transmitted from previous page
     useEffect(() => {
         //!\Replace ID with route.params
-        fetch('https://sportee-backend.vercel.app/activities/getActivity/6468e71e177bae8b6231ecf2')
+        fetch('https://sportee-backend.vercel.app/activities/getActivity/6468e71e177bae8b6231ed09')
             .then(response => response.json())
             .then(data => {
                 if (data.result) {
@@ -192,7 +192,7 @@ const ActivityScreen = ({ navigation, route }) => {
                         </View>
 
                     </View>
-                    {buttonToRender}
+                    {chatBtn}
                 </View>}
             {isParticipationModalVisible && participationModal}
             {isValidateParticipationModalVisible && validateParticipationModal}
