@@ -4,12 +4,13 @@ import { Entypo } from 'react-native-vector-icons'
 import { Fontisto } from 'react-native-vector-icons'
 import RangeSlider, { Slider } from 'react-native-range-slider-expo'
 import { useDispatch, useSelector } from 'react-redux'
-import { addSport, removeSport, selectLevel, removeAllSports, updateSliderValue, setDateTime } from '../reducers/preferences'
+import { addSport, removeSport, selectLevel, removeAllSports, updateSliderValue, setDateTime, setSlotOption, setSelectedParticipants } from '../reducers/preferences'
 import ModaleSports from './ModaleSports'
 import SelectionSport from './SelectionSport'
 import SelectionTxt from './SelectionTxt'
-// import DateTimePicker from '@react-native-community/datetimepicker'
+import DateTimePicker from '@react-native-community/datetimepicker'
 import DropDownPicker from 'react-native-dropdown-picker'
+
 
 const levelTitles = [
     'Sportif du dimanche',
@@ -87,6 +88,22 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
             </TouchableOpacity>
         )
     }
+
+    const handleDropdownChange = (value) => {
+        setToValue(value)
+    }
+
+    useEffect(() => {
+        dispatch(setSlotOption(toValue))
+    }, [dispatch, toValue])
+
+    const handlePeopleDropdownChange = (value) => {
+        setPeopleValue(value)
+    }
+
+    useEffect(() => {
+        dispatch(setSelectedParticipants(peopleValue));
+    }, [dispatch, peopleValue])
 
     const resetFilters = () => {
         dispatch(selectLevel(''))
@@ -298,6 +315,7 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
                     multiple={true}
                     mode="BADGE"
                     badgeDotColors={["#e76f51", "#00b4d8", "#e9c46a", "#e76f51", "#8ac926", "#00b4d8", "#e9c46a"]}
+                    onChangeValue={handleDropdownChange}
                 />
             </View>
             <View>
@@ -316,6 +334,7 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
                     setItems={setPeople}
                     placeholder="Nombre de participants"
                     theme="LIGHT"
+                    onChangeValue={handlePeopleDropdownChange}
                 />
             </View>
             <TouchableOpacity style={styles.resultBtn}>

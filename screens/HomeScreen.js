@@ -9,16 +9,49 @@ import Map from '../components/Map';
 import ModalFilter from '../components/ModalFilter';
 // import { useSelector } from 'react-redux';
 import ModaleConnect from '../components/ModaleConnect';
+// import { addSport, removeSport, removeAllSports, addHabit, removeHabit, removeAllHabits, selectLevel, updateSliderValue } from '../reducers/preferences'
 
 const HomeScreen = ({ navigation }) => {
-    const [showMap, setShowMap] = useState(false);
-    const [modalVisible, setModalVisible] = useState(false);
-    const [mapIconColor, setMapIconColor] = useState('#121C6E');
-    const [mapTextColor, setMapTextColor] = useState('#121C6E');
-    const [listIconColor, setListIconColor] = useState('#121C6E');
-    const [listTextColor, setListTextColor] = useState('#121C6E');
-    const connectedUser = useSelector((state) => state.user.value);
+    const [showMap, setShowMap] = useState(false)
+    const [modalVisible, setModalVisible] = useState(false)
+    const [mapIconColor, setMapIconColor] = useState('#121C6E')
+    const [mapTextColor, setMapTextColor] = useState('#121C6E')
+    const [listIconColor, setListIconColor] = useState('#121C6E')
+    const [listTextColor, setListTextColor] = useState('#121C6E')
+    const connectedUser = useSelector((state) => state.user.value)
+    // const preferences = useSelector((state) => state.preferences.value)
     let dispatch = useDispatch()
+
+    // const filterActivities = () => {
+    //     const { sports, level, sliderValue, selectedOption, selectedParticipants } = preferences
+
+    //     // Filter by sport
+    //     let filteredBySports = activityData.filter(activity => {
+    //         return sports.includes(activity.name)
+    //     })
+
+    //     // Filter by lvl
+    //     let filteredByLevel = filteredBySports.filter(activity => {
+    //         return activity.level === level
+    //     })
+
+    //     // Filter with the slider
+    //     let filteredBySliderValue = filteredByLevel.filter(activity => {
+    //         return activity.sliderValue <= sliderValue
+    //     })
+
+    //     // Filter by slot
+    //     let filteredBySlotOption = filteredBySliderValue.filter(activity => {
+    //         return activity.slotOption === selectedOption
+    //     })
+
+    //     // Filter the number of participants
+    //     let filteredByParticipants = filteredBySlotOption.filter(activity => {
+    //         return activity.participants >= selectedParticipants
+    //     })
+
+    //     return filteredByParticipants
+    // }
 
     //On loading component, fetch all activities from DB and send then in activities store
     useEffect(() => {
@@ -39,8 +72,8 @@ const HomeScreen = ({ navigation }) => {
             })
     }, [])
 
+    // const filteredActivities = filterActivities()
     const activityData = [{ name: "Yoga", city: "Lille", date: "19 mai 18h", titre: "Yoga Vinyasa à la citadelle" }, { name: "Surf", city: "Wissant", date: "22 mai 11h", titre: "Initiation au surf", image: '../assets/sport-photos/surf.jpg' }, { name: "Boxe", city: "Lille", date: "25 mai 7h", titre: "Cours boxe thaïlandaise" }, { name: "Tennis", city: "Roubaix", date: "28 mai 12h", titre: "Tennis en exterieur" }, { name: "Beach-Volley", city: "Malo", date: "30 mai 12h", titre: "Tournoi de Beach-Volley" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }, { name: "Football", city: "Roubaix", date: "2 juin 12h", titre: "Football with fun" }]
-
 
     const listContent = (
         <View>
