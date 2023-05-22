@@ -7,10 +7,6 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import ActivityCard from '../components/ActivityCard';
 import Map from '../components/Map';
 import ModalFilter from '../components/ModalFilter';
-<<<<<<< HEAD
-// import { useSelector } from 'react-redux';
-=======
->>>>>>> camille
 import ModaleConnect from '../components/ModaleConnect';
 // import { addSport, removeSport, removeAllSports, addHabit, removeHabit, removeAllHabits, selectLevel, updateSliderValue } from '../reducers/preferences'
 
@@ -57,22 +53,22 @@ const HomeScreen = ({ navigation }) => {
     // }
 
     //On loading component, fetch all activities from DB and send then in activities store
-    useEffect(() => {
-        fetch('https://sportee-backend.vercel.app/activities')
-            .then(response => {
-                if (response.ok) {
-                    console.log('route hit')
-                    return response.json()
-                } else {
-                    throw new Error('Erreur lors de la récupération de l\'activité')
-                }
-            })
-            .then(data => {
-                dispatch(addAllActivities(data.activities))
-            })
-            .catch(error => {
-                console.error(error);
-            })
+    useEffect(()=>{
+     fetch('https://sportee-backend.vercel.app/activities')
+    .then(response => {
+        if (response.ok) {
+            console.log('route hit')
+            return response.json()
+        } else {
+            throw new Error('Erreur lors de la récupération de l\'activité')
+        }
+    })
+    .then(data => {
+        dispatch(addAllActivities(data.activities))
+    })
+    .catch(error => {
+        console.error(error);
+    })
     }, [])
 
     // const filteredActivities = filterActivities()
@@ -136,7 +132,7 @@ const HomeScreen = ({ navigation }) => {
                 <ModalFilter modalVisible={modalVisible} setModalVisible={setModalVisible} />
                 <TextInput placeholder='Rechercher une activité' style={styles.input}></TextInput>
                 <View style={styles.userIconContainer}>
-                    <FontAwesome name='user' size={25} color='#f8f8ff' style={styles.userIcon} onPress={() => navigation.navigate('Profil')} />
+                    <FontAwesome name='user' size={25} color='#f8f8ff' style={styles.userIcon} onPress={() => {connectedUser.email ? navigation.navigate('Profil') : navigation.navigate('ConnectionAll')}} />
                 </View>
             </View>
 

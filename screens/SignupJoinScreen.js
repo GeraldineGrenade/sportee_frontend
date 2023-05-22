@@ -1,26 +1,14 @@
 import React, { useState, FC } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, Platform, StyleSheet, DateInput } from 'react-native';
-//import DateTimePicker from '@react-native-community/datetimepicker';
+import { View, Text, TextInput, TouchableOpacity, Image, Platform, StyleSheet, DateInput, KeyboardAvoidingView, Modal } from 'react-native';
+import ModaleAvatars from '../components/ModaleAvatars';
+import DateTimePicker from '@react-native-community/datetimepicker'
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
-const avatarIconList = [
-    'https://res.cloudinary.com/dsd7uux0v/image/upload/v1684405796/sportee/avatar1_suh7vc.png',
-    'https://res.cloudinary.com/dsd7uux0v/image/upload/v1684405796/sportee/avatar2_nmbj4l.png',
-    'https://res.cloudinary.com/dsd7uux0v/image/upload/v1684405796/sportee/avatar3_jzjn5u.png',
-    'https://res.cloudinary.com/dsd7uux0v/image/upload/v1684405796/sportee/avatar4_ug3mjt.png',
-    'https://res.cloudinary.com/dsd7uux0v/image/upload/v1684405796/sportee/avatar5_ywvehs.png',
-    'https://res.cloudinary.com/dsd7uux0v/image/upload/v1684405796/sportee/avatar6_gvkxhz.png',
-]
+import Foundation from 'react-native-vector-icons/Foundation';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 const emailRegex = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
 const passwordRegex = new RegExp(/(?=.*\d.*)(?=.*[a-zA-Z].*)(?=.*[!#\$%&\?].*).{8,}/)
-
-
-// DateTimePickerAndroid.open(params: AndroidNativeProps)
-// DateTimePickerAndroid.dismiss(mode: AndroidNativeProps['date'])
-
-
 
 const SignupJoinScreen = ({ navigation }) => {
     const [username, setUsername] = useState('');
@@ -36,36 +24,32 @@ const SignupJoinScreen = ({ navigation }) => {
     const [confirmEmail, setConfirmEmail] = useState('')
     const [confirmEmailError, setConfirmEmailError] = useState(false);
     const [phone, setPhone] = useState('');
-    const [dateOfBirth, setDateOfBirth] = useState(null);
-    const [showModalDate, setShowModalDate] = useState(false);
+    const [dateOfBirth, setDateOfBirth] = useState(new Date());
+    const [dateOfBirthError, setDateOfBirthError] = useState(false);
     const [password, setPassword] = useState('');
     const [passwordError, setPasswordError] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState(false);
-    const [avatar, setAvatar] = useState(avatarIconList[0])
-    
-    //!\ DATE PICKER DOES NOT WORK
-    // const selectDate = (event, selectedDate) => {
-    //     const dob = selectedDate || dateOfBirth
-    //     setDateOfBirth(dob)
-    // }
+    const [avatar, setAvatar] = useState('https://res.cloudinary.com/dsd7uux0v/image/upload/v1684574546/sportee/user_uu2pdu.png');
+    const [showModalAvatar, setShowModalAvatar] = useState(false);
+    const [isAvoiding, setIsAvoiding] = useState(false);
 
-    // let dateModal = <DateTimePicker 
-    //     mode="date" 
-    //     display="calendar" 
-    //     value ={dateOfBirth}
-    //     //onChange={selectDate()}
-    //     onSubmit={(date) => {
-    //         setDateOfBirth(date)
-    //         setShowModalDate(false)
-    //     }}
-    // />
-
-   
     
-    //Validate user info
+    //On closing avatar modal, set new avatar to chosen one
+    const closeAvatarModal = (avatar) => {
+        setShowModalAvatar(false)
+        setAvatar(avatar)
+    }
+    
+    // console.log(dateOfBirth)
+    //!\ SET DATE FROM DATE TIME PICKER DOES NOT WORK
+    const setDate = (event, date) => {
+        setDateOfBirth(date)
+        console.log('date set')
+    }
+
+    //Validate user info - Check if all fields are valid and if not add error text underneath input
     const handleValidate = () => {
-        //Check if all fields are valid and if not add error text underneath input
 
         //Check username
         if (username === '') {
@@ -74,7 +58,7 @@ const SignupJoinScreen = ({ navigation }) => {
             return
         }
         fetch(`https://sportee-backend.vercel.app/users/checkUsername/${username}`)
-        .then(response => response.json())
+            .then(response => response.json())
             .then(data => {
                 if (!data.result) {
                     setUsernameError(true)
@@ -85,7 +69,7 @@ const SignupJoinScreen = ({ navigation }) => {
                     setUsernameErrorTxt('')
                 }
             })
-            
+
         //Check firstname    
         if (firstname === '') {
             setFirstnameError(true);
@@ -93,7 +77,7 @@ const SignupJoinScreen = ({ navigation }) => {
         } else {
             setFirstnameError(false)
         }
-        
+
         //Check lastname
         if (lastname === '') {
             setLastnameError(true);
@@ -105,11 +89,11 @@ const SignupJoinScreen = ({ navigation }) => {
         //Check email
         if (!emailRegex.test(email)) {
             setEmailError(true)
-            setEmailErrorTxt("Entrer une addresse mail valide") 
+            setEmailErrorTxt("Entrer une addresse mail valide")
             return
         } else {
             fetch(`https://sportee-backend.vercel.app/users/checkEmail/${email}`)
-            .then(response => response.json())
+                .then(response => response.json())
                 .then(data => {
                     if (!data.result) {
                         setEmailError(true)
@@ -121,7 +105,7 @@ const SignupJoinScreen = ({ navigation }) => {
                     }
                 })
         }
-        
+
         //Check confirm mail
         if (email !== confirmEmail) {
             setConfirmEmailError(true)
@@ -131,7 +115,13 @@ const SignupJoinScreen = ({ navigation }) => {
         }
 
         //Check date 
-        
+        if (dateOfBirth === new Date()) {
+            setDateOfBirthError(true);
+            return
+        } else {
+            setDateOfBirthError(false)
+        }
+
         //Check password
         if (!passwordRegex.test(password)) {
             setPasswordError(true)
@@ -139,7 +129,7 @@ const SignupJoinScreen = ({ navigation }) => {
         } else {
             setPasswordError(false)
         }
-        
+
         //Check confirm password
         if (password !== confirmPassword) {
             setConfirmPasswordError(true)
@@ -147,167 +137,201 @@ const SignupJoinScreen = ({ navigation }) => {
         } else {
             setConfirmPasswordError(false)
         }
-        
+
         //if all input are correct, navigate to preference page with info in route.params
-        navigation.navigate('SignUpPreferences', {username, firstname, lastname, email, phone, dateOfBirth, password, avatar})
+        navigation.navigate('SignUpPreferences', { username, firstname, lastname, email, phone, dateOfBirth, password, avatar })
     }
-    
-    //!\change style of inputs according to whether error or not 
-    
+
     return (
-        <View style={styles.container}>
-            {/* Change navigation destination to connection page */}
-            <TouchableOpacity onPress={() => navigation.navigate()}>
-                <Feather name='arrow-left' size={25} color='#D9D9D9' />
-            </TouchableOpacity>
-            <Text style={styles.title}>Rejoins nous !</Text>
-            <View style={styles.userContainer}>
-                {/* Add possibility to choose image from list */}
-                <Image title="avatar" src={avatar} style={styles.avatar} />
-                <View style={styles.userNameContainer}>
-                    <Text>Nom d'utilisateur* :</Text>
-                    <TextInput
-                        style={styles.input}
-                        // Change image in input bar
-                        inlineImageLeft='search_icon'
-                        inlineImagePadding={10}
-                        inputMode='none'
-                        placeholder="Mon nom d'utilisateur"
-                        onChangeText={(value) => setUsername(value)}
-                        value={username}
-                    />
-                    {usernameError && <Text style={[styles.error, { alignSelf: 'flex-start' }]}>{usernameErrorTxt}</Text>}
+        <KeyboardAvoidingView
+            style={isAvoiding ? styles.avoidingContainer : styles.container}
+            behavior={Platform.OS === "ios" ? "padding" : "height"} >
+
+            <View >
+                <TouchableOpacity onPress={() => navigation.navigate('ConnectionAll')}>
+                    <Feather name='arrow-left' size={25} color='#D9D9D9' />
+                </TouchableOpacity>
+                <Text style={styles.title}>Rejoins nous !</Text>
+                <View style={styles.userContainer}>
+                    <View style={styles.avatarContainer}>
+                        <Image title="avatar" src={avatar} style={styles.avatar} />
+                        <TouchableOpacity onPress={() => setShowModalAvatar(true)}>
+                            <FontAwesome5 name='pen' style={styles.modifyIAvatar} />
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.userNameContainer}>
+                        <Text style={[styles.inputLabel, { marginBottom: 10 }]}>Nom d'utilisateur* :</Text>
+                        <View style={styles.input}>
+                            <FontAwesome name='user' style={styles.inputIcon} />
+                            <TextInput
+                                style={styles.inputText}
+                                inputMode='none'
+                                placeholder="Mon nom d'utilisateur"
+                                onChangeText={(value) => setUsername(value)}
+                                value={username}
+                            />
+                        </View>
+                        {usernameError && <Text style={[styles.error, { alignSelf: 'flex-start' }]}>{usernameErrorTxt}</Text>}
+                    </View>
                 </View>
+                <View style={styles.inputContainer}>
+                    <View style={styles.inputPair}>
+                        <Text style={styles.inputLabel}>Prénom* :</Text>
+                        <View style={styles.input}>
+                            <FontAwesome name='user' style={styles.inputIcon} />
+                            <TextInput
+                                style={styles.inputText}
+                                inputMode='text'
+                                autoComplete='given-name'
+                                placeholder="Mon prénom"
+                                onChangeText={(value) => setFirstname(value)}
+                                value={firstname}
+                            />
+                        </View>
+                    </View>
+                    {firstnameError && <Text style={styles.error}>Entrer un prénom</Text>}
+                    <View style={styles.inputPair}>
+                        <Text style={styles.inputLabel}>Nom* :</Text>
+                        <View style={styles.input}>
+                            <FontAwesome name='user' style={styles.inputIcon} />
+                            <TextInput
+                                style={styles.inputText}
+                                inputMode='text'
+                                autoComplete='family-name'
+                                placeholder="Mon nom"
+                                onChangeText={(value) => setLastname(value)}
+                                value={lastname}
+                            />
+                        </View>
+                    </View>
+                    {lastnameError && <Text style={styles.error}>Entrer un nom</Text>}
+                    <View style={styles.inputPair}>
+                        <Text style={styles.inputLabel}>Email* :</Text>
+                        <View style={styles.input}>
+                            <Foundation name='mail' style={styles.inputIcon} />
+                            <TextInput
+                                style={styles.inputText}
+                                autoCapitalize="none"
+                                inputMode='email'
+                                autoComplete="email"
+                                placeholder="Mon adresse mail"
+                                onChangeText={(value) => setEmail(value)}
+                                value={email}
+                            />
+                        </View>
+                    </View>
+                    {emailError && <Text style={styles.error}>{emailErrorTxt}</Text>}
+                    <View style={styles.inputPair}>
+                        <Text style={styles.inputLabel}>Confirmer mon mail* :</Text>
+                        <View style={styles.input}>
+                            <Foundation name='mail' style={styles.inputIcon} />
+                            <TextInput
+                                style={styles.inputText}
+                                autoCapitalize="none"
+                                inputMode='email'
+                                placeholder="Confirmer mon mail"
+                                onFocus={() => setIsAvoiding(true)}
+                                onBlur={() => setIsAvoiding(false)}
+                                onChangeText={(value) => setConfirmEmail(value)}
+                                value={confirmEmail}
+                            />
+                        </View>
+                    </View>
+                    {confirmEmailError && <Text style={styles.error}>Addresses mails différentes</Text>}
+                    <View style={styles.inputPair}>
+                        <Text style={styles.inputLabel}>Téléphone :</Text>
+                        <View style={styles.input}>
+                            <FontAwesome name='phone' style={styles.inputIcon} />
+                            <TextInput
+                                style={styles.inputText}
+                                inputMode='tel'
+                                placeholder="0600000000"
+                                onFocus={() => setIsAvoiding(true)}
+                                onBlur={() => setIsAvoiding(false)}
+                                onChangeText={(value) => setPhone(value)}
+                                value={phone}
+                            />
+                        </View>
+                    </View>
+                    <View style={styles.inputPair}>
+                        <Text style={styles.inputLabel}>Date de naissance* :</Text>
+                        <View style={styles.input}>
+                            <FontAwesome5 name='calendar-alt' style={styles.inputIcon} />
+                            {/* <TextInput
+                                style={styles.inputText}
+                                placeholder="JJ/MM/AA"
+                                onFocus={() => setIsAvoiding(true)}
+                                onBlur={() => setIsAvoiding(false)}
+                                // onChangeText={(value) => setDateOfBirth(value)}
+                                //onFocus={() => setShowModalDate(true)}
+                                value={dateOfBirth}
+                            /> */}
+                            <DateTimePicker
+                                style={styles.inputText}
+                                value={dateOfBirth}
+                                mode="date"
+                                placeholder="select date"
+                                format="DD/MM/YYYY"
+                                minDate="01-01-1920"
+                                maxDate="01-01-2018"
+                                confirmBtnText="Confirm"
+                                cancelBtnText="Cancel"
+                                customStyles={{
+                           
+                                }}
+                                onChange={this.setDate}
+                            />
+                        </View>
+                    </View>
+                    {dateOfBirthError && <Text style={styles.error}>Entrer une date de naissance</Text>}
+                    <View style={styles.inputPair}>
+                        <Text style={styles.inputLabel}>Mon mot de passe* :</Text>
+                        {/* Add eye to view password on click */}
+                        <View style={styles.input}>
+                            <FontAwesome5 name='key' style={styles.inputIcon} />
+                            <TextInput
+                                style={styles.inputText}
+                                autoCapitalize="none"
+                                inputMode='text'
+                                placeholder="Mon mot de passe"
+                                onFocus={() => setIsAvoiding(true)}
+                                onBlur={() => setIsAvoiding(false)}
+                                secureTextEntry={true}
+                                onChangeText={(value) => setPassword(value)}
+                                value={password}
+                            />
+                        </View>
+                    </View>
+                    {passwordError && <Text style={styles.error}>Entrer un mot de passe qui contient au moins un chiffre, une minuscule, un caractère spécial et qui fait au moins 8 caractères</Text>}
+                    <View style={styles.inputPair}>
+                        <Text style={styles.inputLabel}>Confirmer mon mot de passe* :</Text>
+                        {/* Add eye to view password on click */}
+                        <View style={styles.input}>
+                            <FontAwesome5 name='key' style={styles.inputIcon} />
+                            <TextInput
+                                style={styles.inputText}
+                                autoCapitalize="none"
+                                inputMode='text'
+                                placeholder="Confirmer mot de passe"
+                                secureTextEntry={true}
+                                onFocus={() => setIsAvoiding(true)}
+                                onBlur={() => setIsAvoiding(false)}
+                                onChangeText={(value) => setConfirmPassword(value)}
+                                value={confirmPassword}
+                            />
+                        </View>
+                    </View>
+                    {confirmPasswordError && <Text style={styles.error}>Mots de passe différents</Text>}
+                </View>
+                <Text style={styles.obligatoire}>* Champs obligatoires</Text>
+                <TouchableOpacity style={styles.validateBtn} onPress={() => handleValidate()}>
+                    <Text style={styles.validateBtnTxt}>Valider mes informations</Text>
+                </TouchableOpacity>
+                <Modal visible={showModalAvatar} animationType="fade" transparent>
+                    <ModaleAvatars closeAvatarModal={closeAvatarModal} />
+                </Modal>
             </View>
-            <View style={styles.inputContainer}>
-                <View style={styles.inputPair}>
-                    <Text>Prénom* :</Text>
-                    <TextInput
-                        style={styles.input}
-                        // Change image in input bar
-                        inlineImageLeft='search_icon'
-                        inlineImagePadding={10}
-                        inputMode='text'
-                        autoComplete='given-name'
-                        placeholder="Mon prénom"
-                        onChangeText={(value) => setFirstname(value)}
-                        value={firstname}
-                    />
-                </View>
-                {firstnameError && <Text style={styles.error}>Entrer un prénom</Text>}
-                <View style={styles.inputPair}>
-                    <Text>Nom* :</Text>
-                    <TextInput
-                        style={styles.input}
-                        // Change image in input bar
-                        inlineImageLeft='search_icon'
-                        inlineImagePadding={10}
-                        inputMode='text'
-                        autoComplete='family-name'
-                        placeholder="Mon nom"
-                        onChangeText={(value) => setLastname(value)}
-                        value={lastname}
-                    />
-                </View>
-                {lastnameError && <Text style={styles.error}>Entrer un nom</Text>}
-                <View style={styles.inputPair}>
-                    <Text>Email* :</Text>
-                    <TextInput
-                        style={styles.input}
-                        // Change image in input bar
-                        inlineImageLeft='search_icon'
-                        inlineImagePadding={10}
-                        autoCapitalize="none"
-                        inputMode='email'
-                        autoComplete="email"
-                        placeholder="Mon adresse mail"
-                        onChangeText={(value) => setEmail(value)}
-                        value={email}
-                    />
-                </View>
-                {emailError && <Text style={styles.error}>{emailErrorTxt}</Text>}
-                <View style={styles.inputPair}>
-                    <Text>Confirmer mon email* :</Text>
-                    <TextInput
-                        style={styles.input}
-                        // Change image in input bar
-                        inlineImageLeft='search_icon'
-                        inlineImagePadding={10}
-                        autoCapitalize="none"
-                        inputMode='email'
-                        placeholder="Confirmer mon mail"
-                        onChangeText={(value) => setConfirmEmail(value)}
-                        value={confirmEmail}
-                    />
-                </View>
-                {confirmEmailError && <Text style={styles.error}>Addresses mails différentes</Text>}
-                <View style={styles.inputPair}>
-                    <Text>Téléphone :</Text>
-                    <TextInput
-                        style={styles.input}
-                        // Change image in input bar
-                        inlineImageLeft='search_icon'
-                        inlineImagePadding={10}
-                        inputMode='tel'
-                        placeholder="0600000000"
-                        onChangeText={(value) => setPhone(value)}
-                        value={phone}
-                    />
-                </View>
-                <View style={styles.inputPair}>
-                    <Text>Date de naissance* :</Text>
-                    {/* Add popup for date on click */}
-                    <TextInput
-                        style={styles.input}
-                        // Change image in input bar
-                        inlineImageLeft='search_icon'
-                        inlineImagePadding={10}
-                        placeholder="JJ/MM/AA"
-                        // onChangeText={(value) => setDateOfBirth(value)}
-                        //onFocus={() => setShowModalDate(true)}
-                        value={dateOfBirth}
-                    />
-                </View>
-                <View style={styles.inputPair}>
-                    <Text>Mon mot de passe* :</Text>
-                    {/* Add eye to view password on click */}
-                    <TextInput
-                        style={styles.input}
-                        // Change image in input bar
-                        inlineImageRight='search_icon'
-                        inlineImagePadding={10}
-                        autoCapitalize="none"
-                        inputMode='text'
-                        placeholder="********"
-                        secureTextEntry={true}
-                        onChangeText={(value) => setPassword(value)}
-                        value={password}
-                    />
-                </View>
-                {passwordError && <Text style={styles.error}>Entrer un mot de passe qui contient au moins un chiffre, une minuscule, un caractère spécial et qui fait au moins 8 caractères</Text>}
-                <View style={styles.inputPair}>
-                    <Text style={styles.inputLabel}>Confirmer mon mot de passe* :</Text>
-                    {/* Add eye to view password on click */}
-                    <TextInput
-                        style={styles.input}
-                        // Change image in input bar
-                        inlineImageRight='search_icon'
-                        inlineImagePadding={10}
-                        autoCapitalize="none"
-                        inputMode='text'
-                        placeholder="********"
-                        secureTextEntry={true}
-                        onChangeText={(value) => setConfirmPassword(value)}
-                        value={confirmPassword}
-                    />
-                </View>
-                {confirmPasswordError && <Text style={styles.error}>Mots de passe différents</Text>}
-            </View>
-            <TouchableOpacity style={styles.validateBtn} onPress={() => handleValidate()}>
-                <Text style={styles.validateBtnTxt}>Valider mes informations</Text>
-            </TouchableOpacity>
-            {/* {showModalDate && dateModal} */}
-        </View>
+        </KeyboardAvoidingView>
     )
 }
 
@@ -319,32 +343,52 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         paddingRight: 30,
         paddingLeft: 30,
-        paddingTop: 30,
+        paddingTop: 60,
         width: '100%',
         height: '100%',
+    },
+    avoidingContainer: {
+        flex: 1,
+        backgroundColor: "white",
+        paddingRight: 30,
+        paddingLeft: 30,
+        paddingTop: 60,
+        width: '100%',
+        height: '100%',
+        justifyContent: 'flex-end',
     },
     title: {
         color: '#EA7810',
         fontSize: 24,
         fontWeight: '700',
         paddingTop: 8,
-        paddingBottom: 20,
+        paddingBottom: 35,
     },
     userContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         width: '100%',
         marginBottom: 10,
+
+    },
+    avatarContainer: {
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        marginRight: 35,
     },
     avatar: {
         borderRadius: 50,
-        width: 100,
-        height: 100,
-        marginRight: 15,
+        width: 130,
+        height: 130,
+    },
+    modifyIAvatar: {
+        color: '#D9D9D9',
+        marginLeft: -15,
+        fontSize: 15,
     },
     userNameContainer: {
         justifyContent: 'flex-start',
-        width: '100%'
+        width: '100%',
     },
     inputContainer: {
         width: '100%',
@@ -355,29 +399,48 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '100%',
-        marginTop: 8,
+        marginTop: 20,
 
     },
+    inputIcon: {
+        color: '#D9D9D9',
+        marginRight: 5,
+    },
+    inputText: {
+        fontSize: 14,
+    },
     inputLabel: {
-        width: 100,
+        width: 150,
+        fontSize: 15,
+        flexWrap: 'wrap',
     },
     input: {
         borderColor: '#D9D9D9',
         borderWidth: 1,
         borderRadius: 5,
-        width: 150,
-        fontSize: 12,
+        width: 190,
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingLeft: 5,
+        height: 30,
+    },
+    obligatoire: {
+        marginTop: 20,
+        fontStyle: 'italic',
+        color: '#D9D9D9',
     },
     validateBtn: {
         backgroundColor: '#121C6E',
-        padding: 10,
+        padding: 15,
         width: '80%',
         alignItems: 'center',
         alignSelf: 'center',
         borderRadius: 5,
+        marginTop: 20,
     },
     validateBtnTxt: {
         color: 'white',
+        fontSize: 16,
     },
     error: {
         color: 'red',

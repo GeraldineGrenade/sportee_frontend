@@ -60,7 +60,11 @@ const SignUpPreferencesScreen = ({ navigation, route }) => {
         let isSelected = false
         if (selectedHabits.includes(e)) isSelected = true
 
-        return <SelectionTxt key={i} category='habits' isSelected={isSelected} selectTxt={selectTxt} title={e} />
+        return (
+            <View style={styles.habit}>
+                <SelectionTxt key={i} category='habits' isSelected={isSelected} selectTxt={selectTxt} title={e} />
+            </View>
+        )
     })
     const levelList = levelTitles.map((e, i) => {
         //Verify if the level has been selected beforehand
@@ -160,7 +164,7 @@ const SignUpPreferencesScreen = ({ navigation, route }) => {
             {sportsError && <Text style={styles.error}>Choisis au moins un sport préféré</Text>}
 
             <Text style={styles.subTitle}>Je fais du sport ...</Text>
-            <View style={styles.choices}>
+            <View style={styles.habitChoices}>
                 {habitList}
             </View>
             {habitsError && <Text style={styles.error}>Choisis au moins une habitude de sport</Text>}
@@ -190,7 +194,7 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         paddingRight: 30,
         paddingLeft: 30,
-        paddingTop: 30,
+        paddingTop: 60,
         width: '100%',
         height: '100%',
     },
@@ -198,14 +202,14 @@ const styles = StyleSheet.create({
         color: '#EA7810',
         fontSize: 24,
         fontWeight: '700',
-        paddingTop: 8,
-        paddingBottom: 15,
+        marginTop: 25,
+        marginBottom: 20,
     },
     subTitle: {
         color: '#121C6E',
-        fontSize: 16,
-        marginBottom: 8,
-        marginTop: 5,
+        fontSize: 18,
+        marginBottom: 25,
+        marginTop: 20,
 
     },
     choices: {
@@ -214,17 +218,29 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         flexWrap: 'wrap',
     },
+    habit: {
+        marginRight: 10,
+        marginLeft: 10,
+    },
+    habitChoices: {
+        flexDirection: 'row',
+        width: '80%',
+        alignSelf: 'center',
+        justifyContent: 'center',
+        flexWrap: 'wrap',
+    },
     validateBtn: {
         backgroundColor: '#121C6E',
-        padding: 10,
+        padding: 15,
         width: '80%',
         alignItems: 'center',
         alignSelf: 'center',
         borderRadius: 5,
-        marginTop: 15,
+        marginTop: 40,
     },
     validateBtnTxt: {
         color: 'white',
+        fontSize: 16,
     },
     error: {
         color: 'red',
