@@ -8,7 +8,6 @@ import ActivityCard from '../components/ActivityCard';
 import Map from '../components/Map';
 import ModalFilter from '../components/ModalFilter';
 import ModaleConnect from '../components/ModaleConnect';
-// import { addSport, removeSport, removeAllSports, addHabit, removeHabit, removeAllHabits, selectLevel, updateSliderValue } from '../reducers/preferences'
 
 const HomeScreen = ({ navigation }) => {
     const [showMap, setShowMap] = useState(false)
@@ -24,13 +23,12 @@ const HomeScreen = ({ navigation }) => {
     let dispatch = useDispatch()
 
     //On loading component, fetch all activities from DB and send then in activities store
-    const { sports, level, sliderValue, selectedOption, selectedParticipants } = preferences
+    const { sports, level, dateTime, slotOption, selectedParticipants } = preferences
     let filteredActivities = activityData
     useEffect(() => {
         fetch('https://sportee-backend.vercel.app/activities')
             .then(response => {
                 if (response.ok) {
-                    console.log('route hit')
                     return response.json()
                 } else {
                     throw new Error('Erreur lors de la récupération de l\'activité')
@@ -59,24 +57,47 @@ const HomeScreen = ({ navigation }) => {
         return (activity.level === level)
     }))
 
+    dateTime && (filteredActivities = filteredActivities.filter(activity => {
+        const activityDate = new Date(activity.date).toISOString().split('T')[0];
+        const filterDate = new Date(dateTime).toISOString().split('T')[0];
+        return activityDate === filterDate;
+    }))
+
     // Create algo to calculate the distance !!!!
 
     // sliderValue && (filteredActivities = filteredActivities.filter(activity => {
     //     return (activity.sliderValue <= sliderValue)
     // }))
 
-
-
     // Create algo to determine if a date is matin midi or soir !!!!
+    function timePeriod(date) {
+        const hour = new Date(date).getHours()
 
-    // !selectedOption && (filteredActivities = filteredActivities.filter(activity => {
-    //     return (activity.slotOption === selectedOption)
-    // }))
+        if (hour >= 6 && hour <= 11) {
+            return "Matin"
+        } else if (hour >= 12 && hour <= 13) {
+            return "Midi"
+        } else if (hour >= 14 && hour <= 17) {
+            return "Après-midi"
+        } else if (hour >= 18 && hour <= 23) {
+            return "Soir"
+        }
+        console.log(hour)
+    }
+
+    if (slotOption !== '') {
+        filteredActivities = filteredActivities;
+    } else {
+        filteredActivities = filteredActivities.filter(activity => {
+            const period = timePeriod(activity.date)
+            return period === slotOption
+        })
+    }
 
 
     console.log(filteredActivities.map(e => e.sport))
 
-    // console.log(preferences)
+    console.log(preferences)
 
 
     const listContent = (
