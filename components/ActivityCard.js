@@ -45,7 +45,6 @@ const Activity = (props) => {
         setCity(resultArr[resultArr.length - 1])
     }, [])
 
-
     return (
         <TouchableOpacity style={styles.cardContainer} onPress={() => props.handleClickActivityCard(props._id)}>
             <View
