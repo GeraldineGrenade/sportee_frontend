@@ -102,7 +102,7 @@ export default ConnectionScreen = ({ navigation }) => {
         <View style={styles.container}>
             <TouchableOpacity style={styles.backBtn} onPress={() => navigation.navigate('Recherche')}>
                 <Feather name='arrow-left' size={25} color='#D9D9D9' />
-                <Text style={styles.backBtnTxt} >Retour à la page d'acceuil</Text>
+                {/* <Text style={styles.backBtnTxt} >Retour à la page d'acceuil</Text> */}
             </TouchableOpacity>
             {userInfo === null ? (
 

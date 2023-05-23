@@ -1,12 +1,19 @@
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
-export default ModalConnect = ({ handleNavigate }) => {
+// Info to send in props : handleNavigate(), handleBack() calledFrom
+
+export default ModalConnect = (props) => {
+    let mapStyle = {}
+    if (props.calledFrom === 'map') mapStyle={height: '65%'}
     return(
-        <View style={styles.container}>
+        <View style={[styles.container, mapStyle]}>
             <View style={styles.modalView}>
                 <Text style={styles.modalTitle}>Pour découvrir les activités à venir ...</Text>
-                <TouchableOpacity style={styles.connectBtn} onPress={()=> handleNavigate()}>
+                <TouchableOpacity style={styles.connectBtn} onPress={()=> props.handleNavigate()}>
                     <Text style={styles.connectBtnTxt}>Connecte toi</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.connectBtn} onPress={() => props.handleBack(props.calledFrom)}>
+                    <Text style={styles.connectBtnTxt}>Retour</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -15,9 +22,8 @@ export default ModalConnect = ({ handleNavigate }) => {
 
 const styles = StyleSheet.create({
     container: {
-        // flex: 1,
         width: '100%',
-        height: '70%',
+        height: '115%',
         position: 'absolute',
         justifyContent: 'center',
         alignItems: 'center',
@@ -37,8 +43,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5,
-        height: '25%',
-        width: '55%',
+        height: 200,
+        width: 220,
     },
     modalTitle: {
         color: '#121C6E',

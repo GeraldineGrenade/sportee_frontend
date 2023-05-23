@@ -16,15 +16,17 @@ const HomeScreen = ({ navigation }) => {
     const [mapTextColor, setMapTextColor] = useState('#121C6E')
     const [listIconColor, setListIconColor] = useState('#121C6E')
     const [listTextColor, setListTextColor] = useState('#121C6E')
+    const [showModalConnect, setShowModalConnect] = useState(false);
     const connectedUser = useSelector((state) => state.user.value)
     const preferences = useSelector((state) => state.preferences.value)
     const activityData = useSelector((state) => state.activities.value)
     // const [filteredActivities, setFilteredActivities] = useState([])
     let dispatch = useDispatch()
 
-    //On loading component, fetch all activities from DB and send then in activities store
     const { sports, level, dateTime, slotOption, selectedParticipants } = preferences
     let filteredActivities = activityData
+
+    //On loading component, fetch all activities from DB and send then in activities store
     useEffect(() => {
         fetch('https://sportee-backend.vercel.app/activities')
             .then(response => {
@@ -43,9 +45,33 @@ const HomeScreen = ({ navigation }) => {
             })
     }, [])
 
+    //On click on acttivity Card, navigate to ActivityScreen with activityId in route.params if user is connected or show connect Modal if user is not connected
+    const handleClickActivityCard = (activityId) => {
+        if(!connectedUser.token) {
+            setShowModalConnect(true)
+        } else {
+            navigation.navigate('Activity', activityId)
+        }
+        
+    }
+
+    //Modal connect functions - navigate to connectionScreen or return to list
+    const handleNavigate = () => {
+        navigation.navigate('ConnectionAll')
+    }
+    const handleBack = (calledFrom) => {
+        if (calledFrom === 'list') setShowModalConnect(false)
+        if (calledFrom ==='map') {
+            setShowMap(false)
+            setMapIconColor('#121C6E');
+            setMapTextColor('#121C6E');
+            setListIconColor('#EA7810');
+            setListTextColor('#EA7810');
+        }
+    }
+    
 
     !sports.every(e => e === null) && (filteredActivities = filteredActivities.filter(activity => {
-
         return sports.some(e => e?.name === activity.sport?.name)
     }))
 
@@ -82,7 +108,6 @@ const HomeScreen = ({ navigation }) => {
         } else if (hour >= 18 && hour <= 23) {
             return "Soir"
         }
-        console.log(hour)
     }
 
     if (slotOption !== '') {
@@ -95,9 +120,7 @@ const HomeScreen = ({ navigation }) => {
     }
 
 
-    console.log(filteredActivities.map(e => e.sport))
-
-    console.log(preferences)
+    //console.log(filteredActivities.map(e => e.sport))
 
 
     const listContent = (
@@ -106,8 +129,7 @@ const HomeScreen = ({ navigation }) => {
             <FlatList
                 data={filteredActivities}
                 renderItem={({ item }) => {
-                    // console.log(item._id)
-                    return <ActivityCard {...item} />
+                    return <ActivityCard {...item} handleClickActivityCard={handleClickActivityCard}/>
                 }
                 }
                 keyExtractor={(item, i) => i}
@@ -121,7 +143,7 @@ const HomeScreen = ({ navigation }) => {
             <FlatList
                 data={filteredActivities}
                 renderItem={({ item }) => {
-                    return <ActivityCard {...item} />
+                    return <ActivityCard {...item} handleClickActivityCard={handleClickActivityCard} />
                 }
                 }
                 keyExtractor={(item, i) => i}
@@ -133,15 +155,11 @@ const HomeScreen = ({ navigation }) => {
         </View>
     )
 
-    const handleNavigate = () => {
-        navigation.navigate('ConnectionAll')
-    }
-
     let content = listContent
     if (showMap) {
         content = (
             <View>
-                {!connectedUser.email && <ModaleConnect handleNavigate={handleNavigate} />}
+                {!connectedUser.token && <ModaleConnect handleNavigate={handleNavigate} handleBack={handleBack} calledFrom='map' />}
 
                 <Map />
 
@@ -152,7 +170,8 @@ const HomeScreen = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-
+            {/* Placement à optimiser */}
+            {showModalConnect && <ModaleConnect handleNavigate={handleNavigate} handleBack={handleBack} calledFrom='list' />}
             <View style={styles.topInfos}>
                 <TouchableOpacity onPress={() => setModalVisible(true)}>
                     <FontAwesome5 name='sliders-h' size={25} color='#121C6E' style={styles.filterIcon} />
