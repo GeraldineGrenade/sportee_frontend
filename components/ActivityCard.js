@@ -3,8 +3,6 @@ import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-//{"__v": 0, "_id": "646b8b896fcac6675b6a961b", "conversation": {"_id": "646b8b896fcac6675b6a961d", "messages": [[Object], [Object], [Object], [Object], [Object], [Object], [Object], [Object], [Object], [Object], [Object], [Object], [Object], [Object], [Object], [Object], [Object], [Object], [Object], [Object], [Object], [Object], [Object], [Object], [Object], [Object]], "users": ["64662968107a0fa2af912a63", "646792f6dea8baa635ef57f5", "64679415f1924a00483f370c", "646794e2dea8baa635ef581b"]}, "date": "2023-05-28T15:29:33.133Z", "description": "Occaecat proident magna reprehenderit et officia pariatur nisi tempor est velit elit sunt.", "handleClickActivityCard": [Function handleClickActivityCard], "level": "Débutant", "name": "Wonderful Event", "nbMaxParticipants": 10, "participants": [{"_id": "646b8b896fcac6675b6a9638", "isApproved": true, "user": "64662968107a0fa2af912a63"}, {"_id": "646b8b896fcac6675b6a9639", "isApproved": false, "user": "646792f6dea8baa635ef57f5"}, {"_id": "646b8b896fcac6675b6a963a", "isApproved": false, "user": "646794e2dea8baa635ef581b"}], "place": {"_id": "646b8b896fcac6675b6a961c", "address": "Nice, Maritime Alps, France", "coords": {"latitude": 43.7009358, "longitude": 7.2683912}}, "sport": {"_id": "646391fc0efb12e60cbd26ad", "icon": "https://res.cloudinary.com/dsd7uux0v/image/upload/v1684246193/sportee/fencing_lm4fsz.png", "name": "escrime", "photo": "https://res.cloudinary.com/dube2vhtq/image/upload/v1684682688/escrime_akfh0l.jpg"}, "time": 3, "user": "64679415f1924a00483f370c"}
-
 const Activity = (props) => {
     const [dateString, setDateString] = useState('')
     const [timeString, setTimeString] = useState('')
@@ -38,11 +36,13 @@ const Activity = (props) => {
 
         let minutes = new Date(props.date).getMinutes()
         if (minutes < 10) (minutes = '0' + minutes)
-   
-        setTimeString(hours+'h'+minutes)
 
+        setTimeString(hours + 'h' + minutes)
 
-    //Get city from address
+        //Get city from address
+        let cityPattern = /[0-9]{5} /
+        let resultArr = props.place.address.split(cityPattern)
+        setCity(resultArr[resultArr.length - 1])
     }, [])
 
 
@@ -84,13 +84,6 @@ const Activity = (props) => {
 export default Activity
 
 const styles = StyleSheet.create({
-    // container: {
-    //   flex: 1,
-    //   backgroundColor: '#f2f2f2',
-    // //   alignItems: 'center',
-    // },
-
-
     cardContainer: {
         margin: 10,
     },
