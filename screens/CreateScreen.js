@@ -158,10 +158,10 @@ const CreateScreen = ({ navigation }) => {
       })
       .then((data) => {
        navigation.navigate('Activity', data.activity._id);
-      // console.log(data.activity);
+      console.log(data.activity);
       })
       .catch((error) => {
-        // console.error(error);
+        console.error(error);
       });
   };
 
