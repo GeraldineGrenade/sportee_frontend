@@ -9,12 +9,14 @@ import Pusher from 'pusher-js/react-native'
 const MessagesScreen = ({ navigation, route }) => {
     const [messages, setMessages] = useState([])
     const connectedUser = useSelector((state) => state.user.value)
+    // const activityId = useSelector((state) => state.activity.id);
 
     useEffect(() => {
         const pusher = new Pusher("11d41dded094302fda2e", {
             cluster: "81666e768eb7907f1a19",
             encrypted: true,
         })
+        // const channelName = `activity-${activityId}`
         const channel = pusher.subscribe('channelName')
 
         channel.bind('message', (data) => {
