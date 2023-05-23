@@ -45,7 +45,6 @@ const Activity = (props) => {
         setCity(resultArr[resultArr.length - 1])
     }, [])
 
-
     return (
         <View style={styles.cardContainer}>
             <Image style={styles.sportPhoto} source={require('../assets/sport-photos/yoga.jpg')} />
