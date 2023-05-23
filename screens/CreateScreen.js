@@ -157,11 +157,11 @@ const CreateScreen = ({ navigation }) => {
         }
       })
       .then((data) => {
-        console.log(data);
-        navigation.navigate('ActivityScreen', { activityId: data.id });
+       navigation.navigate('Activity', data.activity._id);
+      // console.log(data.activity);
       })
       .catch((error) => {
-        console.error(error);
+        // console.error(error);
       });
   };
 
