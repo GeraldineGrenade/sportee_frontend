@@ -3,7 +3,8 @@ import { useSelector } from 'react-redux';
 import { SafeAreaView, View, Text, StyleSheet } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-const MessagesScreen = ({navigation}) => {
+const MessagesScreen = ({navigation, route}) => {
+    console.log(route.params)
     const connectedUser = useSelector((state) => state.user.value);
 
     return (

@@ -3,22 +3,24 @@ import { useFocusEffect } from '@react-navigation/native';
 import { SafeAreaView, View, Text, StyleSheet, TextInput, Button } from 'react-native'
 import { useSelector } from 'react-redux';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import ConversationCard from '../components/ConversationCard';
 
 const MessagesListScreen = ({navigation}) => {
     const connectedUser = useSelector((state) => state.user.value);
 
   //Redirects to ConnectionScreen if no user connected
-  useFocusEffect(() => {
-    !connectedUser.email && navigation.navigate('ConnectionAll')
-  })
+//   useFocusEffect(() => {
+//     !connectedUser.email && navigation.navigate('ConnectionAll')
+//   })
   
+    const handleClickConversationCard = () => {
 
+    }
+    
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.topContainer}>
                 <Text style={styles.title}>Vos conversations</Text>
-                {/* to remove after button tests */}
-                <Button title="Activity" onPress={() => navigation.navigate('Activity')}/> 
                 <View style={styles.userIconContainer}>
                 <FontAwesome name='user' size={25} color='#f8f8ff' style={styles.userIcon} onPress={() => { connectedUser.token ? navigation.navigate('Profil') : navigation.navigate('ConnectionAll') }}/>
                 </View>         
@@ -30,8 +32,7 @@ const MessagesListScreen = ({navigation}) => {
             <View style={styles.activeContainer}>
                 <Text style={styles.subtitleActive}>Conversations actives : </Text>
                 <View style={styles.messagesActivContainer}>
-                    <View style={styles.messageActiv}></View>
-                    <View style={styles.messageActiv}></View>
+                    <ConversationCard />
                 </View>
             </View>
 

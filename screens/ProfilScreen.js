@@ -159,7 +159,6 @@ const styles = StyleSheet.create({
     avatarContainer: {
         flexDirection: 'row',
         alignItems: 'flex-end',
-        marginRight: 35,
     },
     avatar: {
         borderRadius: 60,
