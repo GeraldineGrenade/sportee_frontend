@@ -32,7 +32,6 @@ const levelTitles = [
 ];
 
 const CreateScreen = ({ navigation }) => {
-  
   //CREATE STATE SELECT SPORT
   const [newSport, setNewSport] = useState({
     name: "Choisis ton sport",
@@ -53,6 +52,15 @@ const CreateScreen = ({ navigation }) => {
   const [level, setLevel] = useState("");
   // const [time, setTime] = useState("");
   const [nbMaxParticipants, setNbMaxParticipants] = useState("");
+  const [datePicker, setDatePicker] = useState(false);
+  const [date, setDate] = useState(new Date());
+  const [timePicker, setTimePicker] = useState(false);
+  const [time, setTime] = useState(new Date(Date.now()));
+  const [dateAndTime, setDateAndTime] = useState(new Date().toISOString());
+  const [selectedValue, setSelectedValue] = useState(null);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+
+  const dropdownOptions = Array.from({ length: 12 }, (_, index) => index + 1);
 
   const selectSport = () => {
     setIsModalVisible(true);
@@ -126,11 +134,12 @@ const CreateScreen = ({ navigation }) => {
     description,
     place,
     level,
-    date: new Date(),
-    time: 2,
+    date: new Date(dateAndTime),
+    time: Number(selectedValue),
     nbMaxParticipants,
     userToken,
   };
+  console.log(dateAndTime)
   // VALIDATE CREATE ACTIVITY
   const handleCreate = () => {
     fetch(`${BACKEND_ADRESS}/activities`, {
@@ -148,10 +157,11 @@ const CreateScreen = ({ navigation }) => {
         }
       })
       .then((data) => {
-        console.log(data);
+       navigation.navigate('Activity', data.activity._id);
+      // console.log(data.activity);
       })
       .catch((error) => {
-        console.error(error);
+        // console.error(error);
       });
   };
 
@@ -174,14 +184,7 @@ const CreateScreen = ({ navigation }) => {
 
   //CHOOSE OF DATE AND TIME WITH DATETIMEPICKER
 
-  const [datePicker, setDatePicker] = useState(false);
-  const [date, setDate] = useState(new Date());
-  const [timePicker, setTimePicker] = useState(false);
-  const [time, setTime] = useState(new Date(Date.now()));
-  const [dateAndTime, setDateAndTime] = useState(new Date().toISOString());
-  // const [dateAndTime, setDateAndTime] = useState(new Date().moment());
-
-  // const formattedDateTime = dateAndTime.format('LLL')
+  
 
   const onDateSelected = (event, value) => {
     setDate(value);
@@ -208,16 +211,14 @@ const CreateScreen = ({ navigation }) => {
         ].join("T")
       ).toISOString()
     );
+
   };
+  const formattedDateTime = moment(dateAndTime).format('LLL')
 
   // console.log(dateAndTime);
 
   // DROPDOWNPICKER
-  const [selectedValue, setSelectedValue] = useState(null);
-  const [dropdownVisible, setDropdownVisible] = useState(false);
-
-  const dropdownOptions = Array.from({ length: 12 }, (_, index) => index + 1);
-
+  
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
   };
@@ -227,6 +228,9 @@ const CreateScreen = ({ navigation }) => {
     setDropdownVisible(false);
   };
 
+  const resetSelectedValue = () => {
+    setSelectedValue(null);
+  };
   // const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : 0;
 
   // console.log(isAvoiding)
@@ -247,7 +251,7 @@ const CreateScreen = ({ navigation }) => {
             size={25}
             color="#f8f8ff"
             style={styles.userIcon}
-            onPress={() => { userToken ? navigation.navigate('Profil') : navigation.navigate('ConnectionAll') }}
+            onPress={() => navigation.navigate("Profil")}
           />
         </View>
       </View>
@@ -372,7 +376,7 @@ const CreateScreen = ({ navigation }) => {
                 </View>
               </View>
               {/* <View style={styles.dateAndTime} > */}
-              <Text style={styles.dateAndTime}>{dateAndTime}</Text>
+              <Text style={styles.dateAndTime}>{formattedDateTime}</Text>
               {/* </View> */}
             </View>
             <View style={styles.inputHours}>
@@ -380,9 +384,8 @@ const CreateScreen = ({ navigation }) => {
                 onPress={toggleDropdown}
                 style={styles.dropdownToggle}
               >
-                
                 <Text style={styles.dropdownToggleText}>
-                  {selectedValue || "Durée de l'activité"}
+                {selectedValue !== null ? `${selectedValue}H` : "Durée de l'activité"}
                  
                 </Text>
                 
@@ -405,6 +408,10 @@ const CreateScreen = ({ navigation }) => {
                   </View>
                 </TouchableOpacity>
               </Modal>
+
+              <TouchableOpacity onPress={resetSelectedValue}>
+      <Text style={styles.reinitialisation} >Réinitialiser</Text>
+    </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -649,6 +656,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 13,
     color: "#EA7810",
+    marginLeft:15,
   },
 
   input: {
@@ -772,6 +780,15 @@ const styles = StyleSheet.create({
   // dropdownOption: {
   //   paddingVertical: 8,
   // },
+
+  reinitialisation: {
+    marginTop:10,
+    color: "#121C6E",
+    fontWeight: "bold",
+
+
+    
+  },
 });
 
 export default CreateScreen;
