@@ -71,7 +71,7 @@ const ProfilScreen = ({ navigation }) => {
             <View style={styles.topContainer}>
                 <Text style={styles.title}>Mon profil</Text>
                 <View style={styles.userIconContainer}>
-                    <FontAwesome name='user' size={25} color='#f8f8ff' style={styles.userIcon} onPress={() => navigation.navigate('Profil')} />
+                    <FontAwesome name='user' size={25} color='#f8f8ff' style={styles.userIcon} />
                 </View>
             </View>
 

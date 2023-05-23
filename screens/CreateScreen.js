@@ -31,6 +31,7 @@ const levelTitles = [
 ];
 
 const CreateScreen = ({ navigation }) => {
+  
   //CREATE STATE SELECT SPORT
   const [newSport, setNewSport] = useState({
     name: "Choisis ton sport",
@@ -229,7 +230,7 @@ const CreateScreen = ({ navigation }) => {
             size={25}
             color="#f8f8ff"
             style={styles.userIcon}
-            onPress={() => navigation.navigate("Profil")}
+            onPress={() => { userToken ? navigation.navigate('Profil') : navigation.navigate('ConnectionAll') }}
           />
         </View>
       </View>

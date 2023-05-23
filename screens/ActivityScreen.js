@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView, View, Text, StyleSheet, Image, TouchableOpacity, Modal } from 'react-native';
 import { useSelector } from 'react-redux';
+import ModaleManageParticipations from '../components/ModaleManageParticipations';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-//Activity ID to test : 6468e71e177bae8b6231ecf2
 
 //{"_id": "6468e71e177bae8b6231ecf2", "date": "2023-06-12T17:32:30.351Z", "description": "Et ipsum dolor ad duis ipsum incididunt eu sunt nisi eiusmod.", "level": "Intermédiaires", "name": "Super cool activity", "nbMaxParticipants": 10, "participants": [{"_id": "6468e71e177bae8b6231ed05", "isApproved": true, "user": [Object]}, {"_id": "6468e71e177bae8b6231ed06", "isApproved": true, "user": [Object]}, {"_id": "6468e71e177bae8b6231ed07", "isApproved": true, "user": [Object]}], "place": {"_id": "6468e71e177bae8b6231ecf3", "address": "Saint-Étienne, Loire, France", "coords": {"latitude": 45.4401467, "longitude": 4.3873058}}, "sport": {"_id": "646395dd0efb12e60cbd26c5", "icon": "https://res.cloudinary.com/dsd7uux0v/image/upload/v1684246192/sportee/wind-surf_cwz7ou.png", "name": "kite surf"}, "time": "2023-06-12T19:32:30.351Z", "user": {"__v": 0, "_id": "646792f6dea8baa635ef57f5", "avatar": "https://res.cloudinary.com/dsd7uux0v/image/upload/v1684405796/sportee/avatar1_suh7vc.png", "badges": [], "dateOfBirth": "2023-05-19T15:12:15.769Z", "description": "", "email": "josephine.modiano@gmail.com", "firstname": "Joséphine", "lastname": "Modiano ", "password": "$2b$10$2eifF8Ln2xgobViP/vM4Ce3LOXyJP2XL4ABCKZcz3ZviSFYgvXnxe", "phone": "0625083889", "preferences": {"_id": "646792f6dea8baa635ef57f6", "habits": [Array], "level": "Inter médiaire", "sports": [Array]}, "token": "8ZYEXfLhPWqWos18KkFI8kW590muhvbN", "username": "Jojomodiano"}}
 
@@ -16,13 +16,14 @@ const ActivityScreen = ({ navigation, route }) => {
     const [monthText, setMonthText] = useState('');
     const [isParticipationModalVisible, setIsParticipationModalVisible] = useState(false);
     const [isValidateParticipationModalVisible, setIsValidateParticipationModalVisible] = useState(false);
+    const [isManageParticipationsModalVisible, setIsManageParticipationsModalVisible] = useState(false);
     const [status, setStatus] = useState('participate')
 
 
     //Get activity info from id transmitted from previous page
     useEffect(() => {
         //!\Replace ID with route.params
-        fetch('https://sportee-backend.vercel.app/activities/getActivity/646b1b753e5541193f69a674')
+        fetch('https://sportee-backend.vercel.app/activities/getActivity/646b8b566fcac6675b6a85ec')
             .then(response => response.json())
             .then(data => {
                 if (data.result) {
@@ -55,9 +56,8 @@ const ActivityScreen = ({ navigation, route }) => {
                     //Define status of user relative to the activity
                     if (connectedUser._id === data.activity.user._id) setStatus('creator')
                     if (data.activity.participants.length === data.activity.nbMaxParticipants) setStatus('full')
-                    //!\Add logic to check if user is in participant list and is approved or not => chat and inProgress Btns 
-                    console.log(data.activity.participants.find(e => e.user._id === connectedUser._id && e.user.isApproved))
-
+                    if (data.activity.participants.find(e => e.user._id === connectedUser._id && e.isApproved)) setStatus('approved')
+                    if (data.activity.participants.find(e => e.user._id === connectedUser._id && !e.isApproved)) setStatus('notApproved')
 
                 } else {
                     console.log('Error in fetching activity')
@@ -67,11 +67,15 @@ const ActivityScreen = ({ navigation, route }) => {
 
     //Initialise participants lists according to participants and nbMaxParticipants
     let participantList = []
-    for (let i = 0; i <= currentActivity.nbMaxParticipants; i++) {
+    let approvedStyle = {}
+    for (let i = 0; i < currentActivity.nbMaxParticipants; i++) {
         if (!currentActivity.participants[i]) {
             participantList.push(<View key={i} style={styles.emptyAvatar}></View>)
         } else {
-            participantList.push(<Image key={i} title="participant-avatar" src={currentActivity.participants[i].user.avatar} style={styles.avatar} />)
+            if (!currentActivity.participants[i].isApproved) approvedStyle = { opacity: 0.2 }
+            participantList.push(
+                <Image key={i} title="participant-avatar" src={currentActivity.participants[i].user.avatar} style={[styles.avatar, approvedStyle]} />
+            )
         }
     }
 
@@ -91,18 +95,21 @@ const ActivityScreen = ({ navigation, route }) => {
     )
 
     const handleParticipate = () => {
-    fetch(`https://sportee-backend.vercel.app/activities/646b1b7d3e5541193f69a8a0/646b48e29715944fd8d6a0e7`,
-         {
-           method: 'PUT',
-        //    headers: { 'Content-Type': 'application/json' },
-         })    
-         .then(response => response.json())
-         .then(data => {
-           console.log(data)
-        console.log('participate')
-        setIsParticipationModalVisible(false)
-        setIsValidateParticipationModalVisible(true)
-        });
+        fetch(`https://sportee-backend.vercel.app/activities/646b1b7d3e5541193f69a8a0/646b48e29715944fd8d6a0e7`,
+            {
+                method: 'PUT',
+            })
+            .then(response => response.json())
+            .then(data => {
+                //    console.log(data)
+                if (data.result) {
+                    setIsParticipationModalVisible(false)
+                    setIsValidateParticipationModalVisible(true)
+                } else {
+                    console.log('Error in sending participation request')
+                    setIsParticipationModalVisible(false)
+                }
+            });
     }
 
     //Modal to confirm that participation request has been sent
@@ -121,8 +128,8 @@ const ActivityScreen = ({ navigation, route }) => {
         console.log('modify')
     }
 
-    const handleManageParticipations = () => {
-        console.log('manage')
+    const closeManageParticipationsModal = () => {
+        setIsManageParticipationsModalVisible(false)
     }
 
     //Define button to render according to status of user
@@ -150,11 +157,11 @@ const ActivityScreen = ({ navigation, route }) => {
     ))
     status === 'creator' && (buttonToRender = (
         <View style={styles.creatorBtns}>
-            <TouchableOpacity style={styles.participateBtn} onPress={() => handleModify()}>
+            <TouchableOpacity style={[styles.participateBtn, { width: 170 }, { height: 70 }]} onPress={() => handleModify()}>
                 <Text style={styles.participateBtnTxt}>Modifier l'activité</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.participateBtn} onPress={() => handleManageParticipations()}>
-                <Text style={styles.participateBtnTxt}>Gérer les demandes de participations</Text>
+            <TouchableOpacity style={[styles.participateBtn, { width: 170 }, { height: 70 }]} onPress={() => setIsManageParticipationsModalVisible(true)}>
+                <Text style={styles.participateBtnTxt}>Gérer les participants</Text>
             </TouchableOpacity>
         </View>
     ))
@@ -167,7 +174,7 @@ const ActivityScreen = ({ navigation, route }) => {
                     <View style={styles.topContainer}>
                         <Text style={styles.title}>{currentActivity.name}</Text>
                         <View style={styles.userIconContainer}>
-                            <FontAwesome name='user' size={25} color='#f8f8ff' style={styles.userIcon} onPress={() => navigation.navigate('Profil')} />
+                            <FontAwesome name='user' size={25} color='#f8f8ff' style={styles.userIcon} onPress={() => { connectedUser.token ? navigation.navigate('Profil') : navigation.navigate('ConnectionAll') }} />
                         </View>
                     </View>
                     <View style={styles.activityCreator}>
@@ -177,7 +184,9 @@ const ActivityScreen = ({ navigation, route }) => {
                     </View>
                     <View style={styles.photoAddressLevelContainer}>
                         <View >
-                            <Image style={styles.sportPhoto} src={currentActivity.sport.photo} />
+                            <View style={{ backgroundColor: 'black', borderRadius: 10 }}>
+                                <Image style={styles.sportPhoto} src={currentActivity.sport.photo} />
+                            </View>
                             <Text style={styles.sportName}>{currentActivity.sport.name}</Text>
                         </View>
                         <View style={styles.addressLevelContainer}>
@@ -201,7 +210,7 @@ const ActivityScreen = ({ navigation, route }) => {
                         </View>
                     </View>
                     {/* to remove after button tests */}
-                    {buttonToRender}
+                    {/* {buttonToRender} */}
                     <View style={styles.mainBody}>
                         <Text style={styles.subTitle}>Description</Text>
                         <Text style={styles.descriptionTxt}>{currentActivity.description}</Text>
@@ -215,6 +224,7 @@ const ActivityScreen = ({ navigation, route }) => {
                 </View>}
             {isParticipationModalVisible && participationModal}
             {isValidateParticipationModalVisible && validateParticipationModal}
+            {isManageParticipationsModalVisible && <ModaleManageParticipations closeManageParticipationsModal={closeManageParticipationsModal}/>}
         </View>
     )
 }
@@ -287,6 +297,8 @@ const styles = StyleSheet.create({
         width: 180,
         height: 140,
         borderRadius: 10,
+        opacity: 0.7, 
+
     },
     activityCreator: {
         flexDirection: 'row',
@@ -341,7 +353,7 @@ const styles = StyleSheet.create({
     },
     subTitle: {
         color: '#121C6E',
-        marginTop: 20,
+        marginTop: 15,
         marginBottom: 15,
         fontWeight: 'bold',
         fontSize: 18,
@@ -363,13 +375,15 @@ const styles = StyleSheet.create({
         padding: 15,
         width: '80%',
         alignItems: 'center',
+        justifyContent: 'center',
         alignSelf: 'center',
         borderRadius: 5,
-        marginTop: 40,
+        marginTop: 30,
     },
     participateBtnTxt: {
         color: 'white',
         fontSize: 16,
+        textAlign: 'center'
     },
     modalContainer: {
         width: '80%',
@@ -416,5 +430,7 @@ const styles = StyleSheet.create({
     },
     creatorBtns: {
         flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
     },
 });

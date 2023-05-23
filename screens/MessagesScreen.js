@@ -1,14 +1,17 @@
 import React from 'react'
+import { useSelector } from 'react-redux';
 import { SafeAreaView, View, Text, StyleSheet } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const MessagesScreen = ({navigation}) => {
+    const connectedUser = useSelector((state) => state.user.value);
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.topContainer}>
                 <Text style={styles.title}>Tennis avec Rafael</Text>
                 <View style={styles.userIconContainer}>
-                <FontAwesome name='user' size={25} color='#f8f8ff' style={styles.userIcon} onPress={() => navigation.navigate('Profil')}/>
+                <FontAwesome name='user' size={25} color='#f8f8ff' style={styles.userIcon} onPress={() => { connectedUser.token ? navigation.navigate('Profil') : navigation.navigate('ConnectionAll') }}/>
                 </View>         
             </View>
         </SafeAreaView>

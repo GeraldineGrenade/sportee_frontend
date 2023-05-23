@@ -160,7 +160,7 @@ const HomeScreen = ({ navigation }) => {
                 <ModalFilter modalVisible={modalVisible} setModalVisible={setModalVisible} />
                 <TextInput placeholder='Rechercher une activité' style={styles.input}></TextInput>
                 <View style={styles.userIconContainer}>
-                    <FontAwesome name='user' size={25} color='#f8f8ff' style={styles.userIcon} onPress={() => { connectedUser.email ? navigation.navigate('Profil') : navigation.navigate('ConnectionAll') }} />
+                    <FontAwesome name='user' size={25} color='#f8f8ff' style={styles.userIcon} onPress={() => { connectedUser.token ? navigation.navigate('Profil') : navigation.navigate('ConnectionAll') }} />
                 </View>
             </View>
 

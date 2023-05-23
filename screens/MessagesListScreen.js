@@ -20,7 +20,7 @@ const MessagesListScreen = ({navigation}) => {
                 {/* to remove after button tests */}
                 <Button title="Activity" onPress={() => navigation.navigate('Activity')}/> 
                 <View style={styles.userIconContainer}>
-                <FontAwesome name='user' size={25} color='#f8f8ff' style={styles.userIcon} onPress={() => navigation.navigate('Profil')}/>
+                <FontAwesome name='user' size={25} color='#f8f8ff' style={styles.userIcon} onPress={() => { connectedUser.token ? navigation.navigate('Profil') : navigation.navigate('ConnectionAll') }}/>
                 </View>         
             </View>
             <View style={styles.inputContainer}>
