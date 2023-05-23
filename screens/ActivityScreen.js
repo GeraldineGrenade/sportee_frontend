@@ -15,10 +15,11 @@ const ActivityScreen = ({ navigation, route }) => {
     const [isValidateParticipationModalVisible, setIsValidateParticipationModalVisible] = useState(false);
     const [isManageParticipationsModalVisible, setIsManageParticipationsModalVisible] = useState(false);
     const [status, setStatus] = useState('participate')
+    const activityId = route.params
 
     //Get activity info from id transmitted from previous page
     useEffect(() => {
-        fetch(`https://sportee-backend.vercel.app/activities/getActivity/${route.params}`)
+        fetch(`https://sportee-backend.vercel.app/activities/getActivity/${activityId}`)
             .then(response => response.json())
             .then(data => {
                 if (data.result) {
@@ -90,7 +91,7 @@ const ActivityScreen = ({ navigation, route }) => {
     )
 
     const handleParticipate = () => {
-        fetch(`https://sportee-backend.vercel.app/activities/646b1b7d3e5541193f69a8a0/646b48e29715944fd8d6a0e7`,
+        fetch(`https://sportee-backend.vercel.app/activities/${activityId}/${connectedUser._id}`,
             {
                 method: 'PUT',
             })
@@ -145,18 +146,21 @@ const ActivityScreen = ({ navigation, route }) => {
     ))
     status === 'approved' && (buttonToRender = (
         //On press, navigate to chat screen with id of activity in route.params
-        <TouchableOpacity style={[styles.participateBtn, { backgroundColor: '#EA7810' }]} onPress={() =>         navigation.navigate('Conversation', route.params)}>
+        <TouchableOpacity style={[styles.participateBtn, { backgroundColor: '#EA7810' }]} onPress={() =>         navigation.navigate('Conversation', activityId)}>
             <Text style={styles.participateBtnTxt}>Accéder au chat</Text>
         </TouchableOpacity>
     ))
     status === 'creator' && (buttonToRender = (
         <View style={styles.creatorBtns}>
-            <TouchableOpacity style={[styles.participateBtn, { width: 170 }, { height: 70 }]} onPress={() => handleModify()}>
+            <TouchableOpacity style={[styles.participateBtn, { width: 175 }]} onPress={() => handleModify()}>
                 <Text style={styles.participateBtnTxt}>Modifier l'activité</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.participateBtn, { width: 170 }, { height: 70 }]} onPress={() => setIsManageParticipationsModalVisible(true)}>
-                <Text style={styles.participateBtnTxt}>Gérer les participants</Text>
+            <TouchableOpacity style={[styles.participateBtn, { width: 175 }]} onPress={() => setIsManageParticipationsModalVisible(true)}>
+                <Text style={styles.participateBtnTxt}>Participants</Text>
             </TouchableOpacity>
+            <TouchableOpacity style={[styles.participateBtn, { width: '100%' }, { backgroundColor: '#EA7810' }, {alignSelf: 'center'}, {marginTop : 0}]} onPress={() => navigation.navigate('Conversation', activityId)}>
+            <Text style={styles.participateBtnTxt}>Accéder au chat</Text>
+        </TouchableOpacity>
         </View>
     ))
 
@@ -203,8 +207,6 @@ const ActivityScreen = ({ navigation, route }) => {
                             <Text style={styles.dateTimeTxt} >{currentActivity.time}h</Text>
                         </View>
                     </View>
-                    {/* to remove after button tests */}
-                    {/* {buttonToRender} */}
                     <View style={styles.mainBody}>
                         <Text style={styles.subTitle}>Description</Text>
                         <Text style={styles.descriptionTxt}>{currentActivity.description}</Text>
@@ -245,7 +247,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginTop: 15,
-        marginBottom: 10,
+        marginBottom: 5,
     },
 
     userIconContainer: {
@@ -297,7 +299,7 @@ const styles = StyleSheet.create({
     activityCreator: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 20,
+        marginBottom: 10,
     },
     creatorName: {
         fontSize: 16,
@@ -329,7 +331,7 @@ const styles = StyleSheet.create({
     },
     dateTimeContainer: {
         flexDirection: 'row',
-        marginTop: 40,
+        marginTop: 20,
     },
     dateTimeItem: {
         flexDirection: 'row',
@@ -357,7 +359,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 5,
         padding: 8,
-        height: 150,
+        height: 100,
     },
     participants: {
         flexDirection: 'row',
@@ -424,6 +426,7 @@ const styles = StyleSheet.create({
     },
     creatorBtns: {
         flexDirection: 'row',
+        flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'space-between',
     },

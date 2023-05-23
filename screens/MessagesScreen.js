@@ -6,7 +6,7 @@ import { GiftedChat } from 'react-native-gifted-chat'
 import Pusher from 'pusher-js/react-native'
 
 
-const MessagesScreen = ({ navigation }) => {
+const MessagesScreen = ({ navigation, route }) => {
     const [messages, setMessages] = useState([])
     const connectedUser = useSelector((state) => state.user.value)
 
