@@ -26,7 +26,7 @@ const HomeScreen = ({ navigation }) => {
 
     const { sports, level, dateTime, slotOption, selectedParticipants } = preferences
     let filteredActivities = activityData
-
+  
     //On loading component, fetch all activities from DB and send then in activities store
     useEffect(() => {
         fetch('https://sportee-backend.vercel.app/activities')
@@ -51,8 +51,7 @@ const HomeScreen = ({ navigation }) => {
             setShowModalConnect(true)
         } else {
             navigation.navigate('Activity', activityId)
-        }
-        
+        }     
     }
 
     //Modal connect functions - navigate to connectionScreen or return to list
@@ -348,42 +347,4 @@ const styles = StyleSheet.create({
 });
 
 
-// const listContent = (
-//     <View>
-//       <Text style={styles.titlePopulate}>Activités populaires autour de moi</Text>
-//       <FlatList
-//         data={filteredActivities}
-//         renderItem={({ item }) => {
-//           return (
-//             <ActivityCard
-//               // Pass the item data to the ActivityCard component
-//               {...item}
-//             />
-//           );
-//         }}
-//         keyExtractor={(item, i) => i.toString()} // Convert the key to a string
-//         contentContainerStyle={styles.cardContainerTop}
-//         horizontal={true}
-//         showsHorizontalScrollIndicator={false}
-//       />
-  
-//       <Text style={styles.titleForMe}>Activités liées à mes préférences</Text>
-//       <FlatList
-//         data={filteredActivities}
-//         renderItem={({ item }) => {
-//           return (
-//             <ActivityCard
-//               // Pass the item data to the ActivityCard component
-//               {...item}
-//             />
-//           );
-//         }}
-//         keyExtractor={(item, i) => i.toString()} // Convert the key to a string
-//         contentContainerStyle={styles.cardContainer}
-//         horizontal={false}
-//         showsHorizontalScrollIndicator={false}
-//         numColumns={2}
-//       />
-//     </View>
-//   );
 
