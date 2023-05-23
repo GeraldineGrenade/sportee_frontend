@@ -9,6 +9,8 @@ import Map from '../components/Map';
 import ModalFilter from '../components/ModalFilter';
 import ModaleConnect from '../components/ModaleConnect';
 
+
+
 const HomeScreen = ({ navigation }) => {
     const [showMap, setShowMap] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
@@ -20,7 +22,6 @@ const HomeScreen = ({ navigation }) => {
     const connectedUser = useSelector((state) => state.user.value)
     const preferences = useSelector((state) => state.preferences.value)
     const activityData = useSelector((state) => state.activities.value)
-    // const [filteredActivities, setFilteredActivities] = useState([])
     let dispatch = useDispatch()
 
     const { sports, level, dateTime, slotOption, selectedParticipants } = preferences
@@ -38,7 +39,6 @@ const HomeScreen = ({ navigation }) => {
             })
             .then(data => {
                 dispatch(addAllActivities(data.activities))
-                // setFilteredActivities(data.activities)
             })
             .catch(error => {
                 console.error(error);
@@ -69,7 +69,9 @@ const HomeScreen = ({ navigation }) => {
             setListTextColor('#EA7810');
         }
     }
-    
+
+    //Get 20 random activities from activityData
+    const popularActivities = activityData.slice(0, 20).sort(e => Math.random()-0.5)
 
     !sports.every(e => e === null) && (filteredActivities = filteredActivities.filter(activity => {
         return sports.some(e => e?.name === activity.sport?.name)
@@ -127,7 +129,7 @@ const HomeScreen = ({ navigation }) => {
         <View>
             <Text style={styles.titlePopulate}>Activités populaires autour de moi</Text>
             <FlatList
-                data={filteredActivities}
+                data={popularActivities}
                 renderItem={({ item }) => {
                     return <ActivityCard {...item} handleClickActivityCard={handleClickActivityCard}/>
                 }
