@@ -379,10 +379,12 @@ const CreateScreen = ({ navigation }) => {
                 onPress={toggleDropdown}
                 style={styles.dropdownToggle}
               >
+                
                 <Text style={styles.dropdownToggleText}>
                   {selectedValue || "Durée de l'activité"}
-                  <Text> H</Text>
+                 
                 </Text>
+                
               </TouchableOpacity>
               <Modal visible={dropdownVisible} animationType="fade" transparent>
                 <TouchableOpacity
