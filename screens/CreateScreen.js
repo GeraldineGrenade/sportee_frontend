@@ -20,6 +20,7 @@ import { useSelector, useDispatch } from "react-redux";
 import ModaleSports from "../components/ModaleSports";
 import SelectionTxt from "../components/SelectionTxt";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import moment from "moment";
 
 const BACKEND_ADRESS = "https://sportee-backend.vercel.app/";
 
@@ -172,43 +173,59 @@ const CreateScreen = ({ navigation }) => {
   });
 
   //CHOOSE OF DATE AND TIME WITH DATETIMEPICKER
-    
-      const [datePicker, setDatePicker] = useState(false);
-      const [date, setDate] = useState(new Date());
-      const [timePicker, setTimePicker] = useState(false);
-      const [time, setTime] = useState(new Date(Date.now()));
-      const [dateAndTime, setDateAndTime] = useState(new Date().toISOString());
-      
-      const onDateSelected = (event, value) => {
-        setDate(value);
-        setDatePicker(false);
-        setDateAndTime(
-            new Date(
-                [
-                    value.toISOString().split('T')[0],
-                    time.toISOString().split('T')[1],
-                ].join('T')
-            ).toISOString()
-        );
-    };
-  
-    const onTimeSelected = (event, value) => {
-   
-        const formattedValue = new Date(value.getTime() + 2 * 60 * 60 * 1000);
-        setTime(formattedValue);
-        setTimePicker(false);
-        setDateAndTime(
-            new Date(
-                [
-                    date.toISOString().split('T')[0],
-                    value.toISOString().split('T')[1],
-                ].join('T')
-                ).toISOString()
-                );
-    };
-    
-    // console.log(dateAndTime);
 
+  const [datePicker, setDatePicker] = useState(false);
+  const [date, setDate] = useState(new Date());
+  const [timePicker, setTimePicker] = useState(false);
+  const [time, setTime] = useState(new Date(Date.now()));
+  const [dateAndTime, setDateAndTime] = useState(new Date().toISOString());
+  // const [dateAndTime, setDateAndTime] = useState(new Date().moment());
+
+  // const formattedDateTime = dateAndTime.format('LLL')
+
+  const onDateSelected = (event, value) => {
+    setDate(value);
+    setDatePicker(false);
+    setDateAndTime(
+      new Date(
+        [
+          value.toISOString().split("T")[0],
+          time.toISOString().split("T")[1],
+        ].join("T")
+      ).toISOString()
+    );
+  };
+
+  const onTimeSelected = (event, value) => {
+    const formattedValue = new Date(value.getTime() + 2 * 60 * 60 * 1000);
+    setTime(formattedValue);
+    setTimePicker(false);
+    setDateAndTime(
+      new Date(
+        [
+          date.toISOString().split("T")[0],
+          value.toISOString().split("T")[1],
+        ].join("T")
+      ).toISOString()
+    );
+  };
+
+  // console.log(dateAndTime);
+
+  // DROPDOWNPICKER
+  const [selectedValue, setSelectedValue] = useState(null);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+
+  const dropdownOptions = Array.from({ length: 12 }, (_, index) => index + 1);
+
+  const toggleDropdown = () => {
+    setDropdownVisible(!dropdownVisible);
+  };
+
+  const handleOptionSelect = (option) => {
+    setSelectedValue(option);
+    setDropdownVisible(false);
+  };
 
   // const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : 0;
 
@@ -318,68 +335,79 @@ const CreateScreen = ({ navigation }) => {
           <Text style={styles.textDate}>
             Elle se tiendra le ... ... et durera environ
           </Text>
-          <View style={styles.input} >
-          <View style={styles.inputDate}>
-            <View style={styles.datePicker} ></View>
-            {datePicker && (
-                <DateTimePicker
+          <View style={styles.input}>
+            <View style={styles.datePicker}>
+              <View style={styles.inputDate}>
+                {datePicker && (
+                  <DateTimePicker
                     value={date}
-                    mode='date'
-                    display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                    mode="date"
+                    display={Platform.OS === "ios" ? "spinner" : "default"}
                     onChange={onDateSelected}
-                />
-            )}
-             {!datePicker && (
-                <View>
+                  />
+                )}
+                {!datePicker && (
+                  <View>
                     <TouchableOpacity onPress={() => setDatePicker(true)}>
-                        <Text>Date</Text>
+                      <Text>Date</Text>
                     </TouchableOpacity>
-                </View>
-            )}
-              <View style={styles.timePicker} >
-            {timePicker && (
-                <DateTimePicker
-                    value={time}
-                    mode='time'
-                    display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-                    onChange={onTimeSelected}
-                />
-            )}
-            {!timePicker && (
-                <View>
-                    <TouchableOpacity onPress={() => setTimePicker(true)}>
+                  </View>
+                )}
+                <View style={styles.timePicker}>
+                  {timePicker && (
+                    <DateTimePicker
+                      value={time}
+                      mode="time"
+                      display={Platform.OS === "ios" ? "spinner" : "default"}
+                      onChange={onTimeSelected}
+                    />
+                  )}
+                  {!timePicker && (
+                    <View>
+                      <TouchableOpacity onPress={() => setTimePicker(true)}>
                         <Text>Heure</Text>
-                    </TouchableOpacity>
+                      </TouchableOpacity>
+                    </View>
+                  )}
                 </View>
-            )}
               </View>
-            </View>
               {/* <View style={styles.dateAndTime} > */}
-            <Text style={styles.dateAndTime}>{dateAndTime}</Text> 
-            {/* </View> */}
-
-          {/* <View style={styles.inputHours}>
-            {timePicker && (
-                <DateTimePicker
-                    value={time}
-                    mode='time'
-                    display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-                    onChange={onTimeSelected}
-                />
-            )}
-            {!timePicker && (
-                <View>
-                    <TouchableOpacity onPress={() => setTimePicker(true)}>
-                        <Text>Time</Text>
-                    </TouchableOpacity>
-                </View>
-            )}
-        </View> */}
+              <Text style={styles.dateAndTime}>{dateAndTime}</Text>
+              {/* </View> */}
+            </View>
+            <View style={styles.inputHours}>
+              <TouchableOpacity
+                onPress={toggleDropdown}
+                style={styles.dropdownToggle}
+              >
+                
+                <Text style={styles.dropdownToggleText}>
+                  {selectedValue || "Durée de l'activité"}
+                 
+                </Text>
+                
+              </TouchableOpacity>
+              <Modal visible={dropdownVisible} animationType="fade" transparent>
+                <TouchableOpacity
+                  style={styles.dropdownBackdrop}
+                  onPress={toggleDropdown}
+                >
+                  <View style={styles.dropdown}>
+                    {dropdownOptions.map((option) => (
+                      <TouchableOpacity
+                        key={option}
+                        onPress={() => handleOptionSelect(option)}
+                        style={styles.dropdownOption}
+                      >
+                        <Text>{option}H</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </TouchableOpacity>
+              </Modal>
+            </View>
+          </View>
         </View>
-
-            
-        </View>
-       
 
         <View style={styles.invitation}>
           <Text style={styles.textInvitation}>Je souhaite inviter</Text>
@@ -552,13 +580,11 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
 
-  fontisto: {
-
-  },
+  fontisto: {},
 
   aroundMe: {
-    width: '100%',
-    flexDirection: 'row',
+    width: "100%",
+    flexDirection: "row",
     marginTop: 5,
     textAlign: "center",
     alignItems: "center",
@@ -601,7 +627,8 @@ const styles = StyleSheet.create({
   },
 
   date: {
-    marginTop: 25,
+    marginTop: 8,
+    // flexDirection:'row',
   },
 
   textDate: {
@@ -611,11 +638,11 @@ const styles = StyleSheet.create({
   },
 
   datePicker: {
-    // marginLeft: 5,
+    marginLeft: -10,
   },
 
   timePicker: {
-    marginLeft: 10,
+    marginRight: 20,
   },
 
   dateAndTime: {
@@ -625,26 +652,12 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    flexDirection: "column",
-    justifyContent: "space-between",
-    
-  },
-
-  inputDate: {
-    
-    marginTop: 10,
-    backgroundColor: "white",
-    borderRadius: 7,
-    borderWidth: 1,
-    borderColor: "#D9D9D9",
-    width: 145,
-    height: 34,
-    // paddingLeft: 10,
     flexDirection: "row",
     justifyContent: "space-between",
   },
 
-  inputHours: {
+  inputDate: {
+    marginLeft: 10,
     marginTop: 10,
     backgroundColor: "white",
     borderRadius: 7,
@@ -653,6 +666,23 @@ const styles = StyleSheet.create({
     width: 145,
     height: 34,
     paddingLeft: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+
+  inputHours: {
+    // marginLeft: 10,
+    marginTop: 10,
+    backgroundColor: "white",
+    borderRadius: 7,
+    borderWidth: 1,
+    borderColor: "#D9D9D9",
+    width: 145,
+    height: 34,
+    // paddingLeft: 10,
+    alignItems: "center",
+    paddingTop: 5,
   },
 
   invitation: {
@@ -713,11 +743,35 @@ const styles = StyleSheet.create({
     color: "#f2f2f2",
   },
 
-  dropDown: {
+  dropdown: {
     width: "10%",
   },
-
- 
+  // dropdownToggle: {
+  //   borderWidth: 1,
+  //   borderColor: 'gray',
+  //   padding: 10,
+  //   width: 200,
+  //   alignItems: 'center',
+  // },
+  dropdownToggleText: {
+    fontSize: 16,
+  },
+  dropdownBackdrop: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  dropdown: {
+    backgroundColor: "white",
+    borderWidth: 1,
+    borderColor: "gray",
+    width: 50,
+    padding: 10,
+  },
+  // dropdownOption: {
+  //   paddingVertical: 8,
+  // },
 });
 
 export default CreateScreen;
