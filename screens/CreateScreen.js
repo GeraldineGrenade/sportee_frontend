@@ -22,6 +22,7 @@ import SelectionTxt from "../components/SelectionTxt";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
 
+
 const BACKEND_ADRESS = "https://sportee-backend.vercel.app/";
 
 const levelTitles = [
@@ -140,6 +141,7 @@ const CreateScreen = ({ navigation }) => {
     userToken,
   };
   console.log(dateAndTime)
+
   // VALIDATE CREATE ACTIVITY
   const handleCreate = () => {
     fetch(`${BACKEND_ADRESS}/activities`, {
@@ -157,8 +159,10 @@ const CreateScreen = ({ navigation }) => {
         }
       })
       .then((data) => {
-       navigation.navigate('Activity', data.activity._id);
-      console.log(data.activity);
+        // const newActivityId = data.activity._id;
+        // navigation.navigate('Messages', { activityId: newActivityId })
+        navigation.navigate('Activity', data.activity._id);
+        // console.log(data.activity);
       })
       .catch((error) => {
         console.error(error);
@@ -184,7 +188,7 @@ const CreateScreen = ({ navigation }) => {
 
   //CHOOSE OF DATE AND TIME WITH DATETIMEPICKER
 
-  
+
 
   const onDateSelected = (event, value) => {
     setDate(value);
@@ -218,7 +222,7 @@ const CreateScreen = ({ navigation }) => {
   // console.log(dateAndTime);
 
   // DROPDOWNPICKER
-  
+
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
   };
@@ -385,10 +389,10 @@ const CreateScreen = ({ navigation }) => {
                 style={styles.dropdownToggle}
               >
                 <Text style={styles.dropdownToggleText}>
-                {selectedValue !== null ? `${selectedValue}H` : "Durée de l'activité"}
-                 
+                  {selectedValue !== null ? `${selectedValue}H` : "Durée de l'activité"}
+
                 </Text>
-                
+
               </TouchableOpacity>
               <Modal visible={dropdownVisible} animationType="fade" transparent>
                 <TouchableOpacity
@@ -410,8 +414,8 @@ const CreateScreen = ({ navigation }) => {
               </Modal>
 
               <TouchableOpacity onPress={resetSelectedValue}>
-      <Text style={styles.reinitialisation} >Réinitialiser</Text>
-    </TouchableOpacity>
+                <Text style={styles.reinitialisation} >Réinitialiser</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -656,7 +660,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 13,
     color: "#EA7810",
-    marginLeft:15,
+    marginLeft: 15,
   },
 
   input: {
@@ -782,12 +786,12 @@ const styles = StyleSheet.create({
   // },
 
   reinitialisation: {
-    marginTop:10,
+    marginTop: 10,
     color: "#121C6E",
     fontWeight: "bold",
 
 
-    
+
   },
 });
 
