@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import React from 'react'
+import { View, Image, Text, StyleSheet } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
@@ -47,37 +47,29 @@ const Activity = (props) => {
 
 
     return (
-        <TouchableOpacity style={styles.cardContainer} onPress={() => props.handleClickActivityCard(props._id)}>
-            <View
-                style={
-                    {
-                        backgroundColor: 'black',
-                        borderTopLeftRadius: 10,
-                        borderTopRightRadius: 10,
-                    }}>
-                <Image style={styles.sportPhoto} src={props.sport.photo} />
-            </View>
+        <View style={styles.cardContainer}>
+            <Image style={styles.sportPhoto} source={require('../assets/sport-photos/yoga.jpg')} />
             <Text style={styles.activityName}>{props.sport.name}</Text>
 
             <View style={styles.infosContainer}>
 
-                <Text style={styles.activityTitle}>{props.name}</Text>
-                <View style={styles.locInfos}>
-                    <FontAwesome name='map-pin' size={15} color='#000' style={styles.mapIcon} />
-                    <Text style={styles.city}>{city}</Text>
+                <View style={styles.topInfos}>
+                    <View style={styles.locInfos}>
+                        <FontAwesome name='map-pin' size={15} color='#000' style={styles.mapIcon} />
+                        <Text style={styles.city}>{props.city}</Text>
+                    </View>
+
+                    <Text style={styles.nbrParticipants}>Participants 2/5</Text>
                 </View>
                 <View style={styles.dateInfos}>
                     <FontAwesome5 name='calendar-alt' size={15} color='#000' style={styles.mapIcon} />
-                    <Text style={styles.date}>{dateString} {timeString}</Text>
+                    <Text style={styles.date}>{props.date}</Text>
                 </View>
-                <View style={styles.nbrContainer}>
-                    <FontAwesome name='user' size={15} color='#000' style={styles.calendarIcon} />
-                    <Text style={styles.nbrParticipants}>Participants {props.participants.length}/{props.nbMaxParticipants}</Text>
-                </View>
+                <Text style={styles.activityTitle}>{props.titre}</Text>
 
             </View>
 
-        </TouchableOpacity>
+        </View>
     )
 }
 
@@ -96,6 +88,15 @@ const styles = StyleSheet.create({
         borderColor: '#E4D8D8',
     },
 
+    topInfos: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 4,
+        marginTop: 4,
+        marginLeft: 4,
+        marginRight: 4,
+    },
+
     activityName: {
         color: '#fff',
         fontSize: 22,
@@ -110,29 +111,28 @@ const styles = StyleSheet.create({
         height: 90,
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
-        opacity: 0.7,
     },
 
     activityTitle: {
         fontSize: 11,
-        marginTop: 6,
-        marginLeft: 5,
+        marginBottom: 4,
+        marginTop: 4,
+        marginLeft: 4,
         marginRight: 4,
         textTransform: 'uppercase',
     },
 
     date: {
-        marginLeft: 6,
+        marginLeft: 5,
         fontWeight: '600',
         fontSize: 11,
-        paddingTop: 1,
+        paddingTop: 2,
     },
 
     nbrParticipants: {
-        color: '#000',
-        fontWeight: '600',
+        color: '#121C6E',
+        fontWeight: '500',
         fontSize: 11,
-        marginLeft: 8,
         paddingTop: 1,
     },
 
@@ -143,19 +143,9 @@ const styles = StyleSheet.create({
         paddingTop: 2,
     },
 
-    nbrContainer: {
-        flexDirection: 'row',
-        marginLeft: 5,
-        paddingTop: 3,
-        marginBottom: 3,
-    },
-
     locInfos: {
         flexDirection: 'row',
-        marginLeft: 5,
-        marginBottom: 4,
-        marginTop: 3,
-        marginRight: 4,
+        marginLeft: 1,
     },
 
     dateInfos: {
