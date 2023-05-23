@@ -15,11 +15,13 @@ const [currentPosition, setCurrentPosition] = useState({});
 const [modalVisible, setModalVisible] = useState(false);
 const [pinIconColor, setPinIconColor] = useState('#00bfff');
 const [currentMarker, setCurrentMarker] = useState(null);
-const [dateString, setDateString] = useState('')
-const [timeString, setTimeString] = useState('')
-const activityData = useSelector((state) => state.activities.value)
+const connectedUser = useSelector((state) => state.user.value)
 const preferences = useSelector((state) => state.preferences.value)
+const activityData = useSelector((state) => state.activities.value)
 let dispatch = useDispatch()
+
+const { sports, level, dateTime, slotOption, selectedParticipants } = preferences
+let filteredActivities = activityData
 
     useEffect(() => {
         (async () => {
@@ -29,13 +31,31 @@ let dispatch = useDispatch()
             Location.watchPositionAsync({ distanceInterval: 10 },
               (location) => {
                 setCurrentPosition(location.coords);
-                // console.log(location);
               });
           }
         })();
        }, []);
 
-console.log(currentMarker?.date)
+
+    !sports.every(e => e === null) && (filteredActivities = filteredActivities.filter(activity => {
+        return sports.some(e => e?.name === activity.sport?.name)
+    }))
+
+    selectedParticipants && (filteredActivities = filteredActivities.filter(activity => {
+        return (activity.nbMaxParticipants >= selectedParticipants)
+    }))
+
+    level && (filteredActivities = filteredActivities.filter(activity => {
+        return (activity.level === level)
+    }))
+
+    dateTime && (filteredActivities = filteredActivities.filter(activity => {
+        const activityDate = new Date(activity.date).toISOString().split('T')[0];
+        const filterDate = new Date(dateTime).toISOString().split('T')[0];
+        return activityDate === filterDate;
+    }))
+
+// console.log(currentMarker?.date)
 moment.locale('fr')
 
      const handleOpenPopUp = (data) => {
@@ -49,7 +69,7 @@ moment.locale('fr')
         setPinIconColor('#00bfff')
       };
 
-     const allSportMarkers = activityData.map((data, i) => {
+     const allSportMarkers = filteredActivities.map((data, i) => {
      return <Marker key={i} coordinate={{ latitude: data.place.coords.latitude, longitude: data.place.coords.longitude }} pinColor={pinIconColor} onPress={() => handleOpenPopUp({...data})}/>;
    });
 
@@ -92,7 +112,7 @@ moment.locale('fr')
         <MapView
             style={styles.map}
             mapType= 'hybrid'>
-        {currentPosition && <Marker coordinate={currentPosition} pinColor={pinIconColor} onPress={() => handleOpenPopUp()}/>}
+         {/* {currentPosition && <Marker coordinate={currentPosition} pinColor={pinIconColor} onPress={() => handleOpenPopUp()}/>}  */}
         {allSportMarkers}
         </MapView>
         </View>
@@ -231,25 +251,4 @@ const styles = StyleSheet.create({
 })
 
 
-
-// const [markers, setMarkers] = useState([]);
-
-// useEffect(() => {
-//     const markerData = props.markerData;
-//     setMarkers(markerData);
-//   }, [props.markerData]);
-
-// const renderMarkers = () => {
-//     return markers.map((marker, index) => (
-//       <Marker
-//         key={index}
-//         coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
-//         title={marker.name}
-//       />
-//     ));
-//   };
-
-// const markers = user.places.map((data, i) => {
-//     return <Marker key={i} coordinate={{ latitude: data.latitude, longitude: data.longitude }} title={data.name} />;
-//   });
 
