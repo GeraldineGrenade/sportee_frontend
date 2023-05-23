@@ -462,7 +462,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginRight: 27.5,
     marginLeft: 27.5,
-    marginTop: 30,
+    marginTop: 55,
     marginBottom: 10,
   },
 
@@ -488,7 +488,7 @@ const styles = StyleSheet.create({
   name: {
     flexDirection: "row",
     justifyContent: "flex-start",
-    marginTop: 25,
+    marginTop: 15,
     // marginLeft: 21,
   },
 
@@ -530,7 +530,7 @@ const styles = StyleSheet.create({
   select: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 25,
+    marginTop: 15,
     // marginLeft: 18,
   },
 
@@ -566,7 +566,7 @@ const styles = StyleSheet.create({
 
   adress: {
     FontSize: 15,
-    marginTop: 25,
+    marginTop: 15,
     // marginLeft: 30,
   },
 
