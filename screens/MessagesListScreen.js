@@ -1,26 +1,48 @@
 import React, { useEffect, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { SafeAreaView, View, Text, StyleSheet, TextInput, Button, TouchableOpacity } from 'react-native'
+import { SafeAreaView, View, Text, StyleSheet, TextInput, ScrollView, TouchableOpacity } from 'react-native'
 import { useSelector } from 'react-redux';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import ConversationCard from '../components/ConversationCard';
 
 const MessagesListScreen = ({ navigation }) => {
-    const connectedUser = useSelector((state) => state.user.value)
+    const connectedUser = useSelector((state) => state.user.value);
+    const [myConversationList, setMyConversationList] = useState(null);
+    const [otherConversationList, setOtherConversationList] = useState(null)
 
     //Redirects to ConnectionScreen if no user connected
     useFocusEffect(() => {
         !connectedUser.email && navigation.navigate('ConnectionAll')
     })
 
-    const handlePress = () => {
-        navigation.navigate('Conversation')
-    };
 
-    const handleClickConversationCard = () => {
-
+    const handleClickConversationCard = (activityId) => {
+        navigation.navigate('Conversation', activityId)
     }
-    
+
+
+    useEffect(() => {
+        //Gets list of activities in which the user is participating and is approved
+        fetch(`https://sportee-backend.vercel.app/activities/getActivitiesOfUser?token=${connectedUser.token}`)
+            .then(response => response.json())
+            .then(data => {
+                const Otherlist = data.activities.map((e, i) => {
+                    return <ConversationCard key={i} {...e} handleClickConversationCard={handleClickConversationCard} />
+                })
+                setOtherConversationList(Otherlist)
+            })
+        //Gets list of activities created by user
+        fetch(`https://sportee-backend.vercel.app/activities/getActivitiesByUser?token=${connectedUser.token}`)
+            .then(response => response.json())
+            .then(data => {
+                const myList = data.activities.map((e, i) => {
+                    return <ConversationCard key={i} {...e} handleClickConversationCard={handleClickConversationCard} />
+                })
+                setMyConversationList(myList)
+            })
+    }, [])
+
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.topContainer}>
@@ -29,26 +51,30 @@ const MessagesListScreen = ({ navigation }) => {
                     <FontAwesome name='user' size={25} color='#f8f8ff' style={styles.userIcon} onPress={() => { connectedUser.token ? navigation.navigate('Profil') : navigation.navigate('ConnectionAll') }} />
                 </View>
             </View>
-            <View style={styles.inputContainer}>
-                <TextInput placeholder='Rechercher une conversation' style={styles.input}></TextInput>
+            <View style={styles.input}>
+                <FontAwesome name='search' style={styles.searchIcon} />
+                <TextInput placeholder='Rechercher une conversation' style={styles.inputTxt}></TextInput>
             </View>
 
-            <View style={styles.activeContainer}>
-                <Text style={styles.subtitleActive}>Conversations actives : </Text>
-                <View style={styles.messagesActivContainer}>
-                    {/* <TouchableOpacity style={styles.messageActiv} onPress={handlePress} >
-                        <MessagesScreen />
-                    </TouchableOpacity> */}
-                    <ConversationCard />
+            {myConversationList &&
+                <View style={styles.activeContainer}>
+                    <Text style={styles.subtitle}>Conversations de mes activités : </Text>
+
+                    <ScrollView contentContainerStyle={styles.messagesActivContainer}>
+                        {myConversationList}
+                    </ScrollView>
                 </View>
-            </View>
+            }
 
             <View style={styles.archiveContainer}>
-                <Text style={styles.subtitleArchive}>Anciennes conversations : </Text>
+                <Text style={styles.subtitle}>Conversations des activités auxquelles je participe : </Text>
 
-                <View style={styles.messagesArchivContainer}>
-                    <View style={styles.messageArchiv}></View>
-                </View>
+                {otherConversationList ?
+                    (<ScrollView contentContainerStyle={styles.messagesArchivContainer}>
+                        {otherConversationList}
+                    </ScrollView>)
+                    : <Text style={styles.noActivity}>Vous n'avez pas d'acvitités prévues pour l'instant</Text>
+                }
             </View>
 
         </SafeAreaView>
@@ -95,32 +121,27 @@ const styles = StyleSheet.create({
     },
 
     input: {
-        width: '80%',
+        width: '85%',
         height: 46,
         borderColor: '#D9D9D9',
         borderWidth: 1,
         borderRadius: 7,
         fontSize: 16,
-        marginLeft: 15,
+        marginLeft: 30,
         marginRight: 15,
         paddingLeft: 15,
         marginBottom: 20,
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 10,
     },
 
-    inputContainer: {
-        marginTop: 30,
-        alignItems: 'center'
+    searchIcon: {
+        color: '#D9D9D9',
+        marginRight: 5,
     },
 
-    subtitleActive: {
-        fontSize: 16,
-        fontWeight: '600',
-        color: '#121C6E',
-        marginBottom: 20,
-        marginLeft: 27.5,
-    },
-
-    subtitleArchive: {
+    subtitle: {
         fontSize: 16,
         fontWeight: '600',
         color: '#121C6E',
@@ -129,9 +150,7 @@ const styles = StyleSheet.create({
     },
 
     activeContainer: {
-        marginTop: 20,
-        marginBottom: 40,
-        // marginLeft: 27.5,
+        marginBottom: 30,
     },
 
     archiveContainer: {
@@ -152,7 +171,8 @@ const styles = StyleSheet.create({
     },
 
     messagesActivContainer: {
-        alignItems: 'center'
+        alignItems: 'center',
+        height: '35%',
     },
 
 
@@ -167,6 +187,13 @@ const styles = StyleSheet.create({
     },
 
     messagesArchivContainer: {
-        alignItems: 'center'
+        alignItems: 'center',
+        height: '30%',
+    },
+    noActivity: {
+        marginLeft: 27.5,
+        fontStyle: 'italic',
+        marginTop: 10,
+        color: '#D9D9D9',
     },
 });
