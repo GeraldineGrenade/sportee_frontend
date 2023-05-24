@@ -26,7 +26,7 @@ const HomeScreen = ({ navigation }) => {
 
     const { sports, level, dateTime, slotOption, selectedParticipants } = preferences
     let filteredActivities = activityData
-  
+
     //On loading component, fetch all activities from DB and send then in activities store
     useEffect(() => {
         fetch('https://sportee-backend.vercel.app/activities')
@@ -44,14 +44,14 @@ const HomeScreen = ({ navigation }) => {
                 console.error(error);
             })
     }, [])
-   
+
     //On click on acttivity Card, navigate to ActivityScreen with activityId in route.params if user is connected or show connect Modal if user is not connected
     const handleClickActivityCard = (activityId) => {
-        if(!connectedUser.token) {
+        if (!connectedUser.token) {
             setShowModalConnect(true)
         } else {
             navigation.navigate('Activity', activityId)
-        }     
+        }
     }
 
     //Modal connect functions - navigate to connectionScreen or return to list
@@ -60,7 +60,7 @@ const HomeScreen = ({ navigation }) => {
     }
     const handleBack = (calledFrom) => {
         if (calledFrom === 'list') setShowModalConnect(false)
-        if (calledFrom ==='map') {
+        if (calledFrom === 'map') {
             setShowMap(false)
             setMapIconColor('#121C6E');
             setMapTextColor('#121C6E');
@@ -74,7 +74,7 @@ const HomeScreen = ({ navigation }) => {
     }
 
     //Get 20 random activities from activityData
-    const popularActivities = activityData.slice(0, 20).sort(e => Math.random()-0.5)
+    const popularActivities = activityData.slice(0, 20).sort(e => Math.random() - 0.5)
 
     !sports.every(e => e === null) && (filteredActivities = filteredActivities.filter(activity => {
         return sports.some(e => e?.name === activity.sport?.name)
@@ -130,63 +130,63 @@ const HomeScreen = ({ navigation }) => {
     //console.log(filteredActivities.map(e => e.sport))
 
 
-    let listContent 
+    let listContent
     if (connectedUser.token) {
         listContent = (
-        <View>
-            <Text style={styles.titlePopulate}>Activités populaires autour de moi</Text>
-            <FlatList
-            key={'#'}
-                data={popularActivities}
-                renderItem={({ item }) => {
-                    return <ActivityCard {...item} handleClickActivityCard={handleClickActivityCard}/>
-                }
-                }
-                keyExtractor={(item, i) => item._id}
-                contentContainerStyle={styles.cardContainerTop}
-                // numColumns={2}
-                horizontal={true}
-                vertical={false}
-                showsHorizontalScrollIndicator={true}
-            />
+            <View>
+                <Text style={styles.titlePopulate}>Activités populaires autour de moi</Text>
+                <FlatList
+                    key={'#'}
+                    data={popularActivities}
+                    renderItem={({ item }) => {
+                        return <ActivityCard {...item} handleClickActivityCard={handleClickActivityCard} />
+                    }
+                    }
+                    keyExtractor={(item, i) => item._id}
+                    contentContainerStyle={styles.cardContainerTop}
+                    // numColumns={2}
+                    horizontal={true}
+                    vertical={false}
+                    showsHorizontalScrollIndicator={true}
+                />
 
-            <Text style={styles.titleForMe}>Activités liées à mes préférences</Text>
-            <FlatList
-            key={'_'}
-                data={filteredActivities}
-                renderItem={({ item }) => {
-                    return <ActivityCard {...item} handleClickActivityCard={handleClickActivityCard} />
-                }
-                }
-                keyExtractor={(item, i) => item._id}
-                contentContainerStyle={styles.cardContainer}
-                horizontal={false}
-                showsHorizontalScrollIndicator={false}
-                numColumns={2}
-            />
-        </View>
-    )
-            } else {
-                listContent =(
-     
-                    <View>
-                        <Text style={styles.titlePopulate}>Activités populaires autour de moi</Text>
-                        {showModalConnect && <ModaleConnect handleNavigate={handleNavigate} handleBack={handleBack} calledFrom='list' />}
-                    <FlatList
+                <Text style={styles.titleForMe}>Activités liées à mes préférences</Text>
+                <FlatList
+                    key={'_'}
+                    data={filteredActivities}
+                    renderItem={({ item }) => {
+                        return <ActivityCard {...item} handleClickActivityCard={handleClickActivityCard} />
+                    }
+                    }
+                    keyExtractor={(item, i) => item._id}
+                    contentContainerStyle={styles.cardContainer}
+                    horizontal={false}
+                    showsHorizontalScrollIndicator={false}
+                    numColumns={2}
+                />
+            </View>
+        )
+    } else {
+        listContent = (
+
+            <View>
+                <Text style={styles.titlePopulate}>Activités populaires autour de moi</Text>
+                {showModalConnect && <ModaleConnect handleNavigate={handleNavigate} handleBack={handleBack} calledFrom='list' />}
+                <FlatList
                     key={'/'}
-                        data={popularActivities}
-                        renderItem={({ item }) => {
-                            return <ActivityCard {...item} handleClickActivityCard={handleClickActivityCard}/>
-                        }
-                        }
-                        keyExtractor={(item, i) => i}
-                        contentContainerStyle={styles.guestUserList}
-                        numColumns={2}
-                    />
-                    </View>
-            
-            )
-            }
+                    data={popularActivities}
+                    renderItem={({ item }) => {
+                        return <ActivityCard {...item} handleClickActivityCard={handleClickActivityCard} />
+                    }
+                    }
+                    keyExtractor={(item, i) => i}
+                    contentContainerStyle={styles.guestUserList}
+                    numColumns={2}
+                />
+            </View>
+
+        )
+    }
 
     let content = listContent
     if (showMap) {
@@ -194,14 +194,14 @@ const HomeScreen = ({ navigation }) => {
             <View>
                 {/* {!connectedUser.token && <ModaleConnect handleNavigate={handleNavigate} handleBack={handleBack} calledFrom='map' />} */}
 
-                <Map handleClickMapCard={handleClickMapCard}/>
+                <Map handleClickMapCard={handleClickMapCard} />
 
             </View>
 
         )
     }
 
-   
+
     return (
         <SafeAreaView style={styles.container}>
             {/* Placement à optimiser */}
@@ -372,7 +372,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginLeft: 12,
         marginRight: 10,
-        paddingTop: 10, 
+        paddingTop: 10,
     },
 
     guestUserList: {

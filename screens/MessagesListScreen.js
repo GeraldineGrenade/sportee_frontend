@@ -10,6 +10,7 @@ const MessagesListScreen = ({ navigation }) => {
     const [myConversationList, setMyConversationList] = useState(null);
     const [otherConversationList, setOtherConversationList] = useState(null)
 
+
     //Redirects to ConnectionScreen if no user connected
     useFocusEffect(() => {
         !connectedUser.email && navigation.navigate('ConnectionAll')
