@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, View, Text, StyleSheet, Image, TouchableOpacity, Modal } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import ModaleManageParticipations from '../components/ModaleManageParticipations';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -123,7 +123,8 @@ const ActivityScreen = ({ navigation, route }) => {
         console.log('modify')
     }
 
-    const closeManageParticipationsModal = () => {
+    const closeManageParticipationsModal = (participantId) => {
+        console.log(participantId)
         setIsManageParticipationsModalVisible(false)
     }
 
