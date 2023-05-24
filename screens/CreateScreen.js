@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 
 import {
-  SafeAreaView,
   View,
   Text,
   StyleSheet,
   TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
-  ScrollView,
   Modal,
   Platform,
   FlatList,
@@ -16,12 +14,11 @@ import {
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { Fontisto } from "react-native-vector-icons";
 import SelectionSport from "../components/SelectionSport";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import ModaleSports from "../components/ModaleSports";
 import SelectionTxt from "../components/SelectionTxt";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
-
 
 const BACKEND_ADRESS = "https://sportee-backend.vercel.app/";
 
@@ -47,11 +44,9 @@ const CreateScreen = ({ navigation }) => {
   const [isAvoiding, setIsAvoiding] = useState(false);
 
   const [name, setName] = useState("");
-  const [sport, setSport] = useState("");
   const [description, setDescription] = useState("");
   const [place, setPlace] = useState({});
   const [level, setLevel] = useState("");
-  // const [time, setTime] = useState("");
   const [nbMaxParticipants, setNbMaxParticipants] = useState("");
   const [datePicker, setDatePicker] = useState(false);
   const [date, setDate] = useState(new Date());
@@ -60,9 +55,13 @@ const CreateScreen = ({ navigation }) => {
   const [dateAndTime, setDateAndTime] = useState(new Date().toISOString());
   const [selectedValue, setSelectedValue] = useState(null);
   const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [selectedPerson, setSelectedPerson] = useState(null);
+  const [dropdownPerson, setDropdownPerson] = useState(false);
 
   const dropdownOptions = Array.from({ length: 12 }, (_, index) => index + 1);
 
+  const dropdownNumber = Array.from({ length: 10 }, (_, index) => index + 1);
+  console.log(selectedPerson);
   const selectSport = () => {
     setIsModalVisible(true);
   };
@@ -86,8 +85,6 @@ const CreateScreen = ({ navigation }) => {
         const data = await response.json();
         if (data.features) {
           setSuggestions(data.features);
-          // console.log(data.features[0].properties.label)
-          // console.log(data.features[0].geometry.co);
         } else {
           console.log("Error");
         }
@@ -126,7 +123,6 @@ const CreateScreen = ({ navigation }) => {
 
   const closeCitySearch = () => {
     cityModalVisible(false);
-    // console.log(closeCitySearch);
   };
 
   const activityData = {
@@ -140,7 +136,6 @@ const CreateScreen = ({ navigation }) => {
     nbMaxParticipants,
     userToken,
   };
-  // console.log(dateAndTime)
 
   // VALIDATE CREATE ACTIVITY
   const handleCreate = () => {
@@ -159,8 +154,7 @@ const CreateScreen = ({ navigation }) => {
         }
       })
       .then((data) => {
-        navigation.navigate('Activity', data.activity._id);
-        console.log(data.activity);
+        navigation.navigate("Activity", data.activity._id);
       })
       .catch((error) => {
         console.error(error);
@@ -185,8 +179,6 @@ const CreateScreen = ({ navigation }) => {
   });
 
   //CHOOSE OF DATE AND TIME WITH DATETIMEPICKER
-
-
 
   const onDateSelected = (event, value) => {
     setDate(value);
@@ -213,13 +205,10 @@ const CreateScreen = ({ navigation }) => {
         ].join("T")
       ).toISOString()
     );
-
   };
-  const formattedDateTime = moment(dateAndTime).format('LLL')
+  const formattedDateTime = moment(dateAndTime).format("LLL");
 
-  // console.log(dateAndTime);
-
-  // DROPDOWNPICKER
+  // DROPDOWNPICKER DURATION OF ACTIVITY
 
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
@@ -233,9 +222,23 @@ const CreateScreen = ({ navigation }) => {
   const resetSelectedValue = () => {
     setSelectedValue(null);
   };
+
+  // DROPDOWNPICKER NUMBER OF PEOPLE
+  const selectDropdown = () => {
+    setDropdownPerson(!dropdownPerson);
+  };
+
+  const handlePersonSelect = (select) => {
+    setSelectedPerson(select);
+    setDropdownPerson(false);
+  };
+
+  const resetSelectedNumber = () => {
+    setSelectedPerson(null);
+  };
+
   // const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : 0;
 
-  // console.log(isAvoiding)
   return (
     <KeyboardAvoidingView
       style={
@@ -377,9 +380,8 @@ const CreateScreen = ({ navigation }) => {
                   )}
                 </View>
               </View>
-              {/* <View style={styles.dateAndTime} > */}
+
               <Text style={styles.dateAndTime}>{formattedDateTime}</Text>
-              {/* </View> */}
             </View>
             <View style={styles.inputHours}>
               <TouchableOpacity
@@ -387,10 +389,10 @@ const CreateScreen = ({ navigation }) => {
                 style={styles.dropdownToggle}
               >
                 <Text style={styles.dropdownToggleText}>
-                  {selectedValue !== null ? `${selectedValue}H` : "Durée de l'activité"}
-
+                  {selectedValue !== null
+                    ? `${selectedValue}H`
+                    : "Durée de l'activité"}
                 </Text>
-
               </TouchableOpacity>
               <Modal visible={dropdownVisible} animationType="fade" transparent>
                 <TouchableOpacity
@@ -412,7 +414,7 @@ const CreateScreen = ({ navigation }) => {
               </Modal>
 
               <TouchableOpacity onPress={resetSelectedValue}>
-                <Text style={styles.reinitialisation} >Réinitialiser</Text>
+                <Text style={styles.reinitialisation}>Réinitialiser</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -420,22 +422,33 @@ const CreateScreen = ({ navigation }) => {
 
         <View style={styles.invitation}>
           <Text style={styles.textInvitation}>Je souhaite inviter</Text>
-
-          <View style={styles.nbPersonne}>
-            <TextInput
-              style={styles.inputInvitation}
-              placeholder="Nombre"
-              keyboardType="numeric"
-              onFocus={() => setIsAvoiding(true)}
-              onBlur={() => setIsAvoiding(false)}
-              value={nbMaxParticipants}
-              onChangeText={(value) => {
-                setNbMaxParticipants(value);
-              }}
-            />
-
-            <Text style={styles.personne}>personnes</Text>
-          </View>
+          <TouchableOpacity
+            onPress={selectDropdown}
+            style={styles.dropdownToggle}
+          >
+            <Text style={styles.dropdownPersonText}>
+              {selectedPerson !== null ? `${selectedPerson} Personnes` : "Nombre"}
+            </Text>
+          </TouchableOpacity>
+          <Modal visible={dropdownPerson} animationType="fade" transparent>
+            <TouchableOpacity
+              style={styles.dropdownBackdrop}
+              onPress={selectDropdown}
+            >
+              <View style={styles.dropdown}>
+                {dropdownNumber.map((option) => (
+                  <TouchableOpacity
+                    key={option}
+                    onPress={() => handlePersonSelect(option)}
+                    style={styles.dropdownOption}
+                  >
+                    <Text>{option}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </TouchableOpacity>
+            {/* <Text style={styles.personne}>personnes</Text> */}
+          </Modal>
         </View>
 
         <View style={styles.create}>
@@ -474,11 +487,9 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
     padding: 8,
-    // marginRight: 20,
   },
 
   userIcon: {
-    // padding: 10,
     marginLeft: 4,
   },
 
@@ -491,13 +502,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     marginTop: 15,
-    // marginLeft: 21,
   },
 
   titre: {
     fontSize: 15,
     marginTop: 10,
-    // marginLeft: 5,
     paddingRight: 8,
     color: "#121C6E",
     fontWeight: "bold",
@@ -516,24 +525,13 @@ const styles = StyleSheet.create({
   },
 
   selectSport: {
-    // backgroundColor: "#f2f2f2",
-    // borderRadius: 7,
-    // borderWidth: 1,
-    // borderColor: "#D9D9D9",
-    // width: 71,
-    // height: 71,
-    // alignItems: "center",
-    // paddingTop: 10,
-    // // marginLeft: 8,
     marginTop: 27,
-    // textAlign: "center",
   },
 
   select: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 15,
-    // marginLeft: 18,
   },
 
   textSport: {
@@ -569,7 +567,6 @@ const styles = StyleSheet.create({
   adress: {
     FontSize: 15,
     marginTop: 15,
-    // marginLeft: 30,
   },
 
   textAdress: {
@@ -597,13 +594,10 @@ const styles = StyleSheet.create({
     marginTop: 5,
     textAlign: "center",
     alignItems: "center",
-    // marginLeft: 5,
-    // paddingLeft: 5,
   },
 
   around: {
     marginLeft: 20,
-    //  marginTop: 10,
     fontWeight: "bold",
     fontSize: 13,
     color: "#EA7810",
@@ -637,7 +631,6 @@ const styles = StyleSheet.create({
 
   date: {
     marginTop: 8,
-    // flexDirection:'row',
   },
 
   textDate: {
@@ -682,7 +675,6 @@ const styles = StyleSheet.create({
   },
 
   inputHours: {
-    // marginLeft: 10,
     marginTop: 10,
     backgroundColor: "white",
     borderRadius: 7,
@@ -690,7 +682,7 @@ const styles = StyleSheet.create({
     borderColor: "#D9D9D9",
     width: 145,
     height: 34,
-    // paddingLeft: 10,
+
     alignItems: "center",
     paddingTop: 5,
   },
@@ -753,16 +745,10 @@ const styles = StyleSheet.create({
     color: "#f2f2f2",
   },
 
-  dropdown: {
-    width: "10%",
-  },
-  // dropdownToggle: {
-  //   borderWidth: 1,
-  //   borderColor: 'gray',
-  //   padding: 10,
-  //   width: 200,
-  //   alignItems: 'center',
+  // dropdown: {
+  //   width: "10%",
   // },
+
   dropdownToggleText: {
     fontSize: 16,
   },
@@ -779,18 +765,42 @@ const styles = StyleSheet.create({
     width: 50,
     padding: 10,
   },
-  // dropdownOption: {
-  //   paddingVertical: 8,
-  // },
 
   reinitialisation: {
     marginTop: 10,
     color: "#121C6E",
     fontWeight: "bold",
-
-
-
   },
+
+  dropdownSelect: {
+    width: 10,
+  },
+
+  dropdownBackSelect: {
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  dropdownPersonText: {
+    marginTop: 10,
+    backgroundColor: "white",
+    borderRadius: 7,
+    borderWidth: 1,
+    borderColor: "#D9D9D9",
+    width: 145,
+    height: 34,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: 5,
+    paddingLeft: 30,
+  },
+
+  // dropdownOption: {
+  //   alignContent: "center",
+  //   justifyContent: "center",
+  // },
+  
 });
 
 export default CreateScreen;

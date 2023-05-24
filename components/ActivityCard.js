@@ -26,9 +26,9 @@ const Activity = (props) => {
                         borderTopLeftRadius: 10,
                         borderTopRightRadius: 10,
                     }}>
-                <Image style={styles.sportPhoto} src={props.sport.photo} />
+                <Image style={styles.sportPhoto} src={props.sport?.photo} />
             </View>
-            <Text style={styles.activityName}>{props.sport.name}</Text>
+            <Text style={styles.activityName}>{props.sport?.name}</Text>
 
             <View style={styles.infosContainer}>
 
