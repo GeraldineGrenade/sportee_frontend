@@ -8,72 +8,46 @@ import Pusher from 'pusher-js/react-native'
 
 const MessagesScreen = ({ navigation, route }) => {
     const [messages, setMessages] = useState([])
+    const [userId, setUserId] = useState('')
     const connectedUser = useSelector((state) => state.user.value)
-    const activityId = useSelector((state) => state.activity.id);
+    const activityId = route.params
 
     useEffect(() => {
-        fetch('https://sportee-backend.vercel.app/conversation/join-channel', {
-            method: 'PUT'
-        })
+        fetch(`http://sportee-backend.vercel.app/conversation/userId/${connectedUser.token}`)
             .then(response => response.json())
-            .then(data => console.log('data', data))
+            .then(data => setUserId(data.userId))
+
 
         const pusher = new Pusher("11d41dded094302fda2e", {
             cluster: "eu",
             encrypted: true,
         })
-        // const channelName = `activity-${activityId}`
         const channel = pusher.subscribe('sportee_channel')
         channel.bind('pusher:subscription_succeeded', () => {
             channel.bind('new-message', handleReceiveMessage)
         })
-        //channel.bind('new-message', () => {
-        // const newMessage = {
-        //     _id: data.id,
-        //     text: data.text,
-        //     createdAt: new Date(data.createdAt),
-        //     user: {
-        //         _id: data.userId,
-        //         name: data.userName,
-        //         avatar: data.userAvatar,
-        //     },
-        // }
-        //return 
-        // fetch(`https://sportee-backend.vercel.app/conversation/getConversation/${id}`)
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         if (data.result) {
-        //             setMessages(previousMessages =>
-        //                 GiftedChat.append(previousMessages, data.messages)
-        //             )
-        //         } else {
-        //             console.log('conversation not found')
-        //         }
-        //     })
-        //     .catch(error => {
-        //         console.log(error)
-        //     })
-        // fetch get => giftedchat.append ....
-        // setMessages((previousMessages) =>
-        //     GiftedChat.append(previousMessages, [newMessage])
-        // )
-        // })
 
+        handleReceiveMessage()
         return () => {
             pusher.unsubscribe('sportee_channel')
         }
-    }, [])
+    }, [activityId])
 
     const handleReceiveMessage = () => {
-        console.log('super message send')
-        // fetch get messages ici
-        fetch(`https://sportee-backend.vercel.app/conversation/getConversation/${id}`)
+        fetch(`http://sportee-backend.vercel.app/conversation/getConversation/${activityId}`)
             .then(response => response.json())
             .then(data => {
+                console.log(data.messages)
                 if (data.result) {
-                    setMessages(previousMessages =>
-                        GiftedChat.append(previousMessages, data.messages)
-                    )
+                    console.log('My messages-------', data.messages.map(e => e.message))
+                    data.messages.forEach(e => {
+                        const { _id, message, user, timestamp } = e
+                        setMessages(previousMessages => GiftedChat.append(previousMessages, { _id, text: message, user, createdAt: timestamp }))
+                    })
+                    // setMessages(previousMessages =>
+                    //     GiftedChat.append(previousMessages, data.messages)
+                    // )
+
                 } else {
                     console.log('conversation not found')
                 }
@@ -87,20 +61,21 @@ const MessagesScreen = ({ navigation, route }) => {
         setMessages(previousMessages =>
             GiftedChat.append(previousMessages, newMessages)
         )
-        fetch(`https://sportee-backend.vercel.app/conversation/updateConversation/${activityId}`, {
+        fetch(`http://sportee-backend.vercel.app/conversation/${activityId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(updatedData),
+            body: JSON.stringify({ message: newMessages[0].text, timestamp: new Date(), user: userId }),
         })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-            })
-            .catch(error => {
-                console.log(error);
-            });
+
+        // .then(response => response.json())
+        // .then(data => {
+        //     console.log(data);
+        // })
+        // .catch(error => {
+        //     console.log(error);
+        // });
     };
 
 
@@ -133,14 +108,6 @@ const MessagesScreen = ({ navigation, route }) => {
             />
         </SafeAreaView>
 
-        // <SafeAreaView style={styles.container}>
-        //     <View style={styles.topContainer}>
-        //         <Text style={styles.title}>Tennis avec Rafael</Text>
-        //         <View style={styles.userIconContainer}>
-        //             <FontAwesome name='user' size={25} color='#f8f8ff' style={styles.userIcon} onPress={() => { connectedUser.token ? navigation.navigate('Profil') : navigation.navigate('ConnectionAll') }} />
-        //         </View>
-        //     </View>
-        // </SafeAreaView>
     )
 }
 
