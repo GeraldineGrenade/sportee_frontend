@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { SafeAreaView, View, Text, Image, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
+import { SafeAreaView, View, Text, Image, StyleSheet, TouchableOpacity, TextInput, ImageBackground } from 'react-native'
 import { useDispatch } from 'react-redux';
 import { addSport, addHabit, selectLevel } from '../reducers/preferences'
 import { signIn } from '../reducers/user';
@@ -53,11 +53,16 @@ export default ConnectionMailScreen = ({ navigation }) => {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
+            <ImageBackground
+                style={styles.background}
+                source={require("../assets/background3.png")}
+            >
             <TouchableOpacity style={styles.backBtn} onPress={() => navigation.navigate('ConnectionAll')}>
-                <Feather name='arrow-left' size={25} color='#D9D9D9' />
+            <Feather name='arrow-left' size={25} color='#D9D9D9' />
             </TouchableOpacity>
             <View style={styles.connectionContainer}>
+                <Image style={styles.logo} source={require('../assets/Logo.png')} />
                 <Text style={styles.title}>CONNEXION</Text>
                 <View style={styles.inputContainer}>
                     <View style={styles.input}>
@@ -90,7 +95,8 @@ export default ConnectionMailScreen = ({ navigation }) => {
                     <Text style={styles.connectBtnTxt}>Se connecter</Text>
                 </TouchableOpacity>
             </View>
-        </SafeAreaView>
+            </ImageBackground>
+        </View>
     )
 }
 
@@ -103,13 +109,29 @@ const styles = StyleSheet.create({
     },
     backBtn: {
         marginLeft: 20,
-        marginTop: 20,
-        marginBottom: 180,
+        marginTop: 40,
+        // marginBottom: 180,
     },
     connectionContainer: {
+        marginTop: 170,
         justifyContent: 'center',
         alignItems: 'center',
     },
+
+    background: {
+        height: '100%',
+        flex: 1,
+    },
+
+    logo: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width:275,
+        height:140,
+        marginLeft:70,
+        marginTop: 50,
+    }, 
+
     title: {
         color: '#EA7810',
         fontSize: 24,

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Button } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Button, ImageBackground, Image } from "react-native";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google"
 import Svg, { Path } from "react-native-svg"
@@ -100,6 +100,10 @@ export default ConnectionScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
+            <ImageBackground
+                style={styles.background}
+                source={require("../assets/background3.png")}
+            >
             <TouchableOpacity style={styles.backBtn} onPress={() => navigation.navigate('Recherche')}>
                 <Feather name='arrow-left' size={25} color='#D9D9D9' />
                 {/* <Text style={styles.backBtnTxt} >Retour à la page d'acceuil</Text> */}
@@ -107,6 +111,8 @@ export default ConnectionScreen = ({ navigation }) => {
             {userInfo === null ? (
 
                 <View style={styles.buttonContainer}>
+                    <Image style={styles.logo} source={require('../assets/Logo.png')} />
+
                     <TouchableOpacity style={styles.button} onPress={handleGooglePressAsync}>
                         <Svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="30px" height="30px">
                             <Path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z" />
@@ -136,6 +142,7 @@ export default ConnectionScreen = ({ navigation }) => {
                 // navigation.navigate('HomeScreen'))}
                 <Text style={styles.text}>Welcome: {JSON.stringify(userInfo)}</Text>
             )}
+            </ImageBackground>
         </View>
     )
 }
@@ -144,14 +151,20 @@ export default ConnectionScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: "center",
-        padding: 27.5,
+        // alignItems: "center",
+        // padding: 27.5,
     },
     backBtn: {
         alignSelf: 'flex-start',
         marginTop: 50,
         flexDirection: 'row',
     },
+
+    background: {
+        height: '100%',
+        flex: 1,
+    },
+
     backBtnTxt: {
         color: '#D9D9D9',
         marginLeft: 10,
@@ -164,9 +177,18 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         justifyContent: "space-between",
+        alignItems: "center",
         height: 300,
-        marginTop: 220,
+        marginTop: 200,
     },
+    logo: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width:275,
+        height:140,
+        marginLeft:70,
+        marginBottom: 10,
+    }, 
     button: {
         height: 50,
         width: 250,
@@ -176,7 +198,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 5,
         flexDirection: 'row',
-        justifyContent: 'space-around'
+        justifyContent: 'space-around',
+        marginBottom: 15, 
     },
     buttonText: {
         color: '#ffffff'

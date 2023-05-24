@@ -44,7 +44,7 @@ const HomeScreen = ({ navigation }) => {
                 console.error(error);
             })
     }, [])
-
+   
     //On click on acttivity Card, navigate to ActivityScreen with activityId in route.params if user is connected or show connect Modal if user is not connected
     const handleClickActivityCard = (activityId) => {
         if(!connectedUser.token) {
@@ -124,17 +124,21 @@ const HomeScreen = ({ navigation }) => {
     //console.log(filteredActivities.map(e => e.sport))
 
 
-    const listContent = (
+    let listContent 
+    if (connectedUser.token) {
+        listContent = (
         <View>
             <Text style={styles.titlePopulate}>Activités populaires autour de moi</Text>
             <FlatList
+            key={'#'}
                 data={popularActivities}
                 renderItem={({ item }) => {
                     return <ActivityCard {...item} handleClickActivityCard={handleClickActivityCard}/>
                 }
                 }
-                keyExtractor={(item, i) => i}
+                keyExtractor={(item, i) => item._id}
                 contentContainerStyle={styles.cardContainerTop}
+                // numColumns={2}
                 horizontal={true}
                 vertical={false}
                 showsHorizontalScrollIndicator={true}
@@ -142,12 +146,13 @@ const HomeScreen = ({ navigation }) => {
 
             <Text style={styles.titleForMe}>Activités liées à mes préférences</Text>
             <FlatList
+            key={'_'}
                 data={filteredActivities}
                 renderItem={({ item }) => {
                     return <ActivityCard {...item} handleClickActivityCard={handleClickActivityCard} />
                 }
                 }
-                keyExtractor={(item, i) => i}
+                keyExtractor={(item, i) => item._id}
                 contentContainerStyle={styles.cardContainer}
                 horizontal={false}
                 showsHorizontalScrollIndicator={false}
@@ -155,6 +160,28 @@ const HomeScreen = ({ navigation }) => {
             />
         </View>
     )
+            } else {
+                listContent =(
+     
+                    <View>
+                        <Text style={styles.titlePopulate}>Activités populaires autour de moi</Text>
+                    <FlatList
+                    key={'/'}
+                        data={popularActivities}
+                        renderItem={({ item }) => {
+                            return <ActivityCard {...item} handleClickActivityCard={handleClickActivityCard}/>
+                        }
+                        }
+                        keyExtractor={(item, i) => i}
+                        contentContainerStyle={styles.guestUserList}
+                        numColumns={2}
+                        // vertical={false}
+                        // showsHorizontalScrollIndicator={true}
+                    />
+                    </View>
+            
+            )
+            }
 
     let content = listContent
     if (showMap) {
@@ -168,6 +195,8 @@ const HomeScreen = ({ navigation }) => {
 
         )
     }
+
+   
 
     return (
         <SafeAreaView style={styles.container}>
@@ -312,7 +341,6 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: '500',
         color: '#121C6E',
-        marginBottom: 15,
         marginTop: 10,
         marginLeft: 23,
     },
@@ -321,8 +349,8 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: '500',
         color: '#121C6E',
-        marginBottom: 5,
-        marginTop: 35,
+        marginBottom: 10,
+        marginTop: 30,
         marginLeft: 23,
     },
 
@@ -339,12 +367,21 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 10,
+        // marginBottom: 5,
         marginLeft: 12,
         marginRight: 10,
         paddingTop: 10, 
     },
+
+    guestUserList: {
+        marginTop: 10,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        width: '94%',
+        // flexGrow: 1,
+        // marginLeft: 12,
+        marginRight: 20,
+    },
 });
-
-
 
