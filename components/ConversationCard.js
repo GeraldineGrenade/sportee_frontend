@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 import { useSelector } from 'react-redux';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-//Info to send in props : handleClickConversationCard()
+//Info to send in props : handleClickConversationCard(), activityId, username, avatar, sporticon, date, time, name, conversation id 
 
 export default ConversationCard = (props) => {
     const connectedUser = useSelector((state) => state.user.value);

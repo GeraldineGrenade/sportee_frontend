@@ -155,12 +155,13 @@ const ActivityScreen = ({ navigation, route }) => {
             <TouchableOpacity style={[styles.participateBtn, { width: 175 }]} onPress={() => handleModify()}>
                 <Text style={styles.participateBtnTxt}>Modifier l'activité</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.participateBtn, { width: 175 }]} onPress={() => setIsManageParticipationsModalVisible(true)}>
-                <Text style={styles.participateBtnTxt}>Participants</Text>
+            <TouchableOpacity style={[styles.participateBtn, { width: 175 }, {alignSelf: 'center'}]} onPress={() => navigation.navigate('Conversation', activityId)}>
+                <Text style={styles.participateBtnTxt}>Accéder au chat</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.participateBtn, { width: '100%' }, { backgroundColor: '#EA7810' }, {alignSelf: 'center'}, {marginTop : 0}]} onPress={() => navigation.navigate('Conversation', activityId)}>
-            <Text style={styles.participateBtnTxt}>Accéder au chat</Text>
-        </TouchableOpacity>
+            <TouchableOpacity style={[styles.participateBtn, { width: '100%' }, {marginTop : 0}]} onPress={() => setIsManageParticipationsModalVisible(true)}>
+                <Text style={styles.participateBtnTxt}>Gérer les participants</Text>
+            </TouchableOpacity>
+
         </View>
     ))
 
@@ -220,7 +221,7 @@ const ActivityScreen = ({ navigation, route }) => {
                 </View>}
             {isParticipationModalVisible && participationModal}
             {isValidateParticipationModalVisible && validateParticipationModal}
-            {isManageParticipationsModalVisible && <ModaleManageParticipations closeManageParticipationsModal={closeManageParticipationsModal}/>}
+            {isManageParticipationsModalVisible && <ModaleManageParticipations closeManageParticipationsModal={closeManageParticipationsModal} participants={currentActivity.participants} />}
         </View>
     )
 }
