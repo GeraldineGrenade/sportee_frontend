@@ -2,43 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import moment from 'moment';
+import 'moment/locale/fr'
 
 const Activity = (props) => {
-    const [dateString, setDateString] = useState('')
-    const [timeString, setTimeString] = useState('')
     const [city, setCity] = useState('')
+    moment.locale('fr')
 
     useEffect(() => {
-        //Format date for render
-        let date = new Date(props.date).getDate()
-        if (date < 10) (date = '0' + date)
-
-        let month = new Date(props.date).getMonth()
-        let monthTxt = ''
-        if (month === 0) monthTxt = 'Janvier';
-        if (month === 1) monthTxt = 'Février';
-        if (month === 2) monthTxt = 'Mars';
-        if (month === 3) monthTxt = 'Avril';
-        if (month === 4) monthTxt = 'Mai';
-        if (month === 5) monthTxt = 'Juin';
-        if (month === 6) monthTxt = 'Juillet';
-        if (month === 7) monthTxt = 'Aout';
-        if (month === 8) monthTxt = 'Septembre';
-        if (month === 9) monthTxt = 'Octobre';
-        if (month === 10) monthTxt = 'Novembre';
-        if (month === 11) monthTxt = 'Décembre';
-
-        setDateString(date + ' ' + monthTxt + ' ');
-
-        //Format time for render
-        let hours = new Date(props.date).getHours()
-        if (hours < 10) (hours = '0' + hours)
-
-        let minutes = new Date(props.date).getMinutes()
-        if (minutes < 10) (minutes = '0' + minutes)
-
-        setTimeString(hours + 'h' + minutes)
-
         //Get city from address
         let cityPattern = /[0-9]{5} /
         let resultArr = props.place.address.split(cityPattern)
@@ -68,7 +39,7 @@ const Activity = (props) => {
                 </View>
                 <View style={styles.dateInfos}>
                     <FontAwesome5 name='calendar-alt' size={15} color='#000' style={styles.mapIcon} />
-                    <Text style={styles.date}>{dateString} {timeString}</Text>
+                    <Text style={styles.date}>{moment(props.date).format('LLL')}</Text>
                 </View>
                 <View style={styles.nbrContainer}>
                     <FontAwesome name='user' size={15} color='#000' style={styles.calendarIcon} />
