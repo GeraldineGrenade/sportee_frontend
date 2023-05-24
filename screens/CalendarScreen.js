@@ -64,7 +64,8 @@ const CalendarScreen = ({ navigation }) => {
                     newActivities[formattedTime].push( {
                         name: activity.name, 
                         hour: moment(activity.date).format('hh:mm'),
-                        src: activity.sport.icon
+                        src: activity.sport.icon,
+                        id: activity.activityId
                     })
                 })
                 for (let i = 0; i < 85; i++) {
@@ -82,9 +83,13 @@ const CalendarScreen = ({ navigation }) => {
  
     }
 
+    const handleClickActivityCardCalendar = (activityId) => {
+        navigation.navigate('Activity', activityId)
+    }
+
     const renderItem = (item) => {
         return (
-            <TouchableOpacity style={styles.activity}>
+            <TouchableOpacity style={styles.activity} onPress={() => handleClickActivityCardCalendar(item.id)}>
                 <Card style={styles.cardContainer}>
                     <Card.Content>
                         <View style={styles.infosContainer}>
