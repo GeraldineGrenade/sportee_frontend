@@ -17,22 +17,24 @@ const MessagesScreen = ({ navigation, route }) => {
             encrypted: true,
         })
         // const channelName = `activity-${activityId}`
-        const channel = pusher.subscribe('channelName')
+        const channel = pusher.subscribe('sportee_channel')
 
-        channel.bind('message', (data) => {
-            const newMessage = {
-                _id: data.id,
-                text: data.text,
-                createdAt: new Date(data.createdAt),
-                user: {
-                    _id: data.userId,
-                    name: data.userName,
-                    avatar: data.userAvatar,
-                },
-            }
-            setMessages((previousMessages) =>
-                GiftedChat.append(previousMessages, [newMessage])
-            )
+        channel.bind('new-message', () => {
+            // const newMessage = {
+            //     _id: data.id,
+            //     text: data.text,
+            //     createdAt: new Date(data.createdAt),
+            //     user: {
+            //         _id: data.userId,
+            //         name: data.userName,
+            //         avatar: data.userAvatar,
+            //     },
+            // }
+            console.log('message send')
+            // fetch get => giftedchat.append ....
+            // setMessages((previousMessages) =>
+            //     GiftedChat.append(previousMessages, [newMessage])
+            // )
         })
 
         return () => {
@@ -44,8 +46,10 @@ const MessagesScreen = ({ navigation, route }) => {
         setMessages((previousMessages) =>
             GiftedChat.append(previousMessages, newMessages)
         )
+        //fetch put ('')
         const message = newMessages[0]
     }
+
 
     return (
         <SafeAreaView style={styles.container}>
