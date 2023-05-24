@@ -4,12 +4,14 @@ import { View, StyleSheet, TextInput, Text, ScrollView } from 'react-native';
 import SelectionSport from './SelectionSport';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-//Info to send in props : closeModal(), sports
+//Info to send in props : closeModal(), calledFrom
 
 export default ModaleSports = (props) => {
     const [search, setSearch] = useState('');
     const [allSports, setAllSports] = useState([]);
-    const selectedSports = useSelector((state) => state.preferences.value.sports);
+    // const selectedSports = useSelector((state) => state.preferences.value.sports);
+    let selectedSports = useSelector((state) => state.preferences.value.sports); 
+    if (props.calledFrom === 'create') selectedSports =[null]
 
     //Send selected sport data to parent component and close modal
     const selectSport = (sport) => {
