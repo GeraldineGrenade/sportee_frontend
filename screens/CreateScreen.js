@@ -89,7 +89,7 @@ const CreateScreen = ({ navigation }) => {
           // console.log(data.features[0].properties.label)
           // console.log(data.features[0].geometry.co);
         } else {
-          console.log("Error in fetching cities");
+          console.log("Error");
         }
       } catch (error) {
         console.log("Error in fetching cities", error);
@@ -159,13 +159,11 @@ const CreateScreen = ({ navigation }) => {
         }
       })
       .then((data) => {
-        // const newActivityId = data.activity._id;
-        // navigation.navigate('Messages', { activityId: newActivityId })
         navigation.navigate('Activity', data.activity._id);
-        // console.log(data.activity);
+        console.log(data.activity);
       })
       .catch((error) => {
-        // console.error(error);
+        console.error(error);
       });
   };
 
