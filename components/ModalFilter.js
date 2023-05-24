@@ -4,7 +4,7 @@ import { Entypo } from 'react-native-vector-icons'
 import { Fontisto } from 'react-native-vector-icons'
 import RangeSlider, { Slider } from 'react-native-range-slider-expo'
 import { useDispatch, useSelector } from 'react-redux'
-import { addSport, removeSport, selectLevel, removeAllSports, updateSliderValue, setDateTime, setSlotOption, setSelectedParticipants } from '../reducers/preferences'
+import { addSport, removeSport, selectLevel, removeAllSports, updateSliderValue, setDateTime, setSlotOption, setSelectedParticipants, setCity } from '../reducers/preferences'
 import ModaleSports from './ModaleSports'
 import SelectionSport from './SelectionSport'
 import SelectionTxt from './SelectionTxt'
@@ -92,6 +92,7 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
                 setSuggestions([])
                 setSearchValue('')
                 setCityValue(item.properties.city)
+                dispatch(setCity(item.properties.city))
             }}>
                 <Text style={styles.cityItemText}>
                     {item.properties.postcode}{item.properties.city}
@@ -117,6 +118,7 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
     }, [dispatch, peopleValue])
 
     const resetFilters = () => {
+        dispatch(setCity(''))
         dispatch(setDateTime(false))
         dispatch(selectLevel(''))
         dispatch(removeAllSports())
