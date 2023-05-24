@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
 
 //Info to send in props : closeManageParticipationsModal(), participants
-
 let participants = [{"_id": "646b8b786fcac6675b6a9082", "isApproved": false, "user": {"__v": 0, "_id": "646792f6dea8baa635ef57f5", "avatar": "https://res.cloudinary.com/dsd7uux0v/image/upload/v1684405796/sportee/avatar1_suh7vc.png", "badges": [Array], "dateOfBirth": "2023-05-19T15:12:15.769Z", "description": "", "email": "josephine.modiano@gmail.com", "firstname": "Joséphine", "lastname": "Modiano ", "password": "$2b$10$2eifF8Ln2xgobViP/vM4Ce3LOXyJP2XL4ABCKZcz3ZviSFYgvXnxe", "phone": "0625083889", "preferences": [Object], "token": "8ZYEXfLhPWqWos18KkFI8kW590muhvbN", "username": "Jojomodiano"}}, {"_id": "646b8b786fcac6675b6a9083", "isApproved": true, "user": {"__v": 0, "_id": "64679415f1924a00483f370c", "avatar": "https://res.cloudinary.com/dsd7uux0v/image/upload/v1684405796/sportee/avatar1_suh7vc.png", "badges": [Array], "dateOfBirth": "2023-05-19T15:10:25.439Z", "description": "", "email": "dorianlelarge@gmail.co", "firstname": "Dorian", "lastname": "Lelarge", "password": "$2b$10$YlPiaNVnHhkBlEVRgDWWjOWB2aYMJ.H0iNDDAG/C0TZPJHgGK9wMO", "phone": "0635121422", "preferences": [Object], "token": "xF9d4ka5avejwkPNSPQBXFxIrZJrKECr", "username": "Doudoulamenace"}}, {"_id": "646b8b786fcac6675b6a9084", "isApproved": true, "user": {"__v": 0, "_id": "646794e2dea8baa635ef581b", "avatar": "https://res.cloudinary.com/dsd7uux0v/image/upload/v1684405796/sportee/avatar1_suh7vc.png", "badges": [Array], "dateOfBirth": "2023-05-19T15:12:15.769Z", "description": "", "email": "camille.qui@gmail.com", "firstname": "Camille", "lastname": "Dauchy", "password": "$2b$10$3OsfsM6P21uXd6TT0XmdEel4EKev.vcPvi7CsQ21YlZQBMpqUzEw6", "phone": "", "preferences": [Object], "token": "uo82YtKktQaiBSyruu1oZT88YCleTa12", "username": "Camie"}}]
 
 export default ModaleManageParticipations = (props) => {
@@ -28,7 +27,7 @@ export default ModaleManageParticipations = (props) => {
                         <Text style={styles.participantName}>{e.user.firstname}</Text>
                     </View>
                     <View style={styles.participationBtns}>
-                        <TouchableOpacity style={styles.manageBtn}>
+                        <TouchableOpacity style={styles.manageBtn} onPress={()=> props.closeManageParticipationsModal(e._id)}>
                             <Text style={styles.manageBtnTxt}>Accepter</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.manageBtn}>
@@ -79,7 +78,7 @@ const styles = StyleSheet.create({
         elevation: 5,
         height: '70%',
         width: '95%',
-        marginTop: 70,
+        marginTop: 80,
         marginLeft: 50,
     },
     modalTitle: {
@@ -104,8 +103,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginBottom : 30,
         alignItems: 'center',
-        width:'90%',
-        justifyContent: 'space-between',
+        width:'100%',
         borderColor: '#D9D9D9',
         borderWidth : 1,
         padding : 10,
@@ -114,7 +112,7 @@ const styles = StyleSheet.create({
     },
     participant: {
         alignItems: 'center',
-        marginRight: 10,
+        marginRight: 5,
     },
     participantName: {
         fontSize: 12,
@@ -129,14 +127,12 @@ const styles = StyleSheet.create({
     },
     participationBtns: {
         flexDirection: 'row',
-        // justifyContent: 'space-between',
-
     },
     approvedTxt: {
         fontStyle : 'italic',
         fontSize: 14,
         color: '#D9D9D9',
-        marginRight : 15,
+        marginLeft : 20,
     },
     manageBtn: {
         backgroundColor: '#EA7810',
@@ -147,6 +143,8 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         borderRadius: 5,
         marginLeft : 10,
+        marginRight : 5,
+
     },
     manageBtnTxt: {
         color: 'white',
