@@ -87,7 +87,7 @@ const CreateScreen = ({ navigation }) => {
         if (data.features) {
           setSuggestions(data.features);
           // console.log(data.features[0].properties.label)
-          console.log(data.features[0].geometry.co);
+          // console.log(data.features[0].geometry.co);
         } else {
           console.log("Error in fetching cities");
         }
@@ -126,7 +126,7 @@ const CreateScreen = ({ navigation }) => {
 
   const closeCitySearch = () => {
     cityModalVisible(false);
-    console.log(closeCitySearch);
+    // console.log(closeCitySearch);
   };
 
   const activityData = {
@@ -140,7 +140,7 @@ const CreateScreen = ({ navigation }) => {
     nbMaxParticipants,
     userToken,
   };
-  console.log(dateAndTime)
+  // console.log(dateAndTime)
 
   // VALIDATE CREATE ACTIVITY
   const handleCreate = () => {
@@ -165,7 +165,7 @@ const CreateScreen = ({ navigation }) => {
         // console.log(data.activity);
       })
       .catch((error) => {
-        console.error(error);
+        // console.error(error);
       });
   };
 
