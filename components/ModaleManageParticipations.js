@@ -10,7 +10,7 @@ export default ModaleManageParticipations = (props) => {
     let participantList = participants.map((e, i) => {
         if (e.isApproved) {
             return (
-                <View style={styles.participantContainer}>
+                <View key={i} style={styles.participantContainer}>
                     <View style={styles.participant}>
                         <Image title="avatar" src={e.user.avatar} style={styles.avatar} />
                         <Text style={styles.participantName}>{e.user.firstname}</Text>
@@ -22,7 +22,7 @@ export default ModaleManageParticipations = (props) => {
             )
         } else {
             return (
-                <View style={styles.participantContainer}>
+                <View key={i} style={styles.participantContainer}>
                     <View style={styles.participant}>
                         <Image title="avatar" src={e.user.avatar} style={styles.avatar} />
                         <Text style={styles.participantName}>{e.user.firstname}</Text>
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginBottom : 30,
         alignItems: 'center',
-        width:'95%',
+        width:'90%',
         justifyContent: 'space-between',
         borderColor: '#D9D9D9',
         borderWidth : 1,
@@ -117,14 +117,14 @@ const styles = StyleSheet.create({
         marginRight: 10,
     },
     participantName: {
-        fontSize: 14,
+        fontSize: 12,
         // color: '#121C6E',
         // fontWeight: 'bold',
     },
     avatar: {
         borderRadius: 50,
-        width: 60,
-        height: 60,
+        width: 50,
+        height: 50,
         marginBottom: 10,
     },
     participationBtns: {

@@ -1,27 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 import { useSelector } from 'react-redux';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import moment from 'moment';
+import 'moment/locale/fr'
 
 //Info to send in props : handleClickConversationCard(), activityId, username, avatar, sporticon, date, time, name, conversation id 
 
 export default ConversationCard = (props) => {
-    const connectedUser = useSelector((state) => state.user.value);
+    moment.locale('fr')
 
     return (
-        <TouchableOpacity style={styles.messageActiv} onPress={() => props.handleClickConversationCard(props._id)}>
+        <TouchableOpacity style={styles.messageActiv} onPress={() => props.handleClickConversationCard(props.activityId)}>
             <View style={styles.creator}>
-                <Image title="avatar" src='https://res.cloudinary.com/dsd7uux0v/image/upload/v1684405796/sportee/avatar1_suh7vc.png' style={styles.avatar} />
-                <Text style={styles.creatorName}>Raphaël</Text>
+                <Image title="avatar" src={props.user.avatar} style={styles.avatar} />
+                <Text style={styles.creatorName}>{props.user.username}</Text>
             </View>
             <View style={styles.activityDetails}>
                 <View style={[styles.detailContainer, {alignItems: 'center'}]}>
-                    <Image title="sport" src='https://res.cloudinary.com/dsd7uux0v/image/upload/v1684246194/sportee/tennis_qhk2wr.png' style={styles.sportIcon} />
+                    <Image title={props.sport.name} src={props.sport.icon} style={styles.sportIcon} />
                     <FontAwesome5 name='calendar-alt' size={22} color='#000' />
                 </View>
                 <View style={[styles.detailContainer, {marginTop: 15}]}>
-                    <Text style={styles.descriptionTxt}>Tennis à la cool</Text>
-                    <Text style={styles.descriptionTxt}>Samedi 10 Juin 15h</Text>
+                    <Text style={styles.descriptionTxt}>{props.name}</Text>
+                    <Text style={styles.descriptionTxt}>{moment(props.date).format('LLL')}</Text>
                 </View>
 
             </View>
@@ -30,11 +32,7 @@ export default ConversationCard = (props) => {
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-    //   alignItems: 'center',
-    },
-    messageActiv: {
+     messageActiv: {
         borderColor: '#F2EEEE',
         backgroundColor: '#E4E0E0',
         borderRadius: 10,
