@@ -4,7 +4,6 @@ import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 export default ModalConnect = (props) => {
     let mapStyle = {}
-    if (props.calledFrom === 'map') mapStyle={height: '65%'}
     return(
         <View style={[styles.container, mapStyle]}>
             <View style={styles.modalView}>
@@ -23,7 +22,7 @@ export default ModalConnect = (props) => {
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        height: '115%',
+        height: '60%',
         position: 'absolute',
         justifyContent: 'center',
         alignItems: 'center',

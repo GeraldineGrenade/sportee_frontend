@@ -36,7 +36,6 @@ let filteredActivities = activityData
         })();
        }, []);
 
-
     !sports.every(e => e === null) && (filteredActivities = filteredActivities.filter(activity => {
         return sports.some(e => e?.name === activity.sport?.name)
     }))
@@ -55,7 +54,6 @@ let filteredActivities = activityData
         return activityDate === filterDate;
     }))
 
-// console.log(currentMarker?.date)
 moment.locale('fr')
 
      const handleOpenPopUp = (data) => {
@@ -70,14 +68,15 @@ moment.locale('fr')
       };
 
      const allSportMarkers = filteredActivities.map((data, i) => {
-     return <Marker key={i} coordinate={{ latitude: data.place.coords.latitude, longitude: data.place.coords.longitude }} pinColor={pinIconColor} onPress={() => handleOpenPopUp({...data})}/>;
+      console.log(data._id)
+     return <Marker key={i} coordinate={{ latitude: data.place.coords?.latitude, longitude: data.place.coords?.longitude }} pinColor={pinIconColor} onPress={() => handleOpenPopUp({...data})}/>;
    });
 
     return (
        <View>
-        <TouchableOpacity>
         {currentMarker && <Modal visible={modalVisible} animationType="fade" transparent>
-           <View style={styles.bottomView}>
+        <TouchableOpacity onPress={()=> props.handleClickMapCard(currentMarker._id)} style={styles.bottomView}>
+           {/* <View }> */}
            <View style={styles.modalView}>
                <View style={styles.photoContainer}>          
                  <Image style={styles.sportPhoto} src={currentMarker.sport.photo}/>
@@ -103,16 +102,17 @@ moment.locale('fr')
              </TouchableOpacity>
          </View>
            </View>
-         </View>
+         {/* </View> */}
+         
+     </TouchableOpacity>
        </Modal>
 } 
-     </TouchableOpacity>
 
 
         <MapView
             style={styles.map}
             mapType= 'hybrid'>
-         {/* {currentPosition && <Marker coordinate={currentPosition} pinColor={pinIconColor} onPress={() => handleOpenPopUp()}/>}  */}
+         {currentPosition && <Marker coordinate={currentPosition} pinColor={pinIconColor} onPress={() => handleOpenPopUp()}/>} 
         {allSportMarkers}
         </MapView>
         </View>

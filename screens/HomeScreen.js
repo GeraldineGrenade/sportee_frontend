@@ -69,6 +69,10 @@ const HomeScreen = ({ navigation }) => {
         }
     }
 
+    const handleClickMapCard = (activityId) => {
+        console.log(activityId);
+    }
+
     //Get 20 random activities from activityData
     const popularActivities = activityData.slice(0, 20).sort(e => Math.random()-0.5)
 
@@ -89,6 +93,8 @@ const HomeScreen = ({ navigation }) => {
         const filterDate = new Date(dateTime).toISOString().split('T')[0];
         return activityDate === filterDate;
     }))
+
+    console.log(activityData)
 
     // Create algo to calculate the distance !!!!
 
@@ -165,6 +171,7 @@ const HomeScreen = ({ navigation }) => {
      
                     <View>
                         <Text style={styles.titlePopulate}>Activités populaires autour de moi</Text>
+                        {showModalConnect && <ModaleConnect handleNavigate={handleNavigate} handleBack={handleBack} calledFrom='list' />}
                     <FlatList
                     key={'/'}
                         data={popularActivities}
@@ -175,8 +182,6 @@ const HomeScreen = ({ navigation }) => {
                         keyExtractor={(item, i) => i}
                         contentContainerStyle={styles.guestUserList}
                         numColumns={2}
-                        // vertical={false}
-                        // showsHorizontalScrollIndicator={true}
                     />
                     </View>
             
@@ -187,9 +192,9 @@ const HomeScreen = ({ navigation }) => {
     if (showMap) {
         content = (
             <View>
-                {!connectedUser.token && <ModaleConnect handleNavigate={handleNavigate} handleBack={handleBack} calledFrom='map' />}
+                {/* {!connectedUser.token && <ModaleConnect handleNavigate={handleNavigate} handleBack={handleBack} calledFrom='map' />} */}
 
-                <Map />
+                <Map handleClickMapCard={handleClickMapCard}/>
 
             </View>
 
@@ -197,11 +202,9 @@ const HomeScreen = ({ navigation }) => {
     }
 
    
-
     return (
         <SafeAreaView style={styles.container}>
             {/* Placement à optimiser */}
-            {showModalConnect && <ModaleConnect handleNavigate={handleNavigate} handleBack={handleBack} calledFrom='list' />}
             <View style={styles.topInfos}>
                 <TouchableOpacity onPress={() => setModalVisible(true)}>
                     <FontAwesome5 name='sliders-h' size={25} color='#121C6E' style={styles.filterIcon} />
@@ -367,7 +370,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        // marginBottom: 5,
         marginLeft: 12,
         marginRight: 10,
         paddingTop: 10, 
@@ -377,11 +379,9 @@ const styles = StyleSheet.create({
         marginTop: 10,
         justifyContent: 'space-between',
         alignItems: 'center',
-        flexWrap: 'wrap',
         width: '94%',
-        // flexGrow: 1,
-        // marginLeft: 12,
-        marginRight: 20,
+        marginLeft: 12,
+        marginRight: 25,
     },
 });
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { SafeAreaView, View, Text, StyleSheet, StatusBar, TouchableOpacity, Image } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -49,66 +49,37 @@ const CalendarScreen = ({ navigation }) => {
     const connectedUser = useSelector((state) => state.user.value);
     const [activities, setActivities] = useState({});
 
-    const loadItems = async (day) => {
-        setTimeout(() => {
-
-            const newActivities = {
-                [today]: [{
-                    src: 'https://res.cloudinary.com/dsd7uux0v/image/upload/v1684246191/sportee/gymnast_yowcyh.png',
-                    name: 'Yoga Vinyasa',
-                    hour: '7h'
-                },
-                {
-                    src: 'https://res.cloudinary.com/dsd7uux0v/image/upload/v1684246193/sportee/boxing_bv0uo6.png',
-                    name: 'Boxe Thaïlandaise',
-                    hour: '12h'
-                },
-                ],
-
-                '2023-05-20': [{
-                    src: 'https://res.cloudinary.com/dsd7uux0v/image/upload/v1684246192/sportee/rugby-player_qruccp.png',
-                    name: 'Tournoi de Beach-Volley',
-                    hour: '15h'
-                },
-                ],
-
-                '2023-05-21': [
-                    {
-                        src: 'https://res.cloudinary.com/dsd7uux0v/image/upload/v1684246193/sportee/skate_labagf.png',
-                        name: 'Initiation au surf',
-                        hour: '18h'
-                    },
-                ],
-
-                '2023-05-25': [
-                    {
-                        src: 'https://res.cloudinary.com/dsd7uux0v/image/upload/v1684246195/sportee/bicycle_ikt0vl.png',
-                        name: 'Balade à vélo',
-                        hour: '17h30'
-                    },
-                ],
-
-                '2023-05-27': [
-                    {
-                        src: 'https://res.cloudinary.com/dsd7uux0v/image/upload/v1684246192/sportee/climbing_dzco9w.png',
-                        name: 'Escalade en extérieur',
-                        hour: '14h30'
-                    },
-                ],
-            };
-            // console.log(day)
-
-            for (let i = 0; i < 85; i++) {
-                const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-                const strTime = moment(time).format('YYYY-MM-DD');
-                console.log(strTime)
-
-                if (!newActivities[strTime]) {
-                    newActivities[strTime] = [];
+    const loadItems = (day) => {
+            fetch(`https://sportee-backend.vercel.app/activities/getActivitiesOfUser?token=${connectedUser.token}`)
+            .then(response => response.json())
+            .then(data => {
+                
+                const newActivities = {}
+                data.activities.forEach(activity => {
+                    const formattedTime = moment(activity.date).format('YYYY-MM-DD')
+                   
+                    if (!newActivities[formattedTime]) {
+                        newActivities[formattedTime] = [];
+                    }
+                    newActivities[formattedTime].push( {
+                        name: activity.name, 
+                        hour: moment(activity.date).format('hh:mm'),
+                        src: activity.sport.icon
+                    })
+                })
+                for (let i = 0; i < 85; i++) {
+                    const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+                    const strTime = moment(time).format('YYYY-MM-DD');
+                   // console.log(strTime)
+    
+                    if (!newActivities[strTime]) {
+                        newActivities[strTime] = [];
+                    }
                 }
-            }
-            setActivities(newActivities)
-        }, 100)
+                // console.log('calendar----', newActivities)
+                setActivities(newActivities)
+            });
+ 
     }
 
     const renderItem = (item) => {
