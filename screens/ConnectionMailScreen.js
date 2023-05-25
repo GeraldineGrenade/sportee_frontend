@@ -59,7 +59,7 @@ export default ConnectionMailScreen = ({ navigation }) => {
                 source={require("../assets/background3.png")}
             >
             <TouchableOpacity style={styles.backBtn} onPress={() => navigation.navigate('ConnectionAll')}>
-            <Feather name='arrow-left' size={25} color='#D9D9D9' />
+            <Feather name='arrow-left' size={25} color='#121C6E' />
             </TouchableOpacity>
             <View style={styles.connectionContainer}>
                 <Image style={styles.logo} source={require('../assets/Logo.png')} />
@@ -104,13 +104,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'white',
-        // justifyContent: 'center',
-        // alignItems: 'center',
+
     },
     backBtn: {
         marginLeft: 20,
         marginTop: 40,
-        // marginBottom: 180,
+        marginLeft: 15, 
     },
     connectionContainer: {
         marginTop: 135,
