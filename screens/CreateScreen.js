@@ -116,8 +116,8 @@ const CreateScreen = ({ navigation }) => {
           setPlace({
             address: item.properties.label,
             coords: {
-              latitude: item.geometry.coordinates[0],
-              longitude: item.geometry.coordinates[1],
+              latitude: item.geometry.coordinates[1],
+              longitude: item.geometry.coordinates[0],
             },
           });
         }}
