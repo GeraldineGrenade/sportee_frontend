@@ -22,14 +22,22 @@ const levelTitles = [
 const ModalFilter = ({ modalVisible, setModalVisible }) => {
     let dispatch = useDispatch()
     const [datePicker, setDatePicker] = useState(false)
-    const dateTime = useSelector((state) => state.preferences.dateTime)
-    const selectedLevel = useSelector((state) => state.preferences.value.level)
     const [sportModalVisible, setSportModalVisible] = useState(false)
-    const selectedSports = useSelector((state) => state.preferences.value.sports)
     const [sportIndex, setSportIndex] = useState(null)
     const [date, setDate] = useState(new Date())
     const [toValue, setToValue] = useState(null)
     const [open, setOpen] = useState(false)
+    const [searchValue, setSearchValue] = useState('')
+    const [cityValue, setCityValue] = useState('')
+    const [suggestions, setSuggestions] = useState([])
+    const [cityModalVisible, setCityModalVisible] = useState(false)
+    const [peopleValue, setPeopleValue] = useState(null)
+    const [peopleOpen, setPeopleOpen] = useState(false)
+
+    const selectedSports = useSelector((state) => state.preferences.value.sports)
+    const selectedLevel = useSelector((state) => state.preferences.value.level)
+    const sliderValue = useSelector(state => state.preferences.value.sliderValue)
+
     const [items, setItems] = useState([
         { label: 'Matin', value: 'Matin' },
         { label: 'Midi', value: 'Midi' },
@@ -37,8 +45,6 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
         { label: 'Soir', value: 'Soir' },
         { label: 'Week-end', value: 'Week-end' },
     ])
-    const [peopleValue, setPeopleValue] = useState(null)
-    const [peopleOpen, setPeopleOpen] = useState(false)
     const [people, setPeople] = useState([
         { label: '1', value: '1' },
         { label: '2', value: '2' },
@@ -56,12 +62,8 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
         { label: '14', value: '14' },
         { label: '15', value: '15' },
     ])
-    const sliderValue = useSelector(state => state.preferences.value.sliderValue)
-    const [searchValue, setSearchValue] = useState('')
-    const [cityValue, setCityValue] = useState('')
-    const [suggestions, setSuggestions] = useState([])
-    const [cityModalVisible, setCityModalVisible] = useState(false)
 
+    //FETCHING ADRESS FROM API ADRESSE DATA GOUV
     useEffect(() => {
         const fetchCities = async () => {
             try {
@@ -117,6 +119,7 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
         dispatch(setSelectedParticipants(peopleValue));
     }, [dispatch, peopleValue])
 
+    //RESET THE FILTER
     const resetFilters = () => {
         dispatch(setCity(''))
         dispatch(setDateTime(false))
@@ -183,7 +186,6 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
     }
 
     let sportList = selectedSports.map((e, i) => {
-        {/* modify isSelected to implement */ }
         if (!e) {
             return <SelectionSport key={i} index={i} isSelected={false} name='add' icon='https://res.cloudinary.com/dsd7uux0v/image/upload/v1684260544/sportee/addition-thick-symbol_b3edkd.png' selectSport={selectSport} />
         }
@@ -194,13 +196,14 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
         dispatch(selectLevel(data.title))
     }
 
+    //VERIFY IF THE LEVEL HAS BEEN SELECTED BEFOREHAND
     const levelList = levelTitles.map((e, i) => {
-        //Verify if the level has been selected beforehand
         let isSelected = false
         if (selectedLevel === e) isSelected = true
         return <SelectionTxt key={i} isSelected={isSelected} selectTxt={selectTxt} title={e} />
     })
 
+    // SET THE DATE TIME PICKER
     const onDateSelected = (event, value) => {
         setDate(value)
         setDatePicker(false)
@@ -213,7 +216,6 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
             <DateTimePicker
                 value={date}
                 mode='date'
-                //display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                 onChange={onDateSelected}
             />
 
@@ -233,7 +235,7 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
                 {!datePicker && (
                     <View style={styles.dateContainer}>
                         <TouchableOpacity onPress={() => setDatePicker(true)} style={styles.date}>
-                            <Text  >Date</Text>
+                            <Text>Date</Text>
                         </TouchableOpacity>
                     </View>
                 )}
@@ -305,7 +307,7 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
                 />
             </View>
             <View>
-                <Text style={styles.activity}>Quelles activités sportives cherches-tu ?</Text>
+                <Text style={styles.activity}>Quelles activités cherches-tu ?</Text>
             </View>
             <View style={styles.selectSport}>
                 <View style={styles.choices}>
@@ -366,6 +368,8 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
                     onChangeValue={handlePeopleDropdownChange}
                 />
             </View>
+
+            {/* BUTTON FOR SHOW RESULTS */}
             <TouchableOpacity style={styles.resultBtn}>
                 <Text style={styles.bottomBtn} onPress={closeModal}>Afficher les résultats</Text>
             </TouchableOpacity>
@@ -426,8 +430,8 @@ const styles = StyleSheet.create({
         color: '#121C6E',
         fontWeight: 'bold',
         fontSize: 20,
+        marginLeft: 15,
         marginTop: '22%',
-        textAlign: 'center'
     },
     selectSport: {
         flexDirection: 'row',
@@ -455,7 +459,8 @@ const styles = StyleSheet.create({
         color: '#121C6E',
         fontWeight: 'bold',
         fontSize: 20,
-        textAlign: 'center'
+        textAlign: 'center',
+        marginLeft: 15
     },
     datePicker: {
         marginLeft: 25
@@ -464,18 +469,18 @@ const styles = StyleSheet.create({
         width: '40%',
         marginLeft: 40,
         backgroundColor: '#ffffff',
-        // zIndex: 9999,
     },
     people: {
         color: '#121C6E',
         fontWeight: 'bold',
         fontSize: 20,
-        marginLeft: 15,
+        marginLeft: 25,
         marginTop: 20,
     },
     peopleContainer: {
         width: '100%',
-        zIndex: 10
+        zIndex: 10,
+        marginLeft: 15
     },
     dropDownPeople: {
         marginLeft: 15,

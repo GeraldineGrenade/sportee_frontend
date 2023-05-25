@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import {
   View,
   Text,
@@ -280,7 +279,7 @@ const CreateScreen = ({ navigation }) => {
               selectSport={selectSport}
             />
             <Modal visible={isModalVisible} animationType="fade" transparent>
-              <ModaleSports closeModal={closeModal} calledFrom='create'/>
+              <ModaleSports closeModal={closeModal} calledFrom='create' />
             </Modal>
           </TouchableOpacity>
           <View style={styles.description}>
@@ -351,7 +350,7 @@ const CreateScreen = ({ navigation }) => {
                   <DateTimePicker
                     value={date}
                     mode="date"
-                    display={Platform.OS === "ios" ? "spinner" : "default"}
+                    display="default"
                     onChange={onDateSelected}
                   />
                 )}
@@ -367,7 +366,7 @@ const CreateScreen = ({ navigation }) => {
                     <DateTimePicker
                       value={time}
                       mode="time"
-                      display={Platform.OS === "ios" ? "spinner" : "default"}
+                      display="default"
                       onChange={onTimeSelected}
                     />
                   )}
@@ -380,7 +379,6 @@ const CreateScreen = ({ navigation }) => {
                   )}
                 </View>
               </View>
-
               <Text style={styles.dateAndTime}>{formattedDateTime}</Text>
             </View>
             <View style={styles.inputHours}>
@@ -800,7 +798,7 @@ const styles = StyleSheet.create({
   //   alignContent: "center",
   //   justifyContent: "center",
   // },
-  
+
 });
 
 export default CreateScreen;
