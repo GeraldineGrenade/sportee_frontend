@@ -1,44 +1,69 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
 
-//Info to send in props : closeManageParticipationsModal(), participants
-let participants = [{"_id": "646b8b786fcac6675b6a9082", "isApproved": false, "user": {"__v": 0, "_id": "646792f6dea8baa635ef57f5", "avatar": "https://res.cloudinary.com/dsd7uux0v/image/upload/v1684405796/sportee/avatar1_suh7vc.png", "badges": [Array], "dateOfBirth": "2023-05-19T15:12:15.769Z", "description": "", "email": "josephine.modiano@gmail.com", "firstname": "Joséphine", "lastname": "Modiano ", "password": "$2b$10$2eifF8Ln2xgobViP/vM4Ce3LOXyJP2XL4ABCKZcz3ZviSFYgvXnxe", "phone": "0625083889", "preferences": [Object], "token": "8ZYEXfLhPWqWos18KkFI8kW590muhvbN", "username": "Jojomodiano"}}, {"_id": "646b8b786fcac6675b6a9083", "isApproved": true, "user": {"__v": 0, "_id": "64679415f1924a00483f370c", "avatar": "https://res.cloudinary.com/dsd7uux0v/image/upload/v1684405796/sportee/avatar1_suh7vc.png", "badges": [Array], "dateOfBirth": "2023-05-19T15:10:25.439Z", "description": "", "email": "dorianlelarge@gmail.co", "firstname": "Dorian", "lastname": "Lelarge", "password": "$2b$10$YlPiaNVnHhkBlEVRgDWWjOWB2aYMJ.H0iNDDAG/C0TZPJHgGK9wMO", "phone": "0635121422", "preferences": [Object], "token": "xF9d4ka5avejwkPNSPQBXFxIrZJrKECr", "username": "Doudoulamenace"}}, {"_id": "646b8b786fcac6675b6a9084", "isApproved": true, "user": {"__v": 0, "_id": "646794e2dea8baa635ef581b", "avatar": "https://res.cloudinary.com/dsd7uux0v/image/upload/v1684405796/sportee/avatar1_suh7vc.png", "badges": [Array], "dateOfBirth": "2023-05-19T15:12:15.769Z", "description": "", "email": "camille.qui@gmail.com", "firstname": "Camille", "lastname": "Dauchy", "password": "$2b$10$3OsfsM6P21uXd6TT0XmdEel4EKev.vcPvi7CsQ21YlZQBMpqUzEw6", "phone": "", "preferences": [Object], "token": "uo82YtKktQaiBSyruu1oZT88YCleTa12", "username": "Camie"}}]
+//Info to send in props : closeManageParticipationsModal(), activityId
 
 export default ModaleManageParticipations = (props) => {
+    const [participants, setParticipants] = useState([])
 
-    let participantList = participants.map((e, i) => {
-        if (e.isApproved) {
-            return (
-                <View key={i} style={styles.participantContainer}>
-                    <View style={styles.participant}>
-                        <Image title="avatar" src={e.user.avatar} style={styles.avatar} />
-                        <Text style={styles.participantName}>{e.user.firstname}</Text>
-                    </View>
-                    <View style={styles.participationBtns}>
-                        <Text style={styles.approvedTxt}>Participation validée</Text>
-                    </View>
-                </View>
-            )
-        } else {
-            return (
-                <View key={i} style={styles.participantContainer}>
-                    <View style={styles.participant}>
-                        <Image title="avatar" src={e.user.avatar} style={styles.avatar} />
-                        <Text style={styles.participantName}>{e.user.firstname}</Text>
-                    </View>
-                    <View style={styles.participationBtns}>
-                        <TouchableOpacity style={styles.manageBtn} onPress={()=> props.closeManageParticipationsModal(e._id)}>
-                            <Text style={styles.manageBtnTxt}>Accepter</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.manageBtn} onPress={() => props.closeManageParticipationsModal()}>
-                            <Text style={styles.manageBtnTxt}>Refuser</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            )
-        }
+    //Get list of participants of activity
+    useEffect(() => {
+        fetch(`https://sportee-backend.vercel.app/activities/getParticipants/${props.activityId}`)
+        .then(response => response.json())    
+        .then(data => {
+                setParticipants(data.participants)
+            })
+    }, [])
 
-    })
+    //Accept the partcipation of a user
+    const handleAcceptParticipation = (participantId) => {
+        fetch(`https://sportee-backend.vercel.app/activities/acceptParticipation/${props.activityId}/${participantId}`, { method: 'PUT'})
+        props.closeManageParticipationsModal()
+    }
+
+    //Refuse the partcipation of a user
+    const handleRefuseParticipation = (participantId) => {
+        fetch(`https://sportee-backend.vercel.app/activities/refuseParticipation/${props.activityId}/${participantId}`, { method: 'PUT'})
+        props.closeManageParticipationsModal()
+    }
+
+    let participantList = []
+    //Conditionnal rendering according to whether the user is approved or not
+    if (participants) {
+        participantList = participants.map((e, i) => {
+            if (e.isApproved) {
+                return (
+                    <View key={i} style={styles.participantContainer}>
+                        <View style={styles.participant}>
+                            <Image title="avatar" src={e.user.avatar} style={styles.avatar} />
+                            <Text style={styles.participantName}>{e.user.firstname}</Text>
+                        </View>
+                        <View style={styles.participationBtns}>
+                            <Text style={styles.approvedTxt}>Participation validée</Text>
+                        </View>
+                    </View>
+                )
+            } else {
+                return (
+                    <View key={i} style={styles.participantContainer}>
+                        <View style={styles.participant}>
+                            <Image title="avatar" src={e.user.avatar} style={styles.avatar} />
+                            <Text style={styles.participantName}>{e.user.firstname}</Text>
+                        </View>
+                        <View style={styles.participationBtns}>
+                            <TouchableOpacity style={styles.manageBtn} onPress={() => handleAcceptParticipation(e._id)}>
+                                <Text style={styles.manageBtnTxt}>Accepter</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.manageBtn} onPress={() => handleRefuseParticipation(e._id)}>
+                                <Text style={styles.manageBtnTxt}>Refuser</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                )
+            }
+
+        })
+    }
 
     return (
         <View style={styles.container}>
@@ -101,12 +126,12 @@ const styles = StyleSheet.create({
     },
     participantContainer: {
         flexDirection: 'row',
-        marginBottom : 30,
+        marginBottom: 30,
         alignItems: 'center',
-        width:'100%',
+        width: '100%',
         borderColor: '#D9D9D9',
-        borderWidth : 1,
-        padding : 10,
+        borderWidth: 1,
+        padding: 10,
         borderRadius: 5,
 
     },
@@ -129,10 +154,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     approvedTxt: {
-        fontStyle : 'italic',
+        fontStyle: 'italic',
         fontSize: 14,
         color: '#D9D9D9',
-        marginLeft : 20,
+        marginLeft: 20,
     },
     manageBtn: {
         backgroundColor: '#EA7810',
@@ -142,8 +167,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignSelf: 'center',
         borderRadius: 5,
-        marginLeft : 10,
-        marginRight : 5,
+        marginLeft: 10,
+        marginRight: 5,
 
     },
     manageBtnTxt: {

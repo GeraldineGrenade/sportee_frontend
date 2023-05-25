@@ -14,53 +14,58 @@ const ActivityScreen = ({ navigation, route }) => {
     const [isParticipationModalVisible, setIsParticipationModalVisible] = useState(false);
     const [isValidateParticipationModalVisible, setIsValidateParticipationModalVisible] = useState(false);
     const [isManageParticipationsModalVisible, setIsManageParticipationsModalVisible] = useState(false);
-    const [status, setStatus] = useState('participate')
+    const [status, setStatus] = useState('participate');
+    const [refreshPage, setRefreshPage] = useState(false)
     const activityId = route.params
 
     //Get activity info from id transmitted from previous page
     useEffect(() => {
-        fetch(`https://sportee-backend.vercel.app/activities/getActivity/${activityId}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.result) {
-                    setCurrentActivity(data.activity)
-
-                    //Calculate day of week and month of event date
-                    let day = new Date(data.activity.date).getDay();
-                    if (day === 0) setDayText('Lundi');
-                    if (day === 1) setDayText('Mardi');
-                    if (day === 2) setDayText('Mercredi');
-                    if (day === 3) setDayText('Jeudi');
-                    if (day === 4) setDayText('Vendredi');;
-                    if (day === 5) setDayText('Samedi');
-                    if (day === 6) setDayText('Dimanche')
-
-                    let month = new Date(data.activity.date).getMonth();
-                    if (month === 0) setMonthText('Janvier');
-                    if (month === 1) setMonthText('Février');
-                    if (month === 2) setMonthText('Mars');
-                    if (month === 3) setMonthText('Avril');
-                    if (month === 4) setMonthText('Mai');
-                    if (month === 5) setMonthText('Juin');
-                    if (month === 6) setMonthText('Juillet');
-                    if (month === 7) setMonthText('Aout');
-                    if (month === 8) setMonthText('Septembre');
-                    if (month === 9) setMonthText('Octobre');
-                    if (month === 10) setMonthText('Novembre');
-                    if (month === 11) setMonthText('Décembre');
-
-                    //Define status of user relative to the activity
-                    if (connectedUser._id === data.activity.user._id) setStatus('creator')
-                    if (data.activity.participants.length === data.activity.nbMaxParticipants) setStatus('full')
-                    if (data.activity.participants.find(e => e.user._id === connectedUser._id && e.isApproved)) setStatus('approved')
-                    if (data.activity.participants.find(e => e.user._id === connectedUser._id && !e.isApproved)) setStatus('notApproved')
-
-                } else {
-                    console.log('Error in fetching activity')
-                }
-            })
+       fetchData()
     }, [])
 
+    const fetchData = () => {
+        fetch(`https://sportee-backend.vercel.app/activities/getActivity/${activityId}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log('click')
+            if (data.result) {
+                setCurrentActivity(data.activity)
+
+                //Calculate day of week and month of event date
+                let day = new Date(data.activity.date).getDay();
+                if (day === 0) setDayText('Lundi');
+                if (day === 1) setDayText('Mardi');
+                if (day === 2) setDayText('Mercredi');
+                if (day === 3) setDayText('Jeudi');
+                if (day === 4) setDayText('Vendredi');;
+                if (day === 5) setDayText('Samedi');
+                if (day === 6) setDayText('Dimanche')
+
+                let month = new Date(data.activity.date).getMonth();
+                if (month === 0) setMonthText('Janvier');
+                if (month === 1) setMonthText('Février');
+                if (month === 2) setMonthText('Mars');
+                if (month === 3) setMonthText('Avril');
+                if (month === 4) setMonthText('Mai');
+                if (month === 5) setMonthText('Juin');
+                if (month === 6) setMonthText('Juillet');
+                if (month === 7) setMonthText('Aout');
+                if (month === 8) setMonthText('Septembre');
+                if (month === 9) setMonthText('Octobre');
+                if (month === 10) setMonthText('Novembre');
+                if (month === 11) setMonthText('Décembre');
+
+                //Define status of user relative to the activity
+                if (connectedUser._id === data.activity.user._id) setStatus('creator')
+                if (data.activity.participants.length === data.activity.nbMaxParticipants) setStatus('full')
+                if (data.activity.participants.find(e => e.user._id === connectedUser._id && e.isApproved)) setStatus('approved')
+                if (data.activity.participants.find(e => e.user._id === connectedUser._id && !e.isApproved)) setStatus('notApproved')
+
+            } else {
+                console.log('Error in fetching activity')
+            }
+        })
+    }
     //Initialise participants lists according to participants and nbMaxParticipants
     let participantList = []
     let approvedStyle = {}
@@ -90,6 +95,7 @@ const ActivityScreen = ({ navigation, route }) => {
         </View>
     )
 
+    //Send participation request of user to activity creator
     const handleParticipate = () => {
         fetch(`https://sportee-backend.vercel.app/activities/${activityId}/${connectedUser._id}`,
             {
@@ -119,12 +125,14 @@ const ActivityScreen = ({ navigation, route }) => {
         </View>
     )
 
+    //Modify activity - Nice to have feature - to implement at a later stage
     const handleModify = () => {
         console.log('modify')
     }
 
-    const closeManageParticipationsModal = (participantId) => {
-        console.log(participantId)
+    //Close Manage participations modal
+    const closeManageParticipationsModal = () => {
+        fetchData()
         setIsManageParticipationsModalVisible(false)
     }
 
@@ -156,6 +164,7 @@ const ActivityScreen = ({ navigation, route }) => {
             <TouchableOpacity style={[styles.participateBtn, { width: 175 }]} onPress={() => handleModify()}>
                 <Text style={styles.participateBtnTxt}>Modifier l'activité</Text>
             </TouchableOpacity>
+            {/* On press, navigate to chat screen with id of activity in route.params */}
             <TouchableOpacity style={[styles.participateBtn, { width: 175 }, {alignSelf: 'center'}]} onPress={() => navigation.navigate('Conversation', activityId)}>
                 <Text style={styles.participateBtnTxt}>Accéder au chat</Text>
             </TouchableOpacity>
@@ -222,7 +231,7 @@ const ActivityScreen = ({ navigation, route }) => {
                 </View>}
             {isParticipationModalVisible && participationModal}
             {isValidateParticipationModalVisible && validateParticipationModal}
-            {isManageParticipationsModalVisible && <ModaleManageParticipations closeManageParticipationsModal={closeManageParticipationsModal} participants={currentActivity.participants} />}
+            {isManageParticipationsModalVisible && <ModaleManageParticipations closeManageParticipationsModal={closeManageParticipationsModal} activityId={activityId} />}
         </View>
     )
 }
