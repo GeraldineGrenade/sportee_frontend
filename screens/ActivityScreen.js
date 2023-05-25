@@ -15,7 +15,6 @@ const ActivityScreen = ({ navigation, route }) => {
     const [isValidateParticipationModalVisible, setIsValidateParticipationModalVisible] = useState(false);
     const [isManageParticipationsModalVisible, setIsManageParticipationsModalVisible] = useState(false);
     const [status, setStatus] = useState('participate');
-    const [refreshPage, setRefreshPage] = useState(false)
     const activityId = route.params
 
     //Get activity info from id transmitted from previous page
@@ -27,7 +26,6 @@ const ActivityScreen = ({ navigation, route }) => {
         fetch(`https://sportee-backend.vercel.app/activities/getActivity/${activityId}`)
         .then(response => response.json())
         .then(data => {
-            console.log('click')
             if (data.result) {
                 setCurrentActivity(data.activity)
 
@@ -75,7 +73,9 @@ const ActivityScreen = ({ navigation, route }) => {
         } else {
             if (!currentActivity.participants[i].isApproved) approvedStyle = { opacity: 0.2 }
             participantList.push(
-                <Image key={i} title="participant-avatar" src={currentActivity.participants[i].user.avatar} style={[styles.avatar, approvedStyle]} />
+                <TouchableOpacity onPress={()=>setIsManageParticipationsModalVisible(true)}>
+                    <Image key={i} title="participant-avatar" src={currentActivity.participants[i].user.avatar} style={[styles.avatar, approvedStyle]} />
+                </TouchableOpacity>
             )
         }
     }
@@ -130,7 +130,7 @@ const ActivityScreen = ({ navigation, route }) => {
         console.log('modify')
     }
 
-    //Close Manage participations modal
+    //Close Manage participations modal and reload screen
     const closeManageParticipationsModal = () => {
         fetchData()
         setIsManageParticipationsModalVisible(false)
@@ -305,7 +305,6 @@ const styles = StyleSheet.create({
         height: 140,
         borderRadius: 10,
         opacity: 0.7, 
-
     },
     activityCreator: {
         flexDirection: 'row',
@@ -348,7 +347,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginRight: 50,
-
     },
     dateTimeTxt: {
         marginLeft: 10,

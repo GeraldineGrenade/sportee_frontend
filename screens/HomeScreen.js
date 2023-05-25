@@ -9,8 +9,6 @@ import Map from '../components/Map';
 import ModalFilter from '../components/ModalFilter';
 import ModaleConnect from '../components/ModaleConnect';
 
-
-
 const HomeScreen = ({ navigation }) => {
     const [showMap, setShowMap] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
@@ -68,7 +66,8 @@ const HomeScreen = ({ navigation }) => {
             setListTextColor('#EA7810');
         }
     }
-
+    
+    //!\TO FINISH
     const handleClickMapCard = (activityId) => {
         console.log(activityId);
     }
@@ -76,6 +75,7 @@ const HomeScreen = ({ navigation }) => {
     //Get 20 random activities from activityData
     const popularActivities = activityData.slice(0, 20).sort(e => Math.random() - 0.5)
 
+    //Filter activities according to user's preferences
     !sports.every(e => e === null) && (filteredActivities = filteredActivities.filter(activity => {
         return sports.some(e => e?.name === activity.sport?.name)
     }))
@@ -94,15 +94,13 @@ const HomeScreen = ({ navigation }) => {
         return activityDate === filterDate;
     }))
 
-    console.log(activityData)
-
     // Create algo to calculate the distance !!!!
 
     // sliderValue && (filteredActivities = filteredActivities.filter(activity => {
     //     return (activity.sliderValue <= sliderValue)
     // }))
 
-    // Create algo to determine if a date is matin midi or soir !!!!
+    // Determine if the date is morning, mid-day, afternoon or evening
     function timePeriod(date) {
         const hour = new Date(date).getHours()
 
@@ -127,11 +125,9 @@ const HomeScreen = ({ navigation }) => {
     }
 
 
-    //console.log(filteredActivities.map(e => e.sport))
-
-
     let listContent
     if (connectedUser.token) {
+        //List to render is a user is connected
         listContent = (
             <View>
                 <Text style={styles.titlePopulate}>Activités populaires autour de moi</Text>
@@ -139,7 +135,7 @@ const HomeScreen = ({ navigation }) => {
                     key={'#'}
                     data={popularActivities}
                     renderItem={({ item }) => {
-                        return <ActivityCard {...item} handleClickActivityCard={handleClickActivityCard} />
+                        return <ActivityCard {...item} handleClickActivityCard={handleClickActivityCard} connected={true} />
                     }
                     }
                     keyExtractor={(item, i) => item._id}
@@ -155,7 +151,7 @@ const HomeScreen = ({ navigation }) => {
                     key={'_'}
                     data={filteredActivities}
                     renderItem={({ item }) => {
-                        return <ActivityCard {...item} handleClickActivityCard={handleClickActivityCard} />
+                        return <ActivityCard {...item} handleClickActivityCard={handleClickActivityCard} connected={true}/>
                     }
                     }
                     keyExtractor={(item, i) => item._id}
@@ -167,6 +163,7 @@ const HomeScreen = ({ navigation }) => {
             </View>
         )
     } else {
+        //List to render if no user is connected
         listContent = (
 
             <View>
@@ -176,7 +173,7 @@ const HomeScreen = ({ navigation }) => {
                     key={'/'}
                     data={popularActivities}
                     renderItem={({ item }) => {
-                        return <ActivityCard {...item} handleClickActivityCard={handleClickActivityCard} />
+                        return <ActivityCard {...item} handleClickActivityCard={handleClickActivityCard} connected={false} />
                     }
                     }
                     keyExtractor={(item, i) => i}
@@ -204,7 +201,6 @@ const HomeScreen = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            {/* Placement à optimiser */}
             <View style={styles.topInfos}>
                 <TouchableOpacity onPress={() => setModalVisible(true)}>
                     <FontAwesome5 name='sliders-h' size={25} color='#121C6E' style={styles.filterIcon} />
