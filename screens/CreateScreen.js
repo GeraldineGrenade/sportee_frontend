@@ -19,7 +19,6 @@ import { useSelector } from "react-redux";
 import ModaleSports from "../components/ModaleSports";
 import SelectionTxt from "../components/SelectionTxt";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import moment from "moment";
 
 const BACKEND_ADRESS = "https://sportee-backend.vercel.app/";
 
@@ -213,7 +212,6 @@ const CreateScreen = ({ navigation }) => {
       ).toISOString()
     );
   };
-  const formattedDateTime = moment(dateAndTime).format("LLL");
 
   // DROPDOWNPICKER DURATION OF ACTIVITY
 
@@ -355,7 +353,7 @@ const CreateScreen = ({ navigation }) => {
                     value={date}
                     mode="date"
                     display='default'
-                    // onChange={onDateSelected}
+                    onChange={onDateSelected}
                   />
                 )}
                 {!datePicker && (
@@ -371,7 +369,7 @@ const CreateScreen = ({ navigation }) => {
                       value={time}
                       mode="time"
                       display='Default'
-                      // onChange={onTimeSelected}
+                      onChange={onTimeSelected}
                     />
                   )}
                   {!timePicker && (
@@ -384,7 +382,6 @@ const CreateScreen = ({ navigation }) => {
                 </View>
               </View>
 
-              {/* <Text style={styles.dateAndTime}>{formattedDateTime}</Text> */}
             </View>
             <View style={styles.inputHours}>
               <TouchableOpacity
@@ -664,15 +661,10 @@ const styles = StyleSheet.create({
   },
 
   inputDate: {
-    // marginLeft: 5,
     marginTop: 10,
-    // backgroundColor: "white",
-    // borderRadius: 7,
-    // borderWidth: 1,
     borderColor: "#D9D9D9",
     width: 145,
     height: 34,
-    // paddingLeft: 10,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
