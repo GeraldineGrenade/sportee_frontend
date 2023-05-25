@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginRight: 27.5,
         marginLeft: 27.5,
-        marginTop: 30,
+        marginTop: 77,
         marginBottom: 10,
     },
 
@@ -143,8 +143,8 @@ const styles = StyleSheet.create({
     },
 
     subtitle: {
-        fontSize: 16,
-        fontWeight: '600',
+        fontSize: 18,
+        fontWeight: '500',
         color: '#121C6E',
         marginBottom: 20,
         marginLeft: 27.5,

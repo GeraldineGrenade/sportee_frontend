@@ -210,7 +210,10 @@ const HomeScreen = ({ navigation }) => {
                     <FontAwesome5 name='sliders-h' size={25} color='#121C6E' style={styles.filterIcon} />
                 </TouchableOpacity>
                 <ModalFilter modalVisible={modalVisible} setModalVisible={setModalVisible} />
-                <TextInput placeholder='Rechercher une activité' style={styles.input}></TextInput>
+                <View style={styles.input}>
+                <FontAwesome name='search' style={styles.searchIcon} />
+                <TextInput placeholder='Rechercher une activité' style={styles.textInput}></TextInput>
+                </View>
                 <View style={styles.userIconContainer}>
                     <FontAwesome name='user' size={25} color='#f8f8ff' style={styles.userIcon} onPress={() => { connectedUser.token ? navigation.navigate('Profil') : navigation.navigate('ConnectionAll') }} />
                 </View>
@@ -274,6 +277,8 @@ const styles = StyleSheet.create({
     },
 
     input: {
+        flexDirection: 'row',
+        alignItems: 'center',
         width: '60%',
         borderColor: '#D9D9D9',
         borderWidth: 1,
@@ -282,6 +287,15 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         marginRight: 15,
         paddingLeft: 15,
+    },
+
+    textInput: {
+
+    },
+
+    searchIcon:{
+       color: '#D9D9D9',
+        marginRight: 5,
     },
 
     userIconContainer: {

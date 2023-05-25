@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
         // marginBottom: 180,
     },
     connectionContainer: {
-        marginTop: 170,
+        marginTop: 135,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     },
     connectBtnTxt: {
         color: 'white',
-        fontSize: 16,
+        fontSize: 14,
     },
     input: {
         borderColor: '#D9D9D9',
