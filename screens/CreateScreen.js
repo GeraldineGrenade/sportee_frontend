@@ -350,37 +350,37 @@ const CreateScreen = ({ navigation }) => {
           <View style={styles.input}>
             <View style={styles.datePicker}>
               <View style={styles.inputDate}>
-                {datePicker && (
+                {/* {datePicker && ( */}
                   <DateTimePicker
                     value={date}
                     mode="date"
                     display='default'
-                    // onChange={onDateSelected}
+                    onChange={onDateSelected}
                   />
-                )}
-                {!datePicker && (
-                  <View>
+                {/* )} */}
+                {/* {!datePicker && ( */}
+                  {/* <View>
                     <TouchableOpacity onPress={() => setDatePicker(true)}>
                       <Text>Date</Text>
                     </TouchableOpacity>
-                  </View>
-                )}
+                  </View> */}
+                {/* )} */}
                 <View style={styles.timePicker}>
-                  {timePicker && (
+                  {/* {timePicker && ( */}
                     <DateTimePicker
                       value={time}
                       mode="time"
                       display='Default'
-                      // onChange={onTimeSelected}
+                      onChange={onTimeSelected}
                     />
-                  )}
+                  {/* )}
                   {!timePicker && (
                     <View>
                       <TouchableOpacity onPress={() => setTimePicker(true)}>
                         <Text>Heure</Text>
                       </TouchableOpacity>
                     </View>
-                  )}
+                  )} */}
                 </View>
               </View>
 

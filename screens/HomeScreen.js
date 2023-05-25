@@ -69,7 +69,7 @@ const HomeScreen = ({ navigation }) => {
     
     //!\TO FINISH
     const handleClickMapCard = (activityId) => {
-        console.log(activityId);
+        // console.log(activityId);
     }
 
     //Get 20 random activities from activityData

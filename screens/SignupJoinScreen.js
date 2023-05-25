@@ -1,5 +1,5 @@
-import React, { useState, FC } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, Platform, StyleSheet, DateInput, KeyboardAvoidingView, Modal } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Image, Platform, StyleSheet, KeyboardAvoidingView, Modal } from 'react-native';
 import ModaleAvatars from '../components/ModaleAvatars';
 import DateTimePicker from '@react-native-community/datetimepicker'
 import Feather from 'react-native-vector-icons/Feather';
@@ -57,8 +57,6 @@ const SignupJoinScreen = ({ navigation }) => {
         setDateString(date + '/' + month  + '/' + value.getFullYear());
         setDatePicker(false);
     };
-
-
 
     //Validate user info - Check if all fields are valid and if not add error text underneath input
     const handleValidate = () => {
@@ -273,7 +271,8 @@ const SignupJoinScreen = ({ navigation }) => {
                                 <DateTimePicker
                                     value={dateOfBirth}
                                     mode='date'
-                                    display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                                    display='default'
+                                    // display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                                     onChange={onDateSelected}
                                 />
                             )}

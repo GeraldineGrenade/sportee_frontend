@@ -64,6 +64,12 @@ const ActivityScreen = ({ navigation, route }) => {
             }
         })
     }
+
+    //If the user is the creator, allow click on avatar to open manage participations modale
+    const allowAvatarClick = () => {
+        if (status === 'creator') setIsManageParticipationsModalVisible(true)
+    }
+
     //Initialise participants lists according to participants and nbMaxParticipants
     let participantList = []
     let approvedStyle = {}
@@ -73,7 +79,7 @@ const ActivityScreen = ({ navigation, route }) => {
         } else {
             if (!currentActivity.participants[i].isApproved) approvedStyle = { opacity: 0.2 }
             participantList.push(
-                <TouchableOpacity onPress={()=>setIsManageParticipationsModalVisible(true)}>
+                <TouchableOpacity onPress={()=> allowAvatarClick()}>
                     <Image key={i} title="participant-avatar" src={currentActivity.participants[i].user.avatar} style={[styles.avatar, approvedStyle]} />
                 </TouchableOpacity>
             )
