@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginRight: 27.5,
         marginLeft: 27.5,
-        marginTop: 77,
+        marginTop: 30,
         marginBottom: 10,
     },
 

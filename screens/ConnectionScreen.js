@@ -105,7 +105,7 @@ export default ConnectionScreen = ({ navigation }) => {
                 source={require("../assets/background3.png")}
             >
             <TouchableOpacity style={styles.backBtn} onPress={() => navigation.navigate('Recherche')}>
-                <Feather name='arrow-left' size={25} color='#D9D9D9' />
+                <Feather name='arrow-left' size={25} color='#121C6E' />
                 {/* <Text style={styles.backBtnTxt} >Retour à la page d'acceuil</Text> */}
             </TouchableOpacity>
             {userInfo === null ? (
@@ -157,6 +157,7 @@ const styles = StyleSheet.create({
     backBtn: {
         alignSelf: 'flex-start',
         marginTop: 50,
+        marginLeft: 15, 
         flexDirection: 'row',
     },
 

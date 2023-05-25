@@ -406,7 +406,7 @@ const CreateScreen = ({ navigation }) => {
                         onPress={() => handleOptionSelect(option)}
                         style={styles.dropdownOption}
                       >
-                        <Text>{option}H</Text>
+                        <Text style={styles.dropHourText}>{option}H</Text>
                       </TouchableOpacity>
                     ))}
                   </View>
@@ -444,7 +444,7 @@ const CreateScreen = ({ navigation }) => {
                     onPress={() => handlePersonSelect(select)}
                     style={styles.dropdownOption}
                   >
-                    <Text>{select}</Text>
+                    <Text style={styles.dropInvitationText}>{select}</Text>
                   </TouchableOpacity>
                 ))}
               </View>
@@ -478,7 +478,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginRight: 27.5,
     marginLeft: 27.5,
-    marginTop: 55,
+    marginTop: 77,
     marginBottom: 10,
   },
 
@@ -510,7 +510,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingRight: 8,
     color: "#121C6E",
-    fontWeight: "bold",
+    fontWeight: "600",
+    marginLeft: 15, 
   },
 
   inputSport: {
@@ -521,12 +522,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 7,
     fontSize: 15,
-    marginLeft: 15,
+    marginLeft: 45,
     paddingLeft: 10,
   },
 
   selectSport: {
-    marginTop: 27,
+    marginTop: 20,
   },
 
   select: {
@@ -549,7 +550,7 @@ const styles = StyleSheet.create({
   textDescription: {
     fontSize: 15,
     paddingTop: 5,
-    fontWeight: "bold",
+    fontWeight: "600",
     color: "#121C6E",
   },
 
@@ -560,7 +561,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#D9D9D9",
     width: 250,
-    height: 51,
+    height: 45,
     paddingLeft: 10,
     marginRight: 45,
   },
@@ -572,7 +573,7 @@ const styles = StyleSheet.create({
 
   textAdress: {
     fontSize: 15,
-    fontWeight: "bold",
+    fontWeight: "600",
     color: "#121C6E",
   },
 
@@ -599,7 +600,7 @@ const styles = StyleSheet.create({
 
   around: {
     marginLeft: 20,
-    fontWeight: "bold",
+    fontWeight: "600",
     fontSize: 13,
     color: "#EA7810",
   },
@@ -610,7 +611,7 @@ const styles = StyleSheet.create({
 
   textLevel: {
     fontSize: 15,
-    fontWeight: "bold",
+    fontWeight: "600",
     color: "#121C6E",
   },
 
@@ -636,7 +637,7 @@ const styles = StyleSheet.create({
 
   textDate: {
     fontSize: 15,
-    fontWeight: "bold",
+    fontWeight: "600",
     color: "#121C6E",
   },
 
@@ -662,6 +663,7 @@ const styles = StyleSheet.create({
 
   inputDate: {
     marginTop: 10,
+    marginLeft: 11, 
     borderColor: "#D9D9D9",
     width: 145,
     height: 34,
@@ -678,7 +680,6 @@ const styles = StyleSheet.create({
     borderColor: "#D9D9D9",
     width: 145,
     height: 34,
-
     alignItems: "center",
     paddingTop: 5,
   },
@@ -690,7 +691,7 @@ const styles = StyleSheet.create({
 
   textInvitation: {
     fontSize: 15,
-    fontWeight: "bold",
+    fontWeight: "600",
     color: "#121C6E",
   },
 
@@ -707,14 +708,13 @@ const styles = StyleSheet.create({
     borderColor: "#D9D9D9",
     width: 137,
     height: 38,
-    paddingLeft: 10,
   },
 
   personne: {
     fontSize: 15,
     paddingLeft: 5,
     marginTop: 10,
-    fontWeight: "bold",
+    fontWeight: "600",
     color: "#121C6E",
   },
 
@@ -729,7 +729,7 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     borderColor: "#121C6E",
     borderWidth: 1,
-    width: 270,
+    width: 250,
     height: 50,
     justifyContent: "center",
     alignItems: "center",
@@ -737,12 +737,14 @@ const styles = StyleSheet.create({
   },
 
   textBtn: {
-    fontSize: 20,
+    fontSize: 15,
     color: "#f2f2f2",
   },
 
   dropdownToggleText: {
-    fontSize: 16,
+    fontSize: 14,
+     paddingTop: 3,
+    // paddingLeft: 10,
   },
   dropdownBackdrop: {
     flex: 1,
@@ -754,14 +756,18 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderWidth: 1,
     borderColor: "gray",
-    width: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    width: 100,
     padding: 10,
   },
 
   reinitialisation: {
-    marginTop: 10,
+    marginTop: 18,
+    marginBottom: -10,
     color: "#121C6E",
-    fontWeight: "bold",
+    fontWeight: "600",
+    fontSize: 15, 
   },
 
   dropdownSelect: {
@@ -775,6 +781,7 @@ const styles = StyleSheet.create({
   },
 
   dropdownPersonText: {
+    fontSize: 14, 
     marginTop: 10,
     backgroundColor: "white",
     borderRadius: 7,
@@ -784,8 +791,22 @@ const styles = StyleSheet.create({
     height: 34,
     justifyContent: "center",
     alignItems: "center",
-    paddingTop: 5,
-    paddingLeft: 30,
+    paddingTop: 8,
+    paddingLeft: 10,
+  },
+
+  dropHourText: {
+    fontSize: 20,
+    marginBottom: 5, 
+    fontWeight: '500',
+    color: '#EA7810'
+  }, 
+
+  dropInvitationText: {
+    fontSize: 20,
+    marginBottom: 5,
+    fontWeight: '500', 
+    color: '#EA7810'
   },
 
 });
