@@ -5,10 +5,11 @@ import * as Google from "expo-auth-session/providers/google"
 import Svg, { Path } from "react-native-svg"
 import * as Facebook from "expo-auth-session/providers/facebook";
 import * as AuthSession from "expo-auth-session"
+import { useNavigation } from '@react-navigation/native'
 
 
 WebBrowser.maybeCompleteAuthSession()
-
+const navigation = useNavigation()
 
 export default function App() {
     const [token, setToken] = useState("")
@@ -60,6 +61,7 @@ export default function App() {
             setUserInfo(userInfo)
 
             await sendUserInfoToDatabase(userInfo)
+            navigation.navigate('Home');
         } else {
             alert('Une erreur s\'est produite lors de l\'authentification Google.')
         }
@@ -124,7 +126,7 @@ export default function App() {
                     </View>
                 </View>
             ) : (
-                <Text style={styles.text}>Welcome: {JSON.stringify(userInfo)}</Text>
+                navigation.navigate('Home')
             )}
         </View>
     )
