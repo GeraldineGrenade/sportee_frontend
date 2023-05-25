@@ -280,7 +280,7 @@ const CreateScreen = ({ navigation }) => {
               selectSport={selectSport}
             />
             <Modal visible={isModalVisible} animationType="fade" transparent>
-              <ModaleSports closeModal={closeModal} />
+              <ModaleSports closeModal={closeModal} calledFrom='create'/>
             </Modal>
           </TouchableOpacity>
           <View style={styles.description}>

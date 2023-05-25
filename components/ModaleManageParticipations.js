@@ -30,7 +30,7 @@ export default ModaleManageParticipations = (props) => {
                         <TouchableOpacity style={styles.manageBtn} onPress={()=> props.closeManageParticipationsModal(e._id)}>
                             <Text style={styles.manageBtnTxt}>Accepter</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.manageBtn}>
+                        <TouchableOpacity style={styles.manageBtn} onPress={() => props.closeManageParticipationsModal()}>
                             <Text style={styles.manageBtnTxt}>Refuser</Text>
                         </TouchableOpacity>
                     </View>
