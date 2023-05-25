@@ -181,6 +181,11 @@ const ActivityScreen = ({ navigation, route }) => {
         </View>
     ))
 
+    //Remove blank space for intermédiaire level
+    let treatedLevel = currentActivity.level
+    if (currentActivity.level === 'Inter médiaire') {
+        treatedLevel = currentActivity.level.replace(/\s/g, '')
+    }
 
     return (
         <View style={styles.container}>
@@ -210,7 +215,7 @@ const ActivityScreen = ({ navigation, route }) => {
                                 <Text style={styles.address}>{currentActivity.place.address}</Text>
                             </TouchableOpacity>
                             <View style={styles.level}>
-                                <Text style={styles.levelTxt}>{currentActivity.level}</Text>
+                                <Text style={styles.levelTxt}>{treatedLevel}</Text>
                             </View>
                         </View>
                     </View>
@@ -297,6 +302,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginTop: 10,
         width: '100%',
+        height : 145,
     },
     sportName: {
         color: '#fff',
@@ -326,10 +332,10 @@ const styles = StyleSheet.create({
         marginLeft: 20,
     },
     address: {
-        width: 120,
-        marginBottom: 20,
+        width: 140,
+        marginBottom: 15,
         marginTop: 5,
-        fontSize: 16,
+        fontSize: 14,
     },
     level: {
         backgroundColor: '#EA7810',

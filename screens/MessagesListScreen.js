@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { SafeAreaView, View, Text, StyleSheet, TextInput, ScrollView, TouchableOpacity } from 'react-native'
+import { SafeAreaView, View, Text, StyleSheet, TextInput, ScrollView } from 'react-native'
 import { useSelector } from 'react-redux';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import ConversationCard from '../components/ConversationCard';
@@ -16,7 +16,7 @@ const MessagesListScreen = ({ navigation }) => {
         !connectedUser.email && navigation.navigate('ConnectionAll')
     })
 
-
+    //On click on a conversation card, navigates to message Screen with id of activity in route.params
     const handleClickConversationCard = (activityId) => {
         navigation.navigate('Conversation', activityId)
     }
@@ -61,7 +61,7 @@ const MessagesListScreen = ({ navigation }) => {
                 <View style={styles.activeContainer}>
                     <Text style={styles.subtitle}>Conversations de mes activités : </Text>
 
-                    <ScrollView contentContainerStyle={styles.messagesActivContainer}>
+                    <ScrollView contentContainerStyle={styles.messagesContainer}>
                         {myConversationList}
                     </ScrollView>
                 </View>
@@ -71,7 +71,7 @@ const MessagesListScreen = ({ navigation }) => {
                 <Text style={styles.subtitle}>Conversations des activités auxquelles je participe : </Text>
 
                 {otherConversationList ?
-                    (<ScrollView contentContainerStyle={styles.messagesArchivContainer}>
+                    (<ScrollView contentContainerStyle={styles.messagesContainer}>
                         {otherConversationList}
                     </ScrollView>)
                     : <Text style={styles.noActivity}>Vous n'avez pas d'activités prévues pour l'instant</Text>
@@ -88,7 +88,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#f2f2f2',
-        //   alignItems: 'center',
     },
 
     title: {
@@ -113,11 +112,9 @@ const styles = StyleSheet.create({
         width: 42,
         height: 42,
         padding: 8,
-        // marginRight: 20,
     },
 
     userIcon: {
-        // padding: 10,
         marginLeft: 4,
     },
 
@@ -155,9 +152,7 @@ const styles = StyleSheet.create({
     },
 
     archiveContainer: {
-        // marginTop:20,
         marginBottom: 40,
-        // marginLeft: 27.5,
     },
 
     messageActiv: {
@@ -171,11 +166,10 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
 
-    messagesActivContainer: {
+    messagesContainer: {
         alignItems: 'center',
-        height: '35%',
+        height: 200,
     },
-
 
     messageArchiv: {
         borderColor: '#D9D9D9',
@@ -187,10 +181,6 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
 
-    messagesArchivContainer: {
-        alignItems: 'center',
-        height: '30%',
-    },
     noActivity: {
         marginLeft: 27.5,
         fontStyle: 'italic',
