@@ -239,7 +239,7 @@ const CreateScreen = ({ navigation }) => {
     setDropdownPerson(false);
   };
 
-  
+
   return (
     <KeyboardAvoidingView
       style={
@@ -281,7 +281,7 @@ const CreateScreen = ({ navigation }) => {
               selectSport={selectSport}
             />
             <Modal visible={isModalVisible} animationType="fade" transparent>
-              <ModaleSports closeModal={closeModal} calledFrom="create" />
+              <ModaleSports closeModal={closeModal} calledFrom='create' />
             </Modal>
           </TouchableOpacity>
           <View style={styles.description}>
@@ -349,15 +349,15 @@ const CreateScreen = ({ navigation }) => {
             <View style={styles.datePicker}>
               <View style={styles.inputDate}>
                 {/* {datePicker && ( */}
-                  <DateTimePicker
-                    value={date}
-                    mode="date"
-                    display='default'
-                    onChange={onDateSelected}
-                  />
+                <DateTimePicker
+                  value={date}
+                  mode="date"
+                  display="default"
+                  onChange={onDateSelected}
+                />
                 {/* )} */}
                 {/* {!datePicker && ( */}
-                  {/* <View>
+                {/* <View>
                     <TouchableOpacity onPress={() => setDatePicker(true)}>
                       <Text>Date</Text>
                     </TouchableOpacity>
@@ -365,12 +365,12 @@ const CreateScreen = ({ navigation }) => {
                 {/* )} */}
                 <View style={styles.timePicker}>
                   {/* {timePicker && ( */}
-                    <DateTimePicker
-                      value={time}
-                      mode="time"
-                      display='Default'
-                      onChange={onTimeSelected}
-                    />
+                  <DateTimePicker
+                    value={time}
+                    mode="time"
+                    display="default"
+                    onChange={onTimeSelected}
+                  />
                   {/* )}
                   {!timePicker && (
                     <View>
@@ -381,7 +381,6 @@ const CreateScreen = ({ navigation }) => {
                   )} */}
                 </View>
               </View>
-
             </View>
             <View style={styles.inputHours}>
               <TouchableOpacity
@@ -511,7 +510,7 @@ const styles = StyleSheet.create({
     paddingRight: 8,
     color: "#121C6E",
     fontWeight: "600",
-    marginLeft: 15, 
+    marginLeft: 15,
   },
 
   inputSport: {
@@ -663,7 +662,7 @@ const styles = StyleSheet.create({
 
   inputDate: {
     marginTop: 10,
-    marginLeft: 11, 
+    marginLeft: 11,
     borderColor: "#D9D9D9",
     width: 145,
     height: 34,
@@ -743,7 +742,7 @@ const styles = StyleSheet.create({
 
   dropdownToggleText: {
     fontSize: 14,
-     paddingTop: 3,
+    paddingTop: 3,
     // paddingLeft: 10,
   },
   dropdownBackdrop: {
@@ -767,7 +766,7 @@ const styles = StyleSheet.create({
     marginBottom: -10,
     color: "#121C6E",
     fontWeight: "600",
-    fontSize: 15, 
+    fontSize: 15,
   },
 
   dropdownSelect: {
@@ -781,7 +780,7 @@ const styles = StyleSheet.create({
   },
 
   dropdownPersonText: {
-    fontSize: 14, 
+    fontSize: 14,
     marginTop: 10,
     backgroundColor: "white",
     borderRadius: 7,
@@ -797,15 +796,15 @@ const styles = StyleSheet.create({
 
   dropHourText: {
     fontSize: 20,
-    marginBottom: 5, 
+    marginBottom: 5,
     fontWeight: '500',
     color: '#EA7810'
-  }, 
+  },
 
   dropInvitationText: {
     fontSize: 20,
     marginBottom: 5,
-    fontWeight: '500', 
+    fontWeight: '500',
     color: '#EA7810'
   },
 

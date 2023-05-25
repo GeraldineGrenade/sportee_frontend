@@ -7,9 +7,10 @@ import ConversationCard from '../components/ConversationCard';
 
 const MessagesListScreen = ({ navigation }) => {
     const connectedUser = useSelector((state) => state.user.value);
-    const [myConversationList, setMyConversationList] = useState(null);
-    const [otherConversationList, setOtherConversationList] = useState(null)
+    const [myConversationList, setMyConversationList] = useState([]);
+    const [otherConversationList, setOtherConversationList] = useState([])
 
+    console.log(myConversationList)
 
     //Redirects to ConnectionScreen if no user connected
     useFocusEffect(() => {
@@ -24,26 +25,27 @@ const MessagesListScreen = ({ navigation }) => {
 
     useEffect(() => {
         //Gets list of activities in which the user is participating and is approved
-        fetch(`https://sportee-backend.vercel.app/activities/getActivitiesOfUser?token=${connectedUser.token}`)
+        fetch(`http://10.1.0.84:3000/activities/getActivitiesOfUser?token=${connectedUser.token}`)
             .then(response => response.json())
             .then(data => {
-                const Otherlist = data.activities.map((e, i) => {
-                    return <ConversationCard key={i} {...e} handleClickConversationCard={handleClickConversationCard} />
-                })
-                setOtherConversationList(Otherlist)
+
+                setOtherConversationList(data.activities)
             })
         //Gets list of activities created by user
-        fetch(`https://sportee-backend.vercel.app/activities/getActivitiesByUser?token=${connectedUser.token}`)
+        fetch(`http://10.1.0.84:3000/activities/getActivitiesByUser?token=${connectedUser.token}`)
             .then(response => response.json())
             .then(data => {
-                const myList = data.activities.map((e, i) => {
-                    return <ConversationCard key={i} {...e} handleClickConversationCard={handleClickConversationCard} />
-                })
-                setMyConversationList(myList)
+
+                setMyConversationList(data.activities)
             })
     }, [])
 
-
+    const otherList = otherConversationList.map((e, i) => {
+        return <ConversationCard key={i} {...e} handleClickConversationCard={handleClickConversationCard} />
+    })
+    const myList = myConversationList.map((e, i) => {
+        return <ConversationCard key={i} {...e} handleClickConversationCard={handleClickConversationCard} />
+    })
     return (
         <View style={styles.container}>
             <View style={styles.topContainer}>
@@ -71,8 +73,8 @@ const MessagesListScreen = ({ navigation }) => {
                 <Text style={styles.subtitle}>Conversations des activités auxquelles je participe : </Text>
 
                 {otherConversationList ?
-                    (<ScrollView contentContainerStyle={styles.messagesContainer}>
-                        {otherConversationList}
+                    (<ScrollView contentContainerStyle={styles.messagesArchivContainer}>
+                        {otherList}
                     </ScrollView>)
                     : <Text style={styles.noActivity}>Vous n'avez pas d'activités prévues pour l'instant</Text>
                 }

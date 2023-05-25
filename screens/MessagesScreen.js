@@ -14,49 +14,54 @@ const MessagesScreen = ({ navigation, route }) => {
     const activityId = route.params
 
     useEffect(() => {
-        fetch(`http://sportee-backend.vercel.app/conversation/userId/${connectedUser.token}`)
+        fetch(`http://10.1.0.84:3000/conversation/userId/${connectedUser.token}`)
             .then(response => response.json())
             .then(data => setUserId(data.userId))
-
 
         const pusher = new Pusher("11d41dded094302fda2e", {
             cluster: "eu",
             encrypted: true,
         })
         const channel = pusher.subscribe('sportee_channel')
-        channel.bind('pusher:subscription_succeeded', () => {
-            channel.bind('new-message', handleReceiveMessage)
-        })
+        channel.bind('new-message', handleReceiveMessage)
 
-        handleReceiveMessage()
-        return () => {
-            pusher.unsubscribe('sportee_channel')
-        }
-    }, [activityId])
-
-    const handleReceiveMessage = () => {
-        fetch(`http://sportee-backend.vercel.app/conversation/getConversation/${activityId}`)
+        !messages.length && fetch(`http://10.1.0.84:3000/conversation/getConversation/${activityId}`)
             .then(response => response.json())
             .then(data => {
-                console.log(data.messages)
                 if (data.result) {
-                    console.log('My messages-------', data.messages.map(e => e.message))
                     data.messages.forEach(e => {
                         const { _id, message, user, timestamp } = e
-                        setMessages(previousMessages => GiftedChat.append(previousMessages, { _id, text: message, user, createdAt: timestamp }))
+                        setMessages(previousMessages => GiftedChat.append(previousMessages, { _id: _id, user: { _id: user, name: 'test' }, text: message, createdAt: timestamp }))
                     })
                     setActivityName(data.name)
-                    // setMessages(previousMessages =>
-                    //     GiftedChat.append(previousMessages, data.messages)
-                    // )
+
 
                 } else {
                     console.log('conversation not found')
                 }
             })
-            .catch(error => {
-                console.log(error)
+        return () => {
+            pusher.unsubscribe('sportee_channel')
+        }
+    }, [activityId])
+
+
+
+    const handleReceiveMessage = () => {
+
+        fetch(`http://10.1.0.84:3000/conversation/getLastMessage/${activityId}`)
+            .then(response => response.json())
+            .then(data => {
+
+                console.log('My messages-------', data.message)
+                const { _id, user, message, timestamp } = data.message
+                console.log('id', _id)
+                if (user !== userId && !message.some(e => e._id === _id)) {
+
+                    setMessages(previousMessages => GiftedChat.append(previousMessages, { _id: _id, user: { _id: user }, text: message, createdAt: timestamp }))
+                }
             })
+
     }
 
     const onSend = (newMessages = []) => {
@@ -70,16 +75,7 @@ const MessagesScreen = ({ navigation, route }) => {
             },
             body: JSON.stringify({ message: newMessages[0].text, timestamp: new Date(), user: userId }),
         })
-
-        // .then(response => response.json())
-        // .then(data => {
-        //     console.log(data);
-        // })
-        // .catch(error => {
-        //     console.log(error);
-        // });
-    };
-
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -119,7 +115,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#f2f2f2',
-        //   alignItems: 'center',
     },
 
     title: {
@@ -144,12 +139,10 @@ const styles = StyleSheet.create({
         width: 42,
         height: 42,
         padding: 8,
-        // marginRight: 20,
     },
 
     userIcon: {
-        // padding: 10,
         marginLeft: 4,
-    }
+    },
 
 });
