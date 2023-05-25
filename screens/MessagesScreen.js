@@ -9,6 +9,7 @@ import Pusher from 'pusher-js/react-native'
 const MessagesScreen = ({ navigation, route }) => {
     const [messages, setMessages] = useState([])
     const [userId, setUserId] = useState('')
+    const [activityName, setActivityName] = useState('')
     const connectedUser = useSelector((state) => state.user.value)
     const activityId = route.params
 
@@ -44,6 +45,7 @@ const MessagesScreen = ({ navigation, route }) => {
                         const { _id, message, user, timestamp } = e
                         setMessages(previousMessages => GiftedChat.append(previousMessages, { _id, text: message, user, createdAt: timestamp }))
                     })
+                    setActivityName(data.name)
                     // setMessages(previousMessages =>
                     //     GiftedChat.append(previousMessages, data.messages)
                     // )
@@ -82,7 +84,7 @@ const MessagesScreen = ({ navigation, route }) => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.topContainer}>
-                <Text style={styles.title}>Channel name</Text>
+                <Text style={styles.title}>{activityName}</Text>
                 <View style={styles.userIconContainer}>
                     <FontAwesome
                         name="user"

@@ -15,7 +15,6 @@ const ActivityScreen = ({ navigation, route }) => {
     const [isValidateParticipationModalVisible, setIsValidateParticipationModalVisible] = useState(false);
     const [isManageParticipationsModalVisible, setIsManageParticipationsModalVisible] = useState(false);
     const [status, setStatus] = useState('participate');
-    const [refreshPage, setRefreshPage] = useState(false)
     const activityId = route.params
 
     //Get activity info from id transmitted from previous page
