@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { SafeAreaView, View, Text, StyleSheet, TextInput, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, TextInput, ScrollView } from 'react-native'
 import { useSelector } from 'react-redux';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import ConversationCard from '../components/ConversationCard';
@@ -45,7 +45,7 @@ const MessagesListScreen = ({ navigation }) => {
 
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <View style={styles.topContainer}>
                 <Text style={styles.title}>Vos conversations</Text>
                 <View style={styles.userIconContainer}>
@@ -78,7 +78,7 @@ const MessagesListScreen = ({ navigation }) => {
                 }
             </View>
 
-        </SafeAreaView>
+        </View>
     )
 }
 
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginRight: 27.5,
         marginLeft: 27.5,
-        marginTop: 30,
+        marginTop: 77,
         marginBottom: 10,
     },
 

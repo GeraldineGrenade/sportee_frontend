@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
-import { SafeAreaView, View, Text, StyleSheet, StatusBar, TouchableOpacity, Image } from 'react-native'
+import { View, Text, StyleSheet, StatusBar, TouchableOpacity, Image } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 import { Agenda, LocaleConfig } from 'react-native-calendars';
@@ -111,7 +111,7 @@ useFocusEffect(() => {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <View style={styles.topContainer}>
                 <Text style={styles.title}>Mon calendrier d'activités</Text>
                 <View style={styles.userIconContainer}>
@@ -135,7 +135,7 @@ useFocusEffect(() => {
                 }}>
             </Agenda>
             <StatusBar />
-        </SafeAreaView>
+        </View>
     )
 }
 
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginRight: 27.5,
         marginLeft: 27.5,
-        marginTop: 30,
+        marginTop: 77,
         marginBottom: 10,
     },
 
