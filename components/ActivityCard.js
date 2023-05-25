@@ -37,10 +37,10 @@ const Activity = (props) => {
                     <FontAwesome name='map-pin' size={15} color='#000' style={styles.mapIcon} />
                     <Text style={styles.city}>{city}</Text>
                 </View>
-                <View style={styles.dateInfos}>
+                {props.connected && <View style={styles.dateInfos}>
                     <FontAwesome5 name='calendar-alt' size={15} color='#000' style={styles.mapIcon} />
                     <Text style={styles.date}>{moment(props.date).format('LLL')}</Text>
-                </View>
+                </View>}
                 <View style={styles.nbrContainer}>
                     <FontAwesome name='user' size={15} color='#000' style={styles.calendarIcon} />
                     <Text style={styles.nbrParticipants}>Participants {props.participants.length}/{props.nbMaxParticipants}</Text>
