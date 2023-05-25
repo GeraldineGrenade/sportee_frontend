@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
 import { SafeAreaView, View, Text, StyleSheet, StatusBar, TouchableOpacity, Image } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
-// import { Calendar } from "react-native-calendars";
 import { Agenda, LocaleConfig } from 'react-native-calendars';
 import { Card } from 'react-native-paper';
 
@@ -45,6 +45,8 @@ LocaleConfig.locales['fr'] = {
 
 LocaleConfig.defaultLocale = 'fr';
 
+
+
 const CalendarScreen = ({ navigation }) => {
     const connectedUser = useSelector((state) => state.user.value);
     const [activities, setActivities] = useState({});
@@ -82,6 +84,11 @@ const CalendarScreen = ({ navigation }) => {
             });
  
     }
+
+    //Redirects to ConnectionScreen if no user connected
+useFocusEffect(() => {
+    !connectedUser.email && navigation.navigate('ConnectionAll')
+  })
 
     const handleClickActivityCardCalendar = (activityId) => {
         navigation.navigate('Activity', activityId)

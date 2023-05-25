@@ -45,7 +45,7 @@ const HomeScreen = ({ navigation }) => {
             })
     }, [])
 
-    //On click on acttivity Card, navigate to ActivityScreen with activityId in route.params if user is connected or show connect Modal if user is not connected
+    //On click on activity Card, navigate to ActivityScreen with activityId in route.params if user is connected or show connect Modal if user is not connected
     const handleClickActivityCard = (activityId) => {
         if (!connectedUser.token) {
             setShowModalConnect(true)

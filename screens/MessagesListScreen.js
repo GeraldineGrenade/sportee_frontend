@@ -74,7 +74,7 @@ const MessagesListScreen = ({ navigation }) => {
                     (<ScrollView contentContainerStyle={styles.messagesArchivContainer}>
                         {otherConversationList}
                     </ScrollView>)
-                    : <Text style={styles.noActivity}>Vous n'avez pas d'acvitités prévues pour l'instant</Text>
+                    : <Text style={styles.noActivity}>Vous n'avez pas d'activités prévues pour l'instant</Text>
                 }
             </View>
 

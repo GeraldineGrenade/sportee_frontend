@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 
 import {
   View,
@@ -47,7 +48,6 @@ const CreateScreen = ({ navigation }) => {
   const [description, setDescription] = useState("");
   const [place, setPlace] = useState({});
   const [level, setLevel] = useState("");
-  const [nbMaxParticipants, setNbMaxParticipants] = useState("");
   const [datePicker, setDatePicker] = useState(false);
   const [date, setDate] = useState(new Date());
   const [timePicker, setTimePicker] = useState(false);
@@ -58,10 +58,12 @@ const CreateScreen = ({ navigation }) => {
   const [selectedPerson, setSelectedPerson] = useState(null);
   const [dropdownPerson, setDropdownPerson] = useState(false);
 
+  const connectedUser = useSelector((state) => state.user.value);
+
   const dropdownOptions = Array.from({ length: 12 }, (_, index) => index + 1);
 
   const dropdownNumber = Array.from({ length: 10 }, (_, index) => index + 1);
-  console.log(selectedPerson);
+
   const selectSport = () => {
     setIsModalVisible(true);
   };
@@ -74,6 +76,11 @@ const CreateScreen = ({ navigation }) => {
     setIsModalVisible(false);
     setNewSport(sport);
   };
+
+  //Redirects to ConnectionScreen if no user connected
+  useFocusEffect(() => {
+    !connectedUser.email && navigation.navigate("ConnectionAll");
+  });
 
   //RETREVIAL OF THE ADDRESS OF THE PLACE OF THE ACTIVITY
   useEffect(() => {
@@ -133,7 +140,7 @@ const CreateScreen = ({ navigation }) => {
     level,
     date: new Date(dateAndTime),
     time: Number(selectedValue),
-    nbMaxParticipants,
+    nbMaxParticipants: selectedPerson,
     userToken,
   };
 
@@ -224,6 +231,7 @@ const CreateScreen = ({ navigation }) => {
   };
 
   // DROPDOWNPICKER NUMBER OF PEOPLE
+
   const selectDropdown = () => {
     setDropdownPerson(!dropdownPerson);
   };
@@ -233,12 +241,7 @@ const CreateScreen = ({ navigation }) => {
     setDropdownPerson(false);
   };
 
-  const resetSelectedNumber = () => {
-    setSelectedPerson(null);
-  };
-
-  // const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : 0;
-
+  
   return (
     <KeyboardAvoidingView
       style={
@@ -280,7 +283,7 @@ const CreateScreen = ({ navigation }) => {
               selectSport={selectSport}
             />
             <Modal visible={isModalVisible} animationType="fade" transparent>
-              <ModaleSports closeModal={closeModal} calledFrom='create'/>
+              <ModaleSports closeModal={closeModal} calledFrom="create" />
             </Modal>
           </TouchableOpacity>
           <View style={styles.description}>
@@ -351,8 +354,8 @@ const CreateScreen = ({ navigation }) => {
                   <DateTimePicker
                     value={date}
                     mode="date"
-                    display={Platform.OS === "ios" ? "spinner" : "default"}
-                    onChange={onDateSelected}
+                    display='default'
+                    // onChange={onDateSelected}
                   />
                 )}
                 {!datePicker && (
@@ -367,8 +370,8 @@ const CreateScreen = ({ navigation }) => {
                     <DateTimePicker
                       value={time}
                       mode="time"
-                      display={Platform.OS === "ios" ? "spinner" : "default"}
-                      onChange={onTimeSelected}
+                      display='Default'
+                      // onChange={onTimeSelected}
                     />
                   )}
                   {!timePicker && (
@@ -381,7 +384,7 @@ const CreateScreen = ({ navigation }) => {
                 </View>
               </View>
 
-              <Text style={styles.dateAndTime}>{formattedDateTime}</Text>
+              {/* <Text style={styles.dateAndTime}>{formattedDateTime}</Text> */}
             </View>
             <View style={styles.inputHours}>
               <TouchableOpacity
@@ -427,7 +430,9 @@ const CreateScreen = ({ navigation }) => {
             style={styles.dropdownToggle}
           >
             <Text style={styles.dropdownPersonText}>
-              {selectedPerson !== null ? `${selectedPerson} Personnes` : "Nombre"}
+              {selectedPerson !== null
+                ? `${selectedPerson} Personnes`
+                : "Nombre"}
             </Text>
           </TouchableOpacity>
           <Modal visible={dropdownPerson} animationType="fade" transparent>
@@ -436,18 +441,17 @@ const CreateScreen = ({ navigation }) => {
               onPress={selectDropdown}
             >
               <View style={styles.dropdown}>
-                {dropdownNumber.map((option) => (
+                {dropdownNumber.map((select) => (
                   <TouchableOpacity
-                    key={option}
-                    onPress={() => handlePersonSelect(option)}
+                    key={select}
+                    onPress={() => handlePersonSelect(select)}
                     style={styles.dropdownOption}
                   >
-                    <Text>{option}</Text>
+                    <Text>{select}</Text>
                   </TouchableOpacity>
                 ))}
               </View>
             </TouchableOpacity>
-            {/* <Text style={styles.personne}>personnes</Text> */}
           </Modal>
         </View>
 
@@ -660,15 +664,15 @@ const styles = StyleSheet.create({
   },
 
   inputDate: {
-    marginLeft: 10,
+    // marginLeft: 5,
     marginTop: 10,
-    backgroundColor: "white",
-    borderRadius: 7,
-    borderWidth: 1,
+    // backgroundColor: "white",
+    // borderRadius: 7,
+    // borderWidth: 1,
     borderColor: "#D9D9D9",
     width: 145,
     height: 34,
-    paddingLeft: 10,
+    // paddingLeft: 10,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -745,10 +749,6 @@ const styles = StyleSheet.create({
     color: "#f2f2f2",
   },
 
-  // dropdown: {
-  //   width: "10%",
-  // },
-
   dropdownToggleText: {
     fontSize: 16,
   },
@@ -796,11 +796,6 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
   },
 
-  // dropdownOption: {
-  //   alignContent: "center",
-  //   justifyContent: "center",
-  // },
-  
 });
 
 export default CreateScreen;
