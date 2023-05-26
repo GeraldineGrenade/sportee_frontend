@@ -67,11 +67,9 @@ const HomeScreen = ({ navigation }) => {
         }
     }
     
-    //!\TO FINISH
+    //On click on card on map, navigate to Activity Screen with activityID in route.params
     const handleClickMapCard = (activityId) => {
-        // console.log(activityId);
         navigation.navigate('Activity', activityId)
-
     }
 
     //Get 20 random activities from activityData
@@ -142,7 +140,6 @@ const HomeScreen = ({ navigation }) => {
                     }
                     keyExtractor={(item, i) => item._id}
                     contentContainerStyle={styles.cardContainerTop}
-                    // numColumns={2}
                     horizontal={true}
                     vertical={false}
                     showsHorizontalScrollIndicator={true}
@@ -183,7 +180,6 @@ const HomeScreen = ({ navigation }) => {
                     numColumns={2}
                 />
             </View>
-
         )
     }
 
@@ -191,15 +187,11 @@ const HomeScreen = ({ navigation }) => {
     if (showMap) {
         content = (
             <View>
-                {/* {!connectedUser.token && <ModaleConnect handleNavigate={handleNavigate} handleBack={handleBack} calledFrom='map' />} */}
-
+                {!connectedUser.token && <ModaleConnect handleNavigate={handleNavigate} handleBack={handleBack} calledFrom='map' />}
                 <Map handleClickMapCard={handleClickMapCard} />
-
             </View>
-
         )
     }
-
 
     return (
         <SafeAreaView style={styles.container}>
@@ -285,10 +277,6 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         marginRight: 15,
         paddingLeft: 15,
-    },
-
-    textInput: {
-
     },
 
     searchIcon:{

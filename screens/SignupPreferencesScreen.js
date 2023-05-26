@@ -6,7 +6,6 @@ import SelectionTxt from '../components/SelectionTxt';
 import SelectionSport from '../components/SelectionSport';
 import { addSport, removeSport, addHabit, removeHabit, selectLevel, removeAllSports, removeAllHabits } from '../reducers/preferences';
 import { signIn } from '../reducers/user';
-
 import Feather from 'react-native-vector-icons/Feather';
 
 const habitTitles = [

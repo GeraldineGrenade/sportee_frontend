@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
-import { useSelector } from 'react-redux';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import moment from 'moment';
 import 'moment/locale/fr'
@@ -57,7 +56,6 @@ const styles = StyleSheet.create({
     },
     creatorName: {
         fontSize: 14,
-        // color: '#121C6E',
         fontWeight: 'bold',
     },
     activityDetails: {

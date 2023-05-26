@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   value: [],
-
 };
 
 export const activitiesSlice = createSlice({
@@ -13,7 +12,6 @@ export const activitiesSlice = createSlice({
     addAllActivities: (state, action) => {
       state.value = action.payload;
     },
-
   },
 });
 

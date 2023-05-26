@@ -141,8 +141,6 @@ const styles = StyleSheet.create({
     },
     participantName: {
         fontSize: 12,
-        // color: '#121C6E',
-        // fontWeight: 'bold',
     },
     avatar: {
         borderRadius: 50,

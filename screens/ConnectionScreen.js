@@ -84,7 +84,6 @@ export default ConnectionScreen = ({ navigation }) => {
 
     const sendUserInfoToDatabase = async (userInfo) => {
         try {
-            // console.log('user infos', userInfo)
             const response = await fetch('https://sportee-backend.vercel.app/users', {
                 method: 'POST',
                 headers: {
@@ -92,9 +91,8 @@ export default ConnectionScreen = ({ navigation }) => {
                 },
                 body: JSON.stringify({ userInfo }),
             })
-            // console.log('response from server', response)
         } catch (error) {
-            // console.error('error', error)
+            console.error('error', error)
         }
     }
 
@@ -106,7 +104,6 @@ export default ConnectionScreen = ({ navigation }) => {
             >
             <TouchableOpacity style={styles.backBtn} onPress={() => navigation.navigate('Recherche')}>
                 <Feather name='arrow-left' size={25} color='#121C6E' />
-                {/* <Text style={styles.backBtnTxt} >Retour à la page d'acceuil</Text> */}
             </TouchableOpacity>
             {userInfo === null ? (
 
@@ -151,8 +148,6 @@ export default ConnectionScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // alignItems: "center",
-        // padding: 27.5,
     },
     backBtn: {
         alignSelf: 'flex-start',
@@ -160,7 +155,6 @@ const styles = StyleSheet.create({
         marginLeft: 15, 
         flexDirection: 'row',
     },
-
     iconGoogle: {
         marginLeft: 3, 
     },
@@ -170,12 +164,10 @@ const styles = StyleSheet.create({
     iconMail: {
         marginLeft: 7, 
     },
-
     background: {
         height: '100%',
         flex: 1,
     },
-
     backBtnTxt: {
         color: '#D9D9D9',
         marginLeft: 10,
@@ -212,7 +204,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         marginBottom: 15, 
     },
-
     buttonTextGoogle: {
         color: '#ffffff',
         fontSize: 14,

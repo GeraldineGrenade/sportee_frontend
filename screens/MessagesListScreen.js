@@ -10,8 +10,6 @@ const MessagesListScreen = ({ navigation }) => {
     const [myConversationList, setMyConversationList] = useState([]);
     const [otherConversationList, setOtherConversationList] = useState([])
 
-    console.log(myConversationList)
-
     //Redirects to ConnectionScreen if no user connected
     useFocusEffect(() => {
         !connectedUser.email && navigation.navigate('ConnectionAll')
@@ -22,20 +20,17 @@ const MessagesListScreen = ({ navigation }) => {
         navigation.navigate('Conversation', activityId)
     }
 
-
     useEffect(() => {
         //Gets list of activities in which the user is participating and is approved
         fetch(`http://10.1.0.84:3000/activities/getActivitiesOfUser?token=${connectedUser.token}`)
             .then(response => response.json())
             .then(data => {
-
                 setOtherConversationList(data.activities)
             })
         //Gets list of activities created by user
         fetch(`http://10.1.0.84:3000/activities/getActivitiesByUser?token=${connectedUser.token}`)
             .then(response => response.json())
             .then(data => {
-
                 setMyConversationList(data.activities)
             })
     }, [])
@@ -62,9 +57,8 @@ const MessagesListScreen = ({ navigation }) => {
             {myConversationList &&
                 <View style={styles.activeContainer}>
                     <Text style={styles.subtitle}>Conversations de mes activités : </Text>
-
                     <ScrollView contentContainerStyle={styles.messagesContainer}>
-                        {myConversationList}
+                        {myList}
                     </ScrollView>
                 </View>
             }
@@ -73,13 +67,12 @@ const MessagesListScreen = ({ navigation }) => {
                 <Text style={styles.subtitle}>Conversations des activités auxquelles je participe : </Text>
 
                 {otherConversationList ?
-                    (<ScrollView contentContainerStyle={styles.messagesArchivContainer}>
+                    (<ScrollView contentContainerStyle={styles.messagesContainer}>
                         {otherList}
                     </ScrollView>)
                     : <Text style={styles.noActivity}>Vous n'avez pas d'activités prévues pour l'instant</Text>
                 }
             </View>
-
         </View>
     )
 }
@@ -91,14 +84,12 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#f2f2f2',
     },
-
     title: {
         color: '#EA7810',
         fontSize: 24,
         fontWeight: '700',
         paddingTop: 8,
     },
-
     topContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -107,7 +98,6 @@ const styles = StyleSheet.create({
         marginTop: 77,
         marginBottom: 10,
     },
-
     userIconContainer: {
         backgroundColor: '#121C6E',
         borderRadius: 50,
@@ -115,11 +105,9 @@ const styles = StyleSheet.create({
         height: 42,
         padding: 8,
     },
-
     userIcon: {
         marginLeft: 4,
     },
-
     input: {
         width: '85%',
         height: 46,
@@ -135,12 +123,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 10,
     },
-
     searchIcon: {
         color: '#D9D9D9',
         marginRight: 5,
     },
-
     subtitle: {
         fontSize: 18,
         fontWeight: '500',
@@ -148,15 +134,12 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         marginLeft: 27.5,
     },
-
     activeContainer: {
         marginBottom: 30,
     },
-
     archiveContainer: {
         marginBottom: 40,
     },
-
     messageActiv: {
         borderColor: '#F2EEEE',
         backgroundColor: '#E4E0E0',
@@ -167,12 +150,10 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         marginTop: 10,
     },
-
     messagesContainer: {
         alignItems: 'center',
         height: 200,
     },
-
     messageArchiv: {
         borderColor: '#D9D9D9',
         borderRadius: 10,
@@ -182,7 +163,6 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         marginTop: 10,
     },
-
     noActivity: {
         marginLeft: 27.5,
         fontStyle: 'italic',

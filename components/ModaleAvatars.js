@@ -18,6 +18,16 @@ export default ModaleAvatars = (props) => {
         'https://res.cloudinary.com/dsd7uux0v/image/upload/v1684405796/sportee/avatar4_ug3mjt.png',
         'https://res.cloudinary.com/dsd7uux0v/image/upload/v1684405796/sportee/avatar5_ywvehs.png',
         'https://res.cloudinary.com/dsd7uux0v/image/upload/v1684405796/sportee/avatar6_gvkxhz.png',
+        'https://res.cloudinary.com/dsd7uux0v/image/upload/v1685076178/sportee/avatar7_gb0q8e.png',
+        'https://res.cloudinary.com/dsd7uux0v/image/upload/v1685076178/sportee/avatar8_gnrs2v.png',
+        'https://res.cloudinary.com/dsd7uux0v/image/upload/v1685076178/sportee/avatar9_zbaxcr.png',
+        'https://res.cloudinary.com/dsd7uux0v/image/upload/v1685076178/sportee/avatar10_ed1cb5.png',
+        'https://res.cloudinary.com/dsd7uux0v/image/upload/v1685076178/sportee/avatar11_e878fq.png',
+        'https://res.cloudinary.com/dsd7uux0v/image/upload/v1685076178/sportee/avatar12_v2a5xa.png',
+        'https://res.cloudinary.com/dsd7uux0v/image/upload/v1685076179/sportee/avatar13_rgq2dt.png',
+        'https://res.cloudinary.com/dsd7uux0v/image/upload/v1685076179/sportee/avatar14_xtlmmn.png',
+        'https://res.cloudinary.com/dsd7uux0v/image/upload/v1685076179/sportee/avatar15_p5iddi.png',
+        'https://res.cloudinary.com/dsd7uux0v/image/upload/v1685076179/sportee/avatar16_vr1zvc.png',
     ]
 
     let avatarList = avatarIcons.map((e, i) => {

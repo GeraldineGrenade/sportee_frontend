@@ -9,13 +9,12 @@ const Activity = (props) => {
     const [city, setCity] = useState('')
     moment.locale('fr')
 
-    useEffect(() => {
+    useEffect(()=> {
         //Get city from address
         let cityPattern = /[0-9]{5} /
         let resultArr = props.place.address.split(cityPattern)
         setCity(resultArr[resultArr.length - 1])
     }, [])
-
 
     return (
         <TouchableOpacity style={styles.cardContainer} onPress={() => props.handleClickActivityCard(props._id)}>

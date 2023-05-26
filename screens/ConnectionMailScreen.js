@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { SafeAreaView, View, Text, Image, StyleSheet, TouchableOpacity, TextInput, ImageBackground } from 'react-native'
+import { View, Text, Image, StyleSheet, TouchableOpacity, TextInput, ImageBackground } from 'react-native'
 import { useDispatch } from 'react-redux';
 import { addSport, addHabit, selectLevel } from '../reducers/preferences'
 import { signIn } from '../reducers/user';
@@ -12,8 +12,6 @@ export default ConnectionMailScreen = ({ navigation }) => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
     let dispatch = useDispatch();
-
-    //{"_id": "64662968107a0fa2af912a64", "habits": ["Le weekend"], "level": "Sportif du dimanche", "sports": [{"_id": "6463959b0efb12e60cbd26c3", "icon": "https://res.cloudinary.com/dsd7uux0v/image/upload/v1684246194/sportee/tennis_qhk2wr.png", "name": "tennis", "photo": "https://res.cloudinary.com/dube2vhtq/image/upload/v1684682690/tennis_ncbzbl.jpg"}, {"_id": "646392ba0efb12e60cbd26b3", "icon": "https://res.cloudinary.com/dsd7uux0v/image/upload/v1684246192/sportee/horse-riding_qe3pme.png", "name": "équitation", "photo": "https://res.cloudinary.com/dube2vhtq/image/upload/v1684682688/equitationgirl_xovxqh.jpg"}, {"_id": "646392870efb12e60cbd26b1", "icon": "https://res.cloudinary.com/dsd7uux0v/image/upload/v1684246194/sportee/hiking_iadu3r.png", "name": "randonnée", "photo": "https://res.cloudinary.com/dube2vhtq/image/upload/v1684682687/beautifulhiking_pttyoo.jpg"}]}
 
     handleLogin = () => {
         //Verify if fields are not empty
@@ -104,7 +102,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'white',
-
     },
     backBtn: {
         marginLeft: 20,
@@ -116,12 +113,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-
     background: {
         height: '100%',
         flex: 1,
     },
-
     logo: {
         justifyContent: 'center',
         alignItems: 'center',
@@ -129,8 +124,7 @@ const styles = StyleSheet.create({
         height:140,
         marginLeft:70,
         marginTop: 50,
-    }, 
-
+    },
     title: {
         color: '#EA7810',
         fontSize: 24,
