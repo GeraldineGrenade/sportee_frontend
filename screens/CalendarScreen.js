@@ -73,13 +73,11 @@ const CalendarScreen = ({ navigation }) => {
                 for (let i = 0; i < 85; i++) {
                     const time = day.timestamp + i * 24 * 60 * 60 * 1000;
                     const strTime = moment(time).format('YYYY-MM-DD');
-                   // console.log(strTime)
     
                     if (!newActivities[strTime]) {
                         newActivities[strTime] = [];
                     }
                 }
-                // console.log('calendar----', newActivities)
                 setActivities(newActivities)
             });
  
@@ -129,7 +127,6 @@ useFocusEffect(() => {
                 refreshing={false}
                 renderItem={renderItem}
                 theme={{
-                    // calendarBackground: '#000000'
                     todayTextColor: '#ff7f50',
                     textDayFontWeight: '500',
                 }}>

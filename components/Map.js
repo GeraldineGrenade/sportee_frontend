@@ -15,7 +15,6 @@ const Map = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [pinIconColor, setPinIconColor] = useState('#00bfff');
   const [currentMarker, setCurrentMarker] = useState(null);
-  const connectedUser = useSelector((state) => state.user.value)
   const preferences = useSelector((state) => state.preferences.value)
   const activityData = useSelector((state) => state.activities.value)
 
