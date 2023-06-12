@@ -24,6 +24,7 @@ export default function App() {
         scopes: ["public_profile", "email"],
     })
 
+    //SEARCH IF A CONDITION IS VERIFIED
     useEffect(() => {
         if (googleResponse && googleResponse.type === "success" && googleResponse.authentication) {
             (async () => {
@@ -47,6 +48,7 @@ export default function App() {
         }
     }, [googleResponse, facebookResponse])
 
+    //ACTION AFTER PRESS GOOGLE BUTTON
     const handleGooglePressAsync = async () => {
         const result = await promptGoogleAsync()
         if (result.type === 'success') {
@@ -67,6 +69,7 @@ export default function App() {
 
     }
 
+    //ACTION AFTER PRESS FACEBOOK BUTTON
     const handleFacebookPressAsync = async () => {
         const result = await promptFacebookAsync()
         if (result.type === 'success') {
@@ -81,7 +84,7 @@ export default function App() {
             alert('Une erreur s\'est produite lors de l\'authentification Facebook.')
         }
     }
-
+    //SEND USER INFORMATION ON DATABASE
     const sendUserInfoToDatabase = async (userInfo) => {
         try {
             console.log('user infos', userInfo)
