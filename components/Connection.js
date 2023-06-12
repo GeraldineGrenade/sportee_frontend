@@ -12,15 +12,14 @@ WebBrowser.maybeCompleteAuthSession()
 const navigation = useNavigation()
 
 export default function App() {
-    const [token, setToken] = useState("")
     const [userInfo, setUserInfo] = useState(null)
 
-    const [googleRequest, googleResponse, promptGoogleAsync] = Google.useAuthRequest({
+    const [googleResponse, promptGoogleAsync] = Google.useAuthRequest({
         clientId: "1016759034555-pt2a62f4a0q7msu6f9p7rt9aetlin4a4.apps.googleusercontent.com",
         scopes: ["openid", "profile", "email"],
     })
 
-    const [facebookRequest, facebookResponse, promptFacebookAsync] = Facebook.useAuthRequest({
+    const [facebookResponse, promptFacebookAsync] = Facebook.useAuthRequest({
         clientId: "495706416016280",
         scopes: ["public_profile", "email"],
     })
@@ -93,7 +92,6 @@ export default function App() {
                 },
                 body: JSON.stringify({ userInfo }),
             })
-            // const dataResponse = await response.json()
             console.log('response from server', response)
         } catch (error) {
             console.error('error', error)
