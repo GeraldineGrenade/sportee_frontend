@@ -19,6 +19,9 @@ import { configureStore } from '@reduxjs/toolkit';
 import user from './reducers/user';
 import preferences from './reducers/preferences';
 import activities from './reducers/activities';
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
 
 const store = configureStore({
   reducer: { user, preferences, activities },

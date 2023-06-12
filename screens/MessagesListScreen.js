@@ -38,7 +38,7 @@ const MessagesListScreen = ({ navigation }) => {
     const otherList = otherConversationList.map((e, i) => {
         return <ConversationCard key={i} {...e} handleClickConversationCard={handleClickConversationCard} />
     })
-    const myList = myConversationList.map((e, i) => {
+    const myList = myConversationList.reverse().map((e, i) => {
         return <ConversationCard key={i} {...e} handleClickConversationCard={handleClickConversationCard} />
     })
     return (
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     },
     messagesContainer: {
         alignItems: 'center',
-        height: 200,
+        height: 300,
     },
     messageArchiv: {
         borderColor: '#D9D9D9',

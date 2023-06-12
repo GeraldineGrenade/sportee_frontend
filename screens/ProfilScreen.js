@@ -69,7 +69,8 @@ const ProfilScreen = ({ navigation }) => {
             </View>
             <View style={styles.description}>
                 <Text style={styles.subtitleDesc}>Ma description : </Text>
-                <Text style={styles.input}>{connectedUser.description !== '' ? connectedUser.description : "Vous n'avez pas de description pour l'instant"}</Text>
+                <Text style={styles.input}>Originaire de Hossegor je suis arrivée à Lille depuis 6 mois et je recherche des personnes avec qui partager mes sports favoris : Kite, surf, skate, rando dans la joie et convivialité 😀</Text>
+                {/* {connectedUser.description !== '' ? connectedUser.description : "Vous n'avez pas de description pour l'instant"} */}
             </View>
 
             <View style={styles.bottomButtons}>

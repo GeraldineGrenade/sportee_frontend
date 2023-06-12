@@ -12,19 +12,19 @@ WebBrowser.maybeCompleteAuthSession()
 const navigation = useNavigation()
 
 export default function App() {
-    const [token, setToken] = useState("")
     const [userInfo, setUserInfo] = useState(null)
 
-    const [googleRequest, googleResponse, promptGoogleAsync] = Google.useAuthRequest({
+    const [googleResponse, promptGoogleAsync] = Google.useAuthRequest({
         clientId: "1016759034555-pt2a62f4a0q7msu6f9p7rt9aetlin4a4.apps.googleusercontent.com",
         scopes: ["openid", "profile", "email"],
     })
 
-    const [facebookRequest, facebookResponse, promptFacebookAsync] = Facebook.useAuthRequest({
+    const [facebookResponse, promptFacebookAsync] = Facebook.useAuthRequest({
         clientId: "495706416016280",
         scopes: ["public_profile", "email"],
     })
 
+    //SEARCH IF A CONDITION IS VERIFIED
     useEffect(() => {
         if (googleResponse && googleResponse.type === "success" && googleResponse.authentication) {
             (async () => {
@@ -48,6 +48,7 @@ export default function App() {
         }
     }, [googleResponse, facebookResponse])
 
+    //ACTION AFTER PRESS GOOGLE BUTTON
     const handleGooglePressAsync = async () => {
         const result = await promptGoogleAsync()
         if (result.type === 'success') {
@@ -68,6 +69,7 @@ export default function App() {
 
     }
 
+    //ACTION AFTER PRESS FACEBOOK BUTTON
     const handleFacebookPressAsync = async () => {
         const result = await promptFacebookAsync()
         if (result.type === 'success') {
@@ -82,7 +84,7 @@ export default function App() {
             alert('Une erreur s\'est produite lors de l\'authentification Facebook.')
         }
     }
-
+    //SEND USER INFORMATION ON DATABASE
     const sendUserInfoToDatabase = async (userInfo) => {
         try {
             console.log('user infos', userInfo)
@@ -93,7 +95,6 @@ export default function App() {
                 },
                 body: JSON.stringify({ userInfo }),
             })
-            // const dataResponse = await response.json()
             console.log('response from server', response)
         } catch (error) {
             console.error('error', error)

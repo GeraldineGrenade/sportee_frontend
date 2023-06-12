@@ -44,7 +44,7 @@ const SignupJoinScreen = ({ navigation }) => {
     //Date picker
     const onDateSelected = (event, value) => {
         setDateOfBirth(value);
-      };
+    };
 
     //Validate user info - Check if all fields are valid and if not add error text underneath input
     const handleValidate = () => {
@@ -141,9 +141,10 @@ const SignupJoinScreen = ({ navigation }) => {
     }
 
     return (
-        <KeyboardAvoidingView
-            style={isAvoiding ? styles.avoidingContainer : styles.container}
-            behavior={Platform.OS === "ios" ? "padding" : "height"} >
+        <View
+            style={styles.container}
+        // behavior={Platform.OS === "ios" ? "padding" : "height"} 
+        >
 
             <View >
                 <TouchableOpacity onPress={() => navigation.navigate('ConnectionAll')}>
@@ -254,12 +255,12 @@ const SignupJoinScreen = ({ navigation }) => {
                     <View style={styles.inputPair}>
                         <Text style={styles.inputLabel}>Date de naissance* :</Text>
                         <View style={styles.date}>
-                                <DateTimePicker
-                                    value={dateOfBirth}
-                                    mode='date'
-                                    display='default'
-                                    onChange={onDateSelected}
-                                />
+                            <DateTimePicker
+                                value={dateOfBirth}
+                                mode='date'
+                                display='default'
+                                onChange={onDateSelected}
+                            />
                         </View>
                     </View>
                     {dateOfBirthError && <Text style={styles.error}>Entrer une date de naissance conforme</Text>}
@@ -308,7 +309,7 @@ const SignupJoinScreen = ({ navigation }) => {
                     <ModaleAvatars closeAvatarModal={closeAvatarModal} />
                 </Modal>
             </View>
-        </KeyboardAvoidingView>
+        </View>
     )
 }
 
@@ -429,6 +430,6 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',
     },
     date: {
-        marginRight : 65,
+        marginRight: 65,
     }
 })

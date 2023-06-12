@@ -80,7 +80,8 @@ const MessagesScreen = ({ navigation, route }) => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.topContainer}>
-                <Text style={styles.title}>{activityName}</Text>
+                <Text style={styles.title}>Football</Text>
+                {/* {activityName} */}
                 <View style={styles.userIconContainer}>
                     <FontAwesome
                         name="user"

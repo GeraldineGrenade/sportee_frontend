@@ -176,7 +176,7 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
 
     const selectSport = (data) => {
         setSportModalVisible(true)
-        const { name, icon, index } = data
+        const { index } = data
         setSportIndex(index)
     }
 
@@ -204,7 +204,7 @@ const ModalFilter = ({ modalVisible, setModalVisible }) => {
     })
 
     // SET THE DATE TIME PICKER
-    const onDateSelected = (event, value) => {
+    const onDateSelected = (value) => {
         setDate(value)
         setDatePicker(false)
         const serializedDate = value.toISOString()
