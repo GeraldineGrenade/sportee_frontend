@@ -1,6 +1,6 @@
 __SPORTEE__ is a mobile application designed to enable users to easily organise sporting activities or join activities created by other users around them. We wanted to establish a plateform for sharing and exchanging ideas around sports and foster the development of social connections across all generations. 
 
-__Contributors :__ Dorian L, Josephine M, Camille D, Géraldine G
+__Contributors :__ Géraldine G, Josephine M, Dorian L, Camille D
 
 This repository regroups the frontend elements of the MVP of the SPORTEE mobile app. 
 For more details on the backend aspects of the app, checkout the backend repository here 👉 https://github.com/GeraldineGrenade/sportee_backend
